@@ -1,0 +1,2 @@
+rootProject.name='O&M Pro'
+include ':app'
