@@ -4,4 +4,33 @@
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="welcome">Bienvenue</string>
+    <string name="french">Français</string>
+    <string name="arabic">العربية</string>
+    <string name="visitor_mode"><u>Mode Visiteur</u></string>
+
+    <string name="authentication">Authentification</string>
+    <string name="sign_up">Créer un compte</string>
+    <string name="id_hint">Identifiant</string>
+    <string name="password_hint">Mot de passe</string>
+    <string name="stay_connected">Rester connecté</string>
+    <string name="connect_btn">Connexion</string>
+    <string name="forgotten_password">Mot de passe oublié?</string>
+    <string name="change_account_manager">Changer votre gestionnaire de compte</string>
+    <string name="no_internet">Pas de connexion Internet!</string>
+    <string name="generic_error">Une erreur est survenue!</string>
+    <string name="update_dialog_title">Mise à jour</string>
+    <string name="ok_btn_hint">OK</string>
+    <string name="cancel_btn_label">Annuler</string>
+    <string name="signin">Inscription</string>
+    <string name="login_btn">J\'ai déjà un compte</string>
+    <string name="cin_passeport_hint">CIN/Passeport</string>
+    <string name="phone_hint">N°de tél - Optionnel</string>
+    <string name="email_hint">Adresse mail - Optionnel</string>
+    <string name="security_level">Niveau de sécurité</string>
+    <string name="cgu_btn">J\'ai lu et j\'accepte les <u><b>CGU</b></u></string>
+    <string name="sign_btn">S\'inscrire</string>
+    <string name="security_level_description">Votre mot de passe doit comporter 8 caractères minimum</string>
+    <string name="cancel_update_btn">Plus tard</string>
+
 </resources>
