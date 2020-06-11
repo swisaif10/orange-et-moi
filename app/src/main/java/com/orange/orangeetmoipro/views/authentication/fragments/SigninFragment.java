@@ -11,7 +11,7 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatRadioButton;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.fragment.app.Fragment;
 
 import com.orange.orangeetmoipro.R;
@@ -22,9 +22,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class SigninFragment extends Fragment {
 
     @BindView(R.id.id)
@@ -42,7 +39,7 @@ public class SigninFragment extends Fragment {
     @BindView(R.id.valid_btn)
     Button validBtn;
     @BindView(R.id.cgu_check)
-    AppCompatRadioButton cguCheck;
+    AppCompatCheckBox cguCheck;
 
     public SigninFragment() {
         // Required empty public constructor
@@ -68,7 +65,10 @@ public class SigninFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.sign_up_btn:
-                getActivity().onBackPressed();
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.container, new LoginFragment()).
+                        addToBackStack(null).
+                        commit();
                 break;
             case R.id.valid_btn:
                 saveInformation();

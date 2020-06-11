@@ -14,7 +14,6 @@
         android:elevation="40dp"
         android:minHeight="?actionBarSize"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:tabBackground="@android:color/transparent"
         app:tabGravity="fill"
         app:tabIndicatorHeight="0dp"
         app:tabMode="fixed"

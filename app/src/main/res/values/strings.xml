@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">O&amp;M Pro</string>
+    <string name="app_name">Orange &amp; Moi Pro</string>
 
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
@@ -9,13 +9,14 @@
     <string name="arabic">العربية</string>
     <string name="visitor_mode"><u>Mode Visiteur</u></string>
 
-    <string name="authentication">Authentification</string>
+    <string name="authentication">Connectez-vous</string>
     <string name="sign_up">Créer un compte</string>
     <string name="id_hint">Identifiant</string>
+    <string name="id_hint_1">Identifiant ( RC / Patente )</string>
     <string name="password_hint">Mot de passe</string>
     <string name="stay_connected">Rester connecté</string>
     <string name="connect_btn">Connexion</string>
-    <string name="forgotten_password">Mot de passe oublié?</string>
+    <string name="forgotten_password">Mot de passe oublié ?</string>
     <string name="change_account_manager">Changer votre gestionnaire de compte</string>
     <string name="no_internet">Pas de connexion Internet!</string>
     <string name="generic_error">Une erreur est survenue!</string>

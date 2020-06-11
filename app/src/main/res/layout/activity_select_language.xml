@@ -39,7 +39,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="15dp"
                 android:layout_weight="0.5"
-                android:background="@color/orange"
+                android:background="@drawable/selector_orange_btn_background"
                 android:fontFamily="@font/helveticamedium"
                 android:text="@string/french"
                 android:textAllCaps="false"
@@ -52,11 +52,11 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="15dp"
                 android:layout_weight="0.5"
-                android:background="@drawable/grey_border_background"
+                android:background="@drawable/selector_grey_border_btn_background"
                 android:fontFamily="@font/helveticamedium"
                 android:text="@string/arabic"
                 android:textAllCaps="false"
-                android:textColor="@color/grey"
+                android:textColor="@drawable/selector_btn_text_color"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:fontFamily="@font/helveticalight"
+            android:fontFamily="@font/helveticamedium"
             android:text="@string/visitor_mode"
             android:textAlignment="textEnd"
             android:textColor="@color/black"

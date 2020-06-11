@@ -89,10 +89,7 @@ public class LoginFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.sign_up_btn:
-                getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.container, new SigninFragment()).
-                        addToBackStack(null).
-                        commit();
+               getActivity().onBackPressed();
                 break;
             case R.id.valid_btn:
                 login();
@@ -103,8 +100,10 @@ public class LoginFragment extends Fragment {
             case R.id.show_password_btn:
                 if (password.getTransformationMethod() instanceof PasswordTransformationMethod) {
                     password.setTransformationMethod(null);
+                    password.setSelection(password.getText().length());
                 } else {
                     password.setTransformationMethod(new PasswordTransformationMethod());
+                    password.setSelection(password.getText().length());
                 }
         }
     }

@@ -9,9 +9,7 @@
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="20dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:layout_width="240dp"
@@ -24,7 +22,9 @@
             android:id="@+id/body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="20dp">
 
             <TextView
                 android:id="@+id/title"
@@ -41,12 +41,12 @@
                 android:layout_height="45dp"
                 android:layout_gravity="end"
                 android:layout_marginTop="20dp"
-                android:background="@color/black"
+                android:background="@drawable/selector_black_btn_background"
                 android:fontFamily="@font/helveticamedium"
                 android:paddingHorizontal="20dp"
                 android:text="@string/sign_up"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@drawable/selector_black_btn_text_color"
                 android:textSize="16sp" />
 
             <EditText
@@ -84,10 +84,11 @@
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/show_password_btn"
-                    android:layout_width="27dp"
-                    android:layout_height="15dp"
+                    android:layout_width="24dp"
+                    android:layout_height="13dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginEnd="5dp"
                     android:background="@drawable/selector_password_button"
                     android:button="@null"
                     android:src="@drawable/vision" />
@@ -104,7 +105,8 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@drawable/selector_custom_checkbox"
-                    android:button="@null" />
+                    android:button="@null"
+                    android:checked="true" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -122,7 +124,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="60dp"
-                android:background="@drawable/selector_btn_background"
+                android:background="@drawable/selector_orange_btn_background"
                 android:enabled="false"
                 android:fontFamily="@font/helveticamedium"
                 android:text="@string/connect_btn"
@@ -138,7 +140,9 @@
             android:layout_below="@+id/body"
             android:layout_alignParentBottom="true"
             android:gravity="bottom"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="20dp">
 
             <View
                 android:layout_width="match_parent"
@@ -153,7 +157,7 @@
                 android:layout_marginBottom="15dp"
                 android:fontFamily="@font/helveticalight"
                 android:text="@string/forgotten_password"
-                android:textColor="@color/grey"
+                android:textColor="@color/black"
                 android:textSize="18sp" />
 
             <View
@@ -168,7 +172,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/helveticalight"
                 android:text="@string/change_account_manager"
-                android:textColor="@color/grey"
+                android:textColor="@color/black"
                 android:textSize="18sp" />
         </LinearLayout>
     </RelativeLayout>

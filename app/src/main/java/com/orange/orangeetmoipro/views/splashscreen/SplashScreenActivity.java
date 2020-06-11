@@ -33,7 +33,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_splash_screen);
 
         spalshVM = ViewModelProviders.of(this).get(SpalshVM.class);
@@ -51,7 +50,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         Intent intent;
         if (preferenceManager.getValue(Constants.FIRST_TIME, true)) {
             intent = new Intent(SplashScreenActivity.this, SelectLanguageActivity.class);
-            preferenceManager.putValue(Constants.FIRST_TIME, false);
         } else {
             if (preferenceManager.getValue(Constants.IS_LOGGED_IN, false))
                 intent = new Intent(SplashScreenActivity.this, MainActivity.class);

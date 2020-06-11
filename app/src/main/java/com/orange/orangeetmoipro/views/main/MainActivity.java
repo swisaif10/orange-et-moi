@@ -1,7 +1,11 @@
 package com.orange.orangeetmoipro.views.main;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -42,9 +46,18 @@ public class MainActivity extends AppCompatActivity {
         int i = 0;
         for (TabMenuItem item : tabMenuData.getTabMenuResponse().getData()) {
             TabLayout.Tab tab = tabLayout.newTab();
+            View view = tab.getCustomView() == null ? LayoutInflater.from(tabLayout.getContext()).inflate(R.layout.custom_tab, null) : tab.getCustomView();
+            if (tab.getCustomView() == null) {
+                tab.setCustomView(view);
+            }
+            TextView tabTextView = view.findViewById(R.id.tabTextView);
+            //tabTextView.setTextColor(isSelected ? getColor(R.color.pink) : getColor(R.color.dark_grey));
+            tabTextView.setText(item.getTitle());
             tab.setText(item.getTitle());
+            ImageView tabImageView = view.findViewById(R.id.tabImageView);
             int icon = getResources().getIdentifier(item.getIconDisabled(), "drawable", getPackageName());
-            tab.setIcon(icon);
+            tabImageView.setImageDrawable(getDrawable(icon));
+            //tab.setIcon(icon);
             tabLayout.addTab(tab);
             LinearLayout layout = ((LinearLayout) ((LinearLayout) tabLayout.getChildAt(0)).getChildAt(i));
             layout.setBackground(null);

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.orange.orangeetmoipro.R;
 import com.orange.orangeetmoipro.views.authentication.fragments.LoginFragment;
+import com.orange.orangeetmoipro.views.authentication.fragments.SigninFragment;
 
 import butterknife.ButterKnife;
 
@@ -17,7 +18,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_authentication);
         ButterKnife.bind(this);
         getSupportFragmentManager().beginTransaction().
-                add(R.id.container, new LoginFragment()).
+                add(R.id.container, new SigninFragment()).
                 commit();
     }
 }
