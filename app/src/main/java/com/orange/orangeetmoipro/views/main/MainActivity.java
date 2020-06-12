@@ -51,13 +51,11 @@ public class MainActivity extends AppCompatActivity {
                 tab.setCustomView(view);
             }
             TextView tabTextView = view.findViewById(R.id.tabTextView);
-            //tabTextView.setTextColor(isSelected ? getColor(R.color.pink) : getColor(R.color.dark_grey));
             tabTextView.setText(item.getTitle());
             tab.setText(item.getTitle());
             ImageView tabImageView = view.findViewById(R.id.tabImageView);
             int icon = getResources().getIdentifier(item.getIconDisabled(), "drawable", getPackageName());
             tabImageView.setImageDrawable(getDrawable(icon));
-            //tab.setIcon(icon);
             tabLayout.addTab(tab);
             LinearLayout layout = ((LinearLayout) ((LinearLayout) tabLayout.getChildAt(0)).getChildAt(i));
             layout.setBackground(null);

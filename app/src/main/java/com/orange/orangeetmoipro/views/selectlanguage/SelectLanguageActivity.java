@@ -4,13 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.orange.orangeetmoipro.R;
-import com.orange.orangeetmoipro.datamanager.sharedPref.PreferenceManager;
+import com.orange.orangeetmoipro.datamanager.sharedpref.PreferenceManager;
 import com.orange.orangeetmoipro.utilities.Constants;
 import com.orange.orangeetmoipro.views.authentication.AuthenticationActivity;
 

@@ -9,4 +9,7 @@
     <color name="grey">#999999</color>
     <color name="grey_light">#C7C7C7</color>
     <color name="red">#CD3C14</color>
+    <color name="weak_password">#E50000</color>
+    <color name="medium_password">#FFA500</color>
+    <color name="strong_password">#008000</color>
 </resources>

@@ -11,8 +11,7 @@
 
     <string name="authentication">Connectez-vous</string>
     <string name="sign_up">Créer un compte</string>
-    <string name="id_hint">Identifiant</string>
-    <string name="id_hint_1">Identifiant ( RC / Patente )</string>
+    <string name="id_hint">Identifiant ( RC / Patente )</string>
     <string name="password_hint">Mot de passe</string>
     <string name="stay_connected">Rester connecté</string>
     <string name="connect_btn">Connexion</string>
@@ -33,5 +32,10 @@
     <string name="sign_btn">S\'inscrire</string>
     <string name="security_level_description">Votre mot de passe doit comporter 8 caractères minimum</string>
     <string name="cancel_update_btn">Plus tard</string>
+    <string name="email_error">Merci de saisir une adresse mail valide</string>
+    <string name="complete_profile_later_btn">Me le rappeler plus tard</string>
+    <string name="Complete_profile">Compléter mon profil</string>
+    <string name="complete_profile_description">Renseignez dès à présent vos infos personnelles pour profiter pleinement des avantages Orange et moi pro</string>
+    <string name="complete_profile_title">Bienvenu sur Orange et moi pro</string>
 
 </resources>

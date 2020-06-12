@@ -9,7 +9,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestService {
 
-    private static final String TAG = "ApiService";
     private RestEndpoint restEndpoint;
     private static RestService restService;
 

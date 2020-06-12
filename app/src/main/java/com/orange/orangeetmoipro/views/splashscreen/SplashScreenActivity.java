@@ -5,13 +5,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.orange.orangeetmoipro.R;
-import com.orange.orangeetmoipro.datamanager.sharedPref.PreferenceManager;
+import com.orange.orangeetmoipro.datamanager.sharedpref.PreferenceManager;
 import com.orange.orangeetmoipro.listeners.VersionControlChoiceDialogClickListener;
 import com.orange.orangeetmoipro.models.controlversion.ControlVersionData;
 import com.orange.orangeetmoipro.utilities.Connectivity;
@@ -21,7 +20,6 @@ import com.orange.orangeetmoipro.viewmodels.SpalshVM;
 import com.orange.orangeetmoipro.views.authentication.AuthenticationActivity;
 import com.orange.orangeetmoipro.views.main.MainActivity;
 import com.orange.orangeetmoipro.views.selectlanguage.SelectLanguageActivity;
-
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -43,7 +41,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 .build();
 
         spalshVM.getversionMutableLiveData().observe(this, this::handleVersionCheckResponse);
-        new Handler().postDelayed(() -> getVersionCheck(), 3000);
+        new Handler().postDelayed(this::getVersionCheck, 3000);
     }
 
     private void goToNextActivity() {
@@ -77,7 +75,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 if (status.equalsIgnoreCase("current")) {
                     goToNextActivity();
                 } else {
-                    Utilities.showUpdateDialog(this, controlVersionData.getResponse().getMessage(), getString(R.string.update_dialog_title), status, new VersionControlChoiceDialogClickListener() {
+                    Utilities.showUpdateDialog(this, "", "", status, new VersionControlChoiceDialogClickListener() {
                         @Override
                         public void onAccept() {
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(controlVersionData.getResponse().getLink())));

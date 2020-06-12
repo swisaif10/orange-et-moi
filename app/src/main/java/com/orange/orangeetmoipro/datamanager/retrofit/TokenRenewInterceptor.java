@@ -7,10 +7,6 @@ import okhttp3.Response;
 
 public class TokenRenewInterceptor implements Interceptor {
 
-    public TokenRenewInterceptor() {
-
-    }
-
     @Override
     public Response intercept(Chain chain) throws IOException {
         Response response = chain.proceed(chain.request());
@@ -20,7 +16,7 @@ public class TokenRenewInterceptor implements Interceptor {
         // different upon implementation of backend.
         String newToken = response.header("x-auth-token");
         if (newToken != null) {
-
+            System.out.println(newToken);
         }
 
         return response;

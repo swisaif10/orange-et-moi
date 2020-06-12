@@ -47,7 +47,6 @@ public class Connectivity implements LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     void onStart() {
-        // ToDo register receivers , or may be not
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
@@ -91,6 +90,7 @@ public class Connectivity implements LifecycleObserver {
      * Checks if there is a real internet connection, means there is data sent and received.
      * Note: use with caution because this method executes a ping system command
      * against Google DNS (8.8.8.8)
+     *
      * @return true if there is a real internet connection.
      */
     public boolean isReallyConnected() {
@@ -157,12 +157,12 @@ public class Connectivity implements LifecycleObserver {
         public void onReceive(Context context, Intent intent) {
             ConnectivityChangeDataModel connectivityChangeDataModel = new ConnectivityChangeDataModel();
             try {
-                connectivityChangeDataModel.intent = intent;
-                connectivityChangeDataModel.networkInfo = getActiveNetworkInfo();
-                connectivityChangeDataModel.extraExtras = intent.getStringExtra(ConnectivityManager.EXTRA_EXTRA_INFO);
-                connectivityChangeDataModel.networkType = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) ? intent.getIntExtra(ConnectivityManager.EXTRA_NETWORK_TYPE, ConnectivityManager.TYPE_DUMMY) : ConnectivityManager.TYPE_DUMMY;
-                connectivityChangeDataModel.noConnectivity = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
-                connectivityChangeDataModel.otherNetworkInfo = intent.getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO);
+                connectivityChangeDataModel.setIntent(intent);
+                connectivityChangeDataModel.setNetworkInfo(getActiveNetworkInfo());
+                connectivityChangeDataModel.setExtraExtras(intent.getStringExtra(ConnectivityManager.EXTRA_EXTRA_INFO));
+                connectivityChangeDataModel.setNetworkType((Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) ? intent.getIntExtra(ConnectivityManager.EXTRA_NETWORK_TYPE, ConnectivityManager.TYPE_DUMMY) : ConnectivityManager.TYPE_DUMMY);
+                connectivityChangeDataModel.setNoConnectivity(intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false));
+                connectivityChangeDataModel.setOtherNetworkInfo(intent.getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO));
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -171,37 +171,28 @@ public class Connectivity implements LifecycleObserver {
         }
     }
 
-    public static class Utils {
+    public static class ConnectivityChangeDataModel {
 
-        @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-        public static NetworkRequest newNetworkRequest(@NonNull int[] networkCapabilities, @NonNull int[] networkTransportTypes) {
-            NetworkRequest.Builder networkBuilder = new NetworkRequest.Builder();
-            if (networkCapabilities.length > 0) {
-                for (int capability : networkCapabilities) {
-                    networkBuilder.addCapability(capability);
-                }
-            }
-            if (networkTransportTypes.length > 0) {
-                for (int type : networkTransportTypes) {
-                    networkBuilder.addTransportType(type);
-                }
-            }
-
-            return networkBuilder.build();
+        private ConnectivityChangeDataModel() {
         }
-    }
 
-    public class ConnectivityChangeDataModel {
+        public void setIntent(Intent intent) {
+        }
 
-        public Intent intent;
-        public NetworkInfo networkInfo;
-        public String extraExtras;
-        public int networkType;
-        public boolean noConnectivity;
-        public NetworkInfo otherNetworkInfo;
+        public void setNetworkInfo(NetworkInfo networkInfo) {
+        }
 
+        public void setExtraExtras(String extraExtras) {
+        }
 
-        private ConnectivityChangeDataModel() {}
+        public void setNetworkType(int networkType) {
+        }
+
+        public void setNoConnectivity(boolean noConnectivity) {
+        }
+
+        public void setOtherNetworkInfo(NetworkInfo otherNetworkInfo) {
+        }
     }
 
     // ****************************************** Connectivity interfaces

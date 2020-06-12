@@ -16,7 +16,7 @@
             android:layout_height="180dp"
             android:layout_alignParentEnd="true"
             android:scaleType="fitStart"
-            android:src="@drawable/masques_inscription" />
+            android:src="@drawable/mosi" />
 
         <LinearLayout
             android:id="@+id/body"
@@ -46,14 +46,53 @@
                 android:paddingHorizontal="20dp"
                 android:text="@string/sign_up"
                 android:textAllCaps="false"
-                android:textColor="@drawable/selector_black_btn_text_color"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
+
+            <RelativeLayout
+                android:id="@+id/error_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/red"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:id="@+id/error_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/error" />
+
+                <TextView
+                    android:id="@+id/error_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_toEndOf="@+id/error_icon"
+                    android:fontFamily="@font/helveticamedium"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    tools:text="RC / Patente ou mot de passe incorrect" />
+
+                <ImageView
+                    android:id="@+id/close_btn"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/delete" />
+
+            </RelativeLayout>
 
             <EditText
                 android:id="@+id/id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
                 android:autofillHints=""
                 android:backgroundTint="@color/grey"
                 android:fontFamily="@font/helveticalight"

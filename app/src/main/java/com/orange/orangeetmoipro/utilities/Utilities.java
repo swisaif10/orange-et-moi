@@ -33,7 +33,7 @@ public class Utilities {
         TextView msg = view.findViewById(R.id.message);
         ConstraintLayout container = view.findViewById(R.id.container);
 
-        //titleTv.setText(title);
+        titleTv.setText(title);
         msg.setText(message);
 
         ok.setOnClickListener(v -> dialog.dismiss());
@@ -42,30 +42,6 @@ public class Utilities {
         dialog.show();
     }
 
-    public static void showErrorPopup(Context context, String message, String title, View.OnClickListener onClickListener) {
-
-        if (context == null) {
-            return;
-        }
-
-        final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
-
-        View view = LayoutInflater.from(context).inflate(R.layout.server_error_dialog, null, false);
-        Button ok = view.findViewById(R.id.ok_btn);
-        TextView titleTv = view.findViewById(R.id.title);
-        TextView msg = view.findViewById(R.id.message);
-        ConstraintLayout container = view.findViewById(R.id.container);
-
-        //titleTv.setText(title);
-        msg.setText(message);
-        ok.setOnClickListener(v -> {
-            dialog.dismiss();
-            onClickListener.onClick(v);
-        });
-        //container.setOnClickListener(v -> dialog.dismiss());
-        dialog.setContentView(view);
-        dialog.show();
-    }
 
     public static void showUpdateDialog(Context context, String message, String title, String status, VersionControlChoiceDialogClickListener versionControlChoiceDialogClickListener) {
 
@@ -80,10 +56,9 @@ public class Utilities {
         Button cancel = view.findViewById(R.id.cancel_btn);
         TextView titleTv = view.findViewById(R.id.title);
         TextView msg = view.findViewById(R.id.message);
-        ConstraintLayout container = view.findViewById(R.id.container);
 
-        //titleTv.setText(title);
-        //msg.setText(message);
+        titleTv.setText(title);
+        msg.setText(message);
 
         if (status.equalsIgnoreCase("blocked"))
             cancel.setVisibility(View.GONE);
@@ -96,14 +71,37 @@ public class Utilities {
             dialog.dismiss();
             versionControlChoiceDialogClickListener.onRefuse();
         });
-        //container.setOnClickListener(v -> dialog.dismiss());
         dialog.setContentView(view);
         dialog.show();
     }
 
-    public static String getUIDFromDevice(Context context) {
-        return Settings.Secure.getString(context.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+    public static void showCompleteProfileDialog(Context context, String message, String title, VersionControlChoiceDialogClickListener versionControlChoiceDialogClickListener) {
+
+        if (context == null) {
+            return;
+        }
+
+        final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
+
+        View view = LayoutInflater.from(context).inflate(R.layout.complete_profile_dialog, null, false);
+        Button ok = view.findViewById(R.id.ok_btn);
+        Button cancel = view.findViewById(R.id.cancel_btn);
+        TextView titleTv = view.findViewById(R.id.title);
+        TextView msg = view.findViewById(R.id.message);
+        titleTv.setText(title);
+        msg.setText(message);
+
+
+        ok.setOnClickListener(v -> {
+            dialog.dismiss();
+            versionControlChoiceDialogClickListener.onAccept();
+        });
+        cancel.setOnClickListener(v -> {
+            dialog.dismiss();
+            versionControlChoiceDialogClickListener.onRefuse();
+        });
+        dialog.setContentView(view);
+        dialog.show();
     }
 
     public static void hideSoftKeyboard(Context context, View view) {

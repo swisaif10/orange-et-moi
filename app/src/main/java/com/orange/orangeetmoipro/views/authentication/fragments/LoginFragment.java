@@ -20,7 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.orange.orangeetmoipro.R;
-import com.orange.orangeetmoipro.datamanager.sharedPref.PreferenceManager;
+import com.orange.orangeetmoipro.datamanager.sharedpref.PreferenceManager;
 import com.orange.orangeetmoipro.models.login.LoginData;
 import com.orange.orangeetmoipro.utilities.Connectivity;
 import com.orange.orangeetmoipro.utilities.Constants;
@@ -89,7 +89,7 @@ public class LoginFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.sign_up_btn:
-               getActivity().onBackPressed();
+                getActivity().onBackPressed();
                 break;
             case R.id.valid_btn:
                 login();
@@ -100,11 +100,11 @@ public class LoginFragment extends Fragment {
             case R.id.show_password_btn:
                 if (password.getTransformationMethod() instanceof PasswordTransformationMethod) {
                     password.setTransformationMethod(null);
-                    password.setSelection(password.getText().length());
                 } else {
                     password.setTransformationMethod(new PasswordTransformationMethod());
-                    password.setSelection(password.getText().length());
                 }
+                password.setSelection(password.getText().length());
+            default:
         }
     }
 
@@ -112,40 +112,34 @@ public class LoginFragment extends Fragment {
         id.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                //no statment
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                //no statment
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 0 && password.getText().length() > 0)
-                    validBtn.setEnabled(true);
-                else
-                    validBtn.setEnabled(false);
+                validBtn.setEnabled(s.length() > 0 && password.getText().length() > 0);
             }
         });
 
         password.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                //no statment
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                //no statment
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 0 && id.getText().length() > 0)
-                    validBtn.setEnabled(true);
-                else
-                    validBtn.setEnabled(false);
+                validBtn.setEnabled(s.length() > 0 && id.getText().length() > 0);
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.orange.orangeetmoipro.datamanager.sharedPref;
+package com.orange.orangeetmoipro.datamanager.sharedpref;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class PreferenceManager {
 
-    private final String TAG = PreferenceManager.class.getSimpleName();
+    private static final String TAG = PreferenceManager.class.getSimpleName();
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -33,8 +33,6 @@ public class PreferenceManager {
         Activity activity = builder.preferencesActivity;
         this.changeListener = builder.preferencesListener;
 
-        //this.level = builder.preferencesLevel;
-
         if (activity != null) {
             sharedPreferences = activity.getPreferences(mode);
         } else {
@@ -48,7 +46,11 @@ public class PreferenceManager {
         if (this.sharedPreferences != null && this.changeListener != null) {
             sharedPreferences.registerOnSharedPreferenceChangeListener(this.changeListener);
         }
-        this.editor = sharedPreferences.edit();
+        try {
+            this.editor = sharedPreferences.edit();
+        } catch (NullPointerException e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     public void unregisterChangeListener() {
@@ -59,10 +61,6 @@ public class PreferenceManager {
 
     public boolean contains(String key) {
         return sharedPreferences.contains(key);
-    }
-
-    public Map<String, ?> getPreferences() {
-        return sharedPreferences.getAll();
     }
 
     public String getValue(String key, String defaultValue) {
@@ -108,7 +106,7 @@ public class PreferenceManager {
                     editor.putLong(key, (Long) value).apply();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
             }
         } else {
             Log.w(TAG, "putValue(): Null args!");
@@ -123,7 +121,7 @@ public class PreferenceManager {
                 putValue(entry.getKey().toString(), entry.getValue());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -135,7 +133,7 @@ public class PreferenceManager {
         try {
             editor.remove(key).apply();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -146,7 +144,6 @@ public class PreferenceManager {
         private String preferencesName;
         private Activity preferencesActivity;
         private SharedPreferences.OnSharedPreferenceChangeListener preferencesListener;
-        //private PREFERENCES_LEVEL preferencesLevel = PREFERENCES_LEVEL.APP;
 
         public Builder(@NonNull Context context, int mode) {
             this.context = context;
@@ -167,11 +164,6 @@ public class PreferenceManager {
             this.preferencesListener = listener;
             return this;
         }
-
-        /*public Builder level(PREFERENCES_LEVEL level) {
-            this.preferencesLevel = level;
-            return this;
-        }*/
 
         public PreferenceManager build() {
             return new PreferenceManager(this);
