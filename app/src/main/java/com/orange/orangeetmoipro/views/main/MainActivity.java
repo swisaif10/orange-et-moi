@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.tabs.TabLayout;
@@ -17,11 +16,12 @@ import com.orange.orangeetmoipro.models.tabmenu.TabMenuItem;
 import com.orange.orangeetmoipro.utilities.Connectivity;
 import com.orange.orangeetmoipro.utilities.Utilities;
 import com.orange.orangeetmoipro.viewmodels.MainVM;
+import com.orange.orangeetmoipro.views.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;

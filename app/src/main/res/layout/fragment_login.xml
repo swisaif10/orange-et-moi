@@ -94,10 +94,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints=""
-                android:backgroundTint="@color/grey"
+                android:background="@drawable/edittext_underline"
                 android:fontFamily="@font/helveticalight"
                 android:hint="@string/id_hint"
                 android:inputType="text"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/grey"
                 android:textSize="18sp" />
@@ -113,10 +115,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints=""
-                    android:backgroundTint="@color/grey"
+                    android:background="@drawable/edittext_underline"
                     android:fontFamily="@font/helveticalight"
                     android:hint="@string/password_hint"
-                    android:inputType="textPassword"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:textAlignment="viewStart"
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey"
                     android:textSize="18sp" />
@@ -127,7 +131,6 @@
                     android:layout_height="13dp"
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="13dp"
-                    android:layout_marginEnd="5dp"
                     android:background="@drawable/selector_password_button"
                     android:button="@null"
                     android:src="@drawable/vision" />
@@ -182,6 +185,22 @@
             android:orientation="vertical"
             android:paddingHorizontal="10dp"
             android:paddingVertical="20dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginBottom="15dp"
+                android:background="@color/grey" />
+
+            <TextView
+                android:id="@+id/visitor_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:fontFamily="@font/helveticalight"
+                android:text="@string/visitor_mode"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
             <View
                 android:layout_width="match_parent"

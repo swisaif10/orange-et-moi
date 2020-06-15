@@ -67,16 +67,5 @@
                 android:textColor="@drawable/selector_btn_text_color"
                 android:textSize="18sp" />
         </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:fontFamily="@font/helveticamedium"
-            android:text="@string/visitor_mode"
-            android:textAlignment="textEnd"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
-
     </LinearLayout>
 </RelativeLayout>

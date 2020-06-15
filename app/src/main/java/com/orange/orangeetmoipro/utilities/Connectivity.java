@@ -8,13 +8,11 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
-import android.net.NetworkRequest;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
@@ -43,10 +41,6 @@ public class Connectivity implements LifecycleObserver {
         if (lifecycleOwner != null) {
             lifecycleOwner.getLifecycle().addObserver(this);
         }
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    void onStart() {
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
@@ -156,43 +150,12 @@ public class Connectivity implements LifecycleObserver {
         @Override
         public void onReceive(Context context, Intent intent) {
             ConnectivityChangeDataModel connectivityChangeDataModel = new ConnectivityChangeDataModel();
-            try {
-                connectivityChangeDataModel.setIntent(intent);
-                connectivityChangeDataModel.setNetworkInfo(getActiveNetworkInfo());
-                connectivityChangeDataModel.setExtraExtras(intent.getStringExtra(ConnectivityManager.EXTRA_EXTRA_INFO));
-                connectivityChangeDataModel.setNetworkType((Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) ? intent.getIntExtra(ConnectivityManager.EXTRA_NETWORK_TYPE, ConnectivityManager.TYPE_DUMMY) : ConnectivityManager.TYPE_DUMMY);
-                connectivityChangeDataModel.setNoConnectivity(intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false));
-                connectivityChangeDataModel.setOtherNetworkInfo(intent.getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO));
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
-
             connectivityChangeCallback.onConnectivityChanged(connectivityChangeDataModel);
         }
     }
 
     public static class ConnectivityChangeDataModel {
 
-        private ConnectivityChangeDataModel() {
-        }
-
-        public void setIntent(Intent intent) {
-        }
-
-        public void setNetworkInfo(NetworkInfo networkInfo) {
-        }
-
-        public void setExtraExtras(String extraExtras) {
-        }
-
-        public void setNetworkType(int networkType) {
-        }
-
-        public void setNoConnectivity(boolean noConnectivity) {
-        }
-
-        public void setOtherNetworkInfo(NetworkInfo otherNetworkInfo) {
-        }
     }
 
     // ****************************************** Connectivity interfaces

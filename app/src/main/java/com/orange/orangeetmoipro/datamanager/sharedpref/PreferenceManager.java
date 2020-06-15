@@ -35,21 +35,16 @@ public class PreferenceManager {
 
         if (activity != null) {
             sharedPreferences = activity.getPreferences(mode);
+            sharedPreferences.registerOnSharedPreferenceChangeListener(this.changeListener);
+            this.editor = sharedPreferences.edit();
         } else {
             if (!name.equals("")) {
                 sharedPreferences = context.getSharedPreferences(name, mode);
+                sharedPreferences.registerOnSharedPreferenceChangeListener(this.changeListener);
+                this.editor = sharedPreferences.edit();
             } else {
                 throw new IllegalArgumentException("PreferencesManager: Missing Argument: provide either a name or an activity.");
             }
-        }
-
-        if (this.sharedPreferences != null && this.changeListener != null) {
-            sharedPreferences.registerOnSharedPreferenceChangeListener(this.changeListener);
-        }
-        try {
-            this.editor = sharedPreferences.edit();
-        } catch (NullPointerException e) {
-            Log.e(TAG, e.getMessage());
         }
     }
 

@@ -11,13 +11,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.orange.orangeetmoipro.R;
 import com.orange.orangeetmoipro.datamanager.sharedpref.PreferenceManager;
 import com.orange.orangeetmoipro.utilities.Constants;
+import com.orange.orangeetmoipro.utilities.LocaleManager;
 import com.orange.orangeetmoipro.views.authentication.AuthenticationActivity;
+import com.orange.orangeetmoipro.views.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SelectLanguageActivity extends AppCompatActivity {
+public class SelectLanguageActivity extends BaseActivity {
 
     @BindView(R.id.french_btn)
     Button frenchBtn;
@@ -39,6 +41,14 @@ public class SelectLanguageActivity extends AppCompatActivity {
 
     @OnClick({R.id.french_btn, R.id.arabic_btn})
     public void onViewClicked(View view) {
+        switch (view.getId()){
+            case R.id.french_btn:
+                setNewLocale(this, LocaleManager.ENGLISH);
+                break;
+            case R.id.arabic_btn:
+                setNewLocale(this, LocaleManager.ARABIC);
+                break;
+        }
         preferenceManager.putValue(Constants.FIRST_TIME, false);
         Intent intent = new Intent(SelectLanguageActivity.this, AuthenticationActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

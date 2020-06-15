@@ -109,39 +109,25 @@ public class LoginFragment extends Fragment {
     }
 
     private void init() {
-        id.addTextChangedListener(new TextWatcher() {
+        TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //no statment
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //no statment
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                validBtn.setEnabled(s.length() > 0 && password.getText().length() > 0);
+                validBtn.setEnabled(id.getText().length() > 0 && password.getText().length() >= 8);
             }
-        });
+        };
 
-        password.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //no statment
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //no statment
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                validBtn.setEnabled(s.length() > 0 && id.getText().length() > 0);
-            }
-        });
+        id.addTextChangedListener(textWatcher);
+        password.addTextChangedListener(textWatcher);
     }
 
     private void login() {

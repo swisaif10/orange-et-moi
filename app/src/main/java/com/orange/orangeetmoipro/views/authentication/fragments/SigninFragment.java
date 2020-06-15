@@ -56,12 +56,6 @@ public class SigninFragment extends Fragment {
     TextView errorDescription;
     @BindView(R.id.error_layout)
     RelativeLayout errorLayout;
-    @BindView(R.id.security_level_1)
-    View securityLevel1;
-    @BindView(R.id.security_level_2)
-    View securityLevel2;
-    @BindView(R.id.security_level_3)
-    View securityLevel3;
 
     public SigninFragment() {
         // Required empty public constructor
@@ -82,13 +76,18 @@ public class SigninFragment extends Fragment {
         init();
     }
 
-
     @OnClick({R.id.sign_up_btn, R.id.cgu_btn, R.id.valid_btn, R.id.credentials_layout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.sign_up_btn:
                 getActivity().getSupportFragmentManager().beginTransaction().
                         replace(R.id.container, new LoginFragment()).
+                        addToBackStack(null).
+                        commit();
+                break;
+            case R.id.cgu_btn:
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.container, new CGUFragment()).
                         addToBackStack(null).
                         commit();
                 break;
@@ -107,105 +106,50 @@ public class SigninFragment extends Fragment {
         observer.addOnGlobalLayoutListener(() -> {
             int viewHeight = container.getMeasuredHeight();
             int contentHeight = container.getChildAt(0).getHeight();
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(constraintLayout);
             if (viewHeight - contentHeight < 0) {
-                ConstraintSet constraintSet = new ConstraintSet();
-                constraintSet.clone(constraintLayout);
                 constraintSet.clear(R.id.valid_btn, ConstraintSet.BOTTOM);
                 constraintSet.connect(R.id.valid_btn, ConstraintSet.TOP, R.id.credentials_layout, ConstraintSet.BOTTOM, 0);
-                constraintSet.applyTo(constraintLayout);
             } else {
-                ConstraintSet constraintSet = new ConstraintSet();
-                constraintSet.clone(constraintLayout);
                 constraintSet.clear(R.id.valid_btn, ConstraintSet.TOP);
                 constraintSet.connect(R.id.valid_btn, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
-                constraintSet.applyTo(constraintLayout);
             }
+            constraintSet.applyTo(constraintLayout);
         });
 
-
-        id.addTextChangedListener(new TextWatcher() {
+        TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //no statment
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //no statment
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 validateForm();
             }
-        });
+        };
 
-        cin.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //no statment
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //no statment
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                validateForm();
-            }
-        });
-
-        password.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //no statment
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() >= 8)
-                    calculatePasswordStrength(s.toString());
-                else {
-                    securityLevel1.setBackgroundColor(getResources().getColor(R.color.grey_light));
-                    securityLevel2.setBackgroundColor(getResources().getColor(R.color.grey_light));
-                    securityLevel3.setBackgroundColor(getResources().getColor(R.color.grey_light));
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                validateForm();
-            }
-        });
-
-        email.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //no statment
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //no statment
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                checkEmail();
-                validateForm();
-            }
-        });
+        id.addTextChangedListener(textWatcher);
+        cin.addTextChangedListener(textWatcher);
+        password.addTextChangedListener(textWatcher);
+        email.addTextChangedListener(textWatcher);
 
         cguCheck.setOnCheckedChangeListener((buttonView, isChecked) -> validateForm());
     }
 
     private void validateForm() {
-        if (id.getText().length() > 0 && cin.getText().length() > 0 && password.getText().length() >= 8 && cguCheck.isChecked() && checkEmail())
-            validBtn.setEnabled(true);
-        else
-            validBtn.setEnabled(false);
+        if (password.getText().length() >= 8)
+            calculatePasswordStrength(password.getText().toString());
+        else if (password.getText().length() < 8)
+            securityLevel.setBackgroundColor(getResources().getColor(R.color.grey_light));
+
+        validBtn.setEnabled(id.getText().length() > 0 && cin.getText().length() > 0 && password.getText().length() >= 8 && cguCheck.isChecked() && checkEmail());
     }
 
     private boolean checkEmail() {
@@ -244,19 +188,13 @@ public class SigninFragment extends Fragment {
         int passwordStrength = PasswordStrength.calculate(str);
         switch (passwordStrength) {
             case 1:
-                securityLevel1.setBackgroundColor(getResources().getColor(R.color.weak_password));
-                securityLevel2.setBackgroundColor(getResources().getColor(R.color.grey_light));
-                securityLevel3.setBackgroundColor(getResources().getColor(R.color.grey_light));
+                securityLevel.setBackgroundColor(getResources().getColor(R.color.red));
                 break;
             case 2:
-                securityLevel1.setBackgroundColor(getResources().getColor(R.color.medium_password));
-                securityLevel2.setBackgroundColor(getResources().getColor(R.color.medium_password));
-                securityLevel3.setBackgroundColor(getResources().getColor(R.color.grey_light));
+                securityLevel.setBackgroundColor(getResources().getColor(R.color.medium_password));
                 break;
             default:
-                securityLevel1.setBackgroundColor(getResources().getColor(R.color.strong_password));
-                securityLevel2.setBackgroundColor(getResources().getColor(R.color.strong_password));
-                securityLevel3.setBackgroundColor(getResources().getColor(R.color.strong_password));
+                securityLevel.setBackgroundColor(getResources().getColor(R.color.strong_password));
         }
     }
 

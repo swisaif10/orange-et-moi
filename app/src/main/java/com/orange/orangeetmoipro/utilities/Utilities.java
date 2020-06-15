@@ -3,7 +3,6 @@ package com.orange.orangeetmoipro.utilities;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,9 +86,7 @@ public class Utilities {
         Button ok = view.findViewById(R.id.ok_btn);
         Button cancel = view.findViewById(R.id.cancel_btn);
         TextView titleTv = view.findViewById(R.id.title);
-        TextView msg = view.findViewById(R.id.message);
-        titleTv.setText(title);
-        msg.setText(message);
+        TextView msg = view.findViewById(R.id.description);
 
 
         ok.setOnClickListener(v -> {

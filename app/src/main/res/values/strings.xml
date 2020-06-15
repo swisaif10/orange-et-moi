@@ -1,13 +1,10 @@
 <resources>
     <string name="app_name">Orange &amp; Moi Pro</string>
 
-    <string name="title_activity_splash_screen">SplashScreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="welcome">Bienvenue</string>
     <string name="french">Français</string>
     <string name="arabic">العربية</string>
-    <string name="visitor_mode"><u>Mode Visiteur</u></string>
+    <string name="visitor_mode">Mode Visiteur</string>
 
     <string name="authentication">Connectez-vous</string>
     <string name="sign_up">Créer un compte</string>
@@ -36,6 +33,8 @@
     <string name="complete_profile_later_btn">Me le rappeler plus tard</string>
     <string name="Complete_profile">Compléter mon profil</string>
     <string name="complete_profile_description">Renseignez dès à présent vos infos personnelles pour profiter pleinement des avantages Orange et moi pro</string>
-    <string name="complete_profile_title">Bienvenu sur Orange et moi pro</string>
+    <string name="complete_profile_title">Bienvenue sur Orange et moi pro</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
 
 </resources>

@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Orange &amp; Moi Pro</string>
+
+    <string name="welcome">مرحبا</string>
+    <string name="french">Français</string>
+    <string name="arabic">العربية</string>
+    <string name="visitor_mode">Mode Visiteur</string>
+    <string name="authentication">تسجيل الدخول</string>
+    <string name="sign_up">قوموا بالتسجيل</string>
+    <string name="id_hint">السجل التجاري أو الرخصة</string>
+    <string name="password_hint">كلمة المرور</string>
+    <string name="stay_connected">ابق على اتصال</string>
+    <string name="connect_btn">تسجيل دخولي</string>
+    <string name="forgotten_password">نسيتم كلمة المرور؟</string>
+    <string name="change_account_manager">تغيير الشخص المفوض</string>
+    <string name="no_internet">لا يوجد اتصال بالإنترنت</string>
+    <string name="generic_error">لقد وقع خطأ!</string>
+    <string name="update_dialog_title">Mise à jour</string>
+    <string name="ok_btn_hint">OK</string>
+    <string name="cancel_btn_label">Annuler</string>
+    <string name="signin">تشغيل حسابي</string>
+    <string name="login_btn">مسجل سابقا</string>
+    <string name="cin_passeport_hint">البطاقة الوطنية للتعريف او جواز السفر</string>
+    <string name="phone_hint">"  رقم الهاتف - اختياري"</string>
+    <string name="email_hint">البريد الالكتروني - اختياري</string>
+    <string name="security_level">مستوى الأمان</string>
+    <string name="cgu_btn"> لقد قرأت  <u><b>شروط استخدام</b></u> فضاء الزبون أورنج للمقاولات و أوافق عليها </string>
+    <string name="sign_btn">تسجيل</string>
+    <string name="security_level_description">يجب أن تحتوي كلمة مرورك على 8 أحرف على الأقل</string>
+    <string name="cancel_update_btn">Plus tard</string>
+    <string name="email_error">Merci de saisir une adresse mail valide</string>
+    <string name="complete_profile_later_btn">Me le rappeler plus tard</string>
+    <string name="Complete_profile">Compléter mon profil</string>
+    <string name="complete_profile_description">Renseignez dès à présent vos infos personnelles pour profiter pleinement des avantages Orange et moi pro</string>
+    <string name="complete_profile_title">Bienvenue sur Orange et moi pro</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+
+</resources>

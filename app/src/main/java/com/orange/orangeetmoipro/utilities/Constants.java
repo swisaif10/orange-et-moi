@@ -9,4 +9,6 @@ public class Constants {
     public static final String SHARED_PREFS_NAME = "com.orange.orangeetmoipro";
     public static final String FIRST_TIME = "FIRST_TIME";
     public static final String IS_LOGGED_IN = "LOGGED_IN";
+    public static final String LANGUAGE_KEY = "LANGUAGE_KEY";
+
 }
