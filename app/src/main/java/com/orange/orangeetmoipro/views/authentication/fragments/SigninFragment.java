@@ -1,28 +1,34 @@
 package com.orange.orangeetmoipro.views.authentication.fragments;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.orange.orangeetmoipro.R;
-import com.orange.orangeetmoipro.listeners.VersionControlChoiceDialogClickListener;
+import com.orange.orangeetmoipro.datamanager.sharedpref.PreferenceManager;
 import com.orange.orangeetmoipro.utilities.Constants;
 import com.orange.orangeetmoipro.utilities.PasswordStrength;
 import com.orange.orangeetmoipro.utilities.Utilities;
@@ -33,6 +39,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SigninFragment extends Fragment {
+
+    private static final int REQUEST_CODE = 100;
 
     @BindView(R.id.id)
     EditText id;
@@ -47,7 +55,7 @@ public class SigninFragment extends Fragment {
     @BindView(R.id.valid_btn)
     Button validBtn;
     @BindView(R.id.cgu_check)
-    AppCompatCheckBox cguCheck;
+    CheckBox cguCheck;
     @BindView(R.id.container)
     ScrollView container;
     @BindView(R.id.constraintLayout)
@@ -56,11 +64,24 @@ public class SigninFragment extends Fragment {
     TextView errorDescription;
     @BindView(R.id.error_layout)
     RelativeLayout errorLayout;
+    @BindView(R.id.security_level_layout)
+    ConstraintLayout securityLevelLayout;
+    @BindView(R.id.background)
+    ImageView background;
+    private Boolean checked = false;
+    private PreferenceManager preferenceManager;
 
     public SigninFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
+                .name(Constants.SHARED_PREFS_NAME)
+                .build();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,12 +92,20 @@ public class SigninFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onResume() {
+        super.onResume();
         init();
     }
 
-    @OnClick({R.id.sign_up_btn, R.id.cgu_btn, R.id.valid_btn, R.id.credentials_layout})
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            checked = data.getBooleanExtra("cgu", false);
+        }
+    }
+
+    @OnClick({R.id.sign_up_btn, R.id.cgu_btn, R.id.valid_btn, R.id.credentials_layout, R.id.show_password_btn, R.id.close_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.sign_up_btn:
@@ -86,8 +115,11 @@ public class SigninFragment extends Fragment {
                         commit();
                 break;
             case R.id.cgu_btn:
+                Utilities.hideSoftKeyboard(getContext(), getView());
+                CGUFragment cguFragment = new CGUFragment();
+                cguFragment.setTargetFragment(this, REQUEST_CODE);
                 getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.container, new CGUFragment()).
+                        replace(R.id.container, cguFragment).
                         addToBackStack(null).
                         commit();
                 break;
@@ -97,11 +129,26 @@ public class SigninFragment extends Fragment {
             case R.id.credentials_layout:
                 Utilities.hideSoftKeyboard(getContext(), getView());
                 break;
+            case R.id.show_password_btn:
+                if (password.getTransformationMethod() instanceof PasswordTransformationMethod) {
+                    password.setTransformationMethod(null);
+                } else {
+                    password.setTransformationMethod(new PasswordTransformationMethod());
+                }
+                password.setSelection(password.getText().length());
+                break;
+            case R.id.close_btn:
+                errorLayout.setVisibility(View.INVISIBLE);
+                break;
             default:
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void init() {
+        if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar"))
+            background.setScaleX(-1);
+
         ViewTreeObserver observer = container.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(() -> {
             int viewHeight = container.getMeasuredHeight();
@@ -118,6 +165,8 @@ public class SigninFragment extends Fragment {
             constraintSet.applyTo(constraintLayout);
         });
 
+        updateFontFamily();
+
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -126,7 +175,7 @@ public class SigninFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                updateFontFamily();
             }
 
             @Override
@@ -140,7 +189,19 @@ public class SigninFragment extends Fragment {
         password.addTextChangedListener(textWatcher);
         email.addTextChangedListener(textWatcher);
 
+        email.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus)
+                checkEmail();
+        });
+
+        password.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus)
+                container.smoothScrollTo(securityLevelLayout.getLeft(), securityLevelLayout.getTop());
+        });
+
         cguCheck.setOnCheckedChangeListener((buttonView, isChecked) -> validateForm());
+
+        cguCheck.setChecked(checked);
     }
 
     private void validateForm() {
@@ -153,6 +214,7 @@ public class SigninFragment extends Fragment {
     }
 
     private boolean checkEmail() {
+
         if (email.getText().length() > 0) {
             if (Constants.EMAIL_ADDRESS_PATTERN.matcher(email.getText().toString()).matches()) {
                 errorLayout.setVisibility(View.INVISIBLE);
@@ -169,19 +231,11 @@ public class SigninFragment extends Fragment {
     }
 
     private void saveInformation() {
-        Utilities.showCompleteProfileDialog(getContext(), "", "", new VersionControlChoiceDialogClickListener() {
-            @Override
-            public void onAccept() {
-                startActivity(new Intent(getActivity(), MainActivity.class));
-                getActivity().finish();
-            }
-
-            @Override
-            public void onRefuse() {
-                startActivity(new Intent(getActivity(), MainActivity.class));
-                getActivity().finish();
-            }
-        });
+        preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.putExtra("show_popup", true);
+        startActivity(intent);
+        getActivity().finish();
     }
 
     private void calculatePasswordStrength(String str) {
@@ -195,6 +249,43 @@ public class SigninFragment extends Fragment {
                 break;
             default:
                 securityLevel.setBackgroundColor(getResources().getColor(R.color.strong_password));
+        }
+    }
+
+    private void updateFontFamily() {
+        if (id.getText().length() > 0) {
+            Typeface face = ResourcesCompat.getFont(getContext(), R.font.helveticaneueregular);
+            id.setTypeface(face);
+        } else {
+            Typeface face = ResourcesCompat.getFont(getContext(), R.font.helveticalight);
+            id.setTypeface(face);
+        }
+
+        if (cin.getText().length() > 0) {
+            Typeface face = ResourcesCompat.getFont(getContext(), R.font.helveticaneueregular);
+            cin.setTypeface(face);
+        } else {
+            Typeface face = ResourcesCompat.getFont(getContext(), R.font.helveticalight);
+            cin.setTypeface(face);
+        }
+
+        if (email.getText().length() > 0) {
+            Typeface face = ResourcesCompat.getFont(getContext(), R.font.helveticaneueregular);
+            email.setTypeface(face);
+            if (Constants.EMAIL_ADDRESS_PATTERN.matcher(email.getText().toString()).matches())
+                errorLayout.setVisibility(View.INVISIBLE);
+        } else {
+            Typeface face = ResourcesCompat.getFont(getContext(), R.font.helveticalight);
+            email.setTypeface(face);
+            errorLayout.setVisibility(View.INVISIBLE);
+        }
+
+        if (password.getText().length() > 0) {
+            Typeface face = ResourcesCompat.getFont(getContext(), R.font.helveticaneueregular);
+            password.setTypeface(face);
+        } else {
+            Typeface face = ResourcesCompat.getFont(getContext(), R.font.helveticalight);
+            password.setTypeface(face);
         }
     }
 

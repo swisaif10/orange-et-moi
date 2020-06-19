@@ -2,8 +2,6 @@ package com.orange.orangeetmoipro.views.authentication;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.orange.orangeetmoipro.R;
 import com.orange.orangeetmoipro.views.authentication.fragments.SigninFragment;
 import com.orange.orangeetmoipro.views.base.BaseActivity;

@@ -54,13 +54,13 @@ public class SplashScreenActivity extends AppCompatActivity {
             else
                 intent = new Intent(SplashScreenActivity.this, AuthenticationActivity.class);
         }
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        finish();
     }
 
     private void getVersionCheck() {
         if (connectivity.isConnected()) {
-            spalshVM.getVersionCheck();
+            spalshVM.getVersionCheck("fr");
         } else
             goToNextActivity();
     }

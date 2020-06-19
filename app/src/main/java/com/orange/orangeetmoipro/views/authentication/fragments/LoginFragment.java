@@ -2,6 +2,7 @@ package com.orange.orangeetmoipro.views.authentication.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,11 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -49,6 +53,12 @@ public class LoginFragment extends Fragment {
     TextView forgotPasswordBtn;
     @BindView(R.id.change_btn)
     TextView changeBtn;
+    @BindView(R.id.error_layout)
+    RelativeLayout errorLayout;
+    @BindView(R.id.error_description)
+    TextView errorDescription;
+    @BindView(R.id.background)
+    ImageView background;
     private AuthenticationVM authenticationVM;
     private Connectivity connectivity;
     private PreferenceManager preferenceManager;
@@ -85,7 +95,7 @@ public class LoginFragment extends Fragment {
         init();
     }
 
-    @OnClick({R.id.sign_up_btn, R.id.valid_btn, R.id.container, R.id.show_password_btn})
+    @OnClick({R.id.sign_up_btn, R.id.valid_btn, R.id.container, R.id.show_password_btn, R.id.close_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.sign_up_btn:
@@ -104,11 +114,18 @@ public class LoginFragment extends Fragment {
                     password.setTransformationMethod(new PasswordTransformationMethod());
                 }
                 password.setSelection(password.getText().length());
+            case R.id.close_btn:
+                errorLayout.setVisibility(View.INVISIBLE);
+                break;
             default:
         }
     }
 
     private void init() {
+        if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar"))
+            background.setScaleX(-1);
+
+        updateFontFamily();
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -117,12 +134,12 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                updateFontFamily();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                validBtn.setEnabled(id.getText().length() > 0 && password.getText().length() >= 8);
+                validBtn.setEnabled(id.getText().length() > 0 && password.getText().length() > 0);
             }
         };
 
@@ -132,14 +149,17 @@ public class LoginFragment extends Fragment {
 
     private void login() {
         if (connectivity.isConnected())
-            authenticationVM.login(id.getText().toString().trim(), password.toString().trim());
-        else
-            Utilities.showErrorPopup(getContext(), getString(R.string.no_internet), "");
+            authenticationVM.login(id.getText().toString().trim(), password.toString().trim(), "fr");
+        else {
+            errorLayout.setVisibility(View.VISIBLE);
+            errorDescription.setText(getString(R.string.no_internet));
+        }
     }
 
     private void handleLoginResponse(LoginData loginData) {
         if (loginData == null) {
-            Utilities.showErrorPopup(getContext(), getString(R.string.generic_error), "");
+            errorLayout.setVisibility(View.VISIBLE);
+            errorDescription.setText(getString(R.string.generic_error));
         } else {
             int code = loginData.getHeader().getCode();
             if (code == 200) {
@@ -147,8 +167,28 @@ public class LoginFragment extends Fragment {
                 getActivity().finish();
                 if (saveBtn.isChecked())
                     preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
-            } else
-                Utilities.showErrorPopup(getContext(), loginData.getHeader().getMessage(), "");
+            } else {
+                errorLayout.setVisibility(View.VISIBLE);
+                errorDescription.setText(loginData.getHeader().getMessage());
+            }
+        }
+    }
+
+    private void updateFontFamily() {
+        if (id.getText().length() > 0) {
+            Typeface face = ResourcesCompat.getFont(getContext(), R.font.helveticaneueregular);
+            id.setTypeface(face);
+        } else {
+            Typeface face = ResourcesCompat.getFont(getContext(), R.font.helveticalight);
+            id.setTypeface(face);
+        }
+
+        if (password.getText().length() > 0) {
+            Typeface face = ResourcesCompat.getFont(getContext(), R.font.helveticaneueregular);
+            password.setTypeface(face);
+        } else {
+            Typeface face = ResourcesCompat.getFont(getContext(), R.font.helveticalight);
+            password.setTypeface(face);
         }
     }
 

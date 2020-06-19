@@ -3,6 +3,9 @@ package com.orange.orangeetmoipro.utilities;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.orange.orangeetmoipro.R;
 import com.orange.orangeetmoipro.listeners.VersionControlChoiceDialogClickListener;
+
+import java.lang.reflect.Method;
+
+import static android.content.pm.PackageManager.GET_META_DATA;
+import static android.os.Build.VERSION_CODES.P;
 
 
 public class Utilities {
@@ -28,11 +36,9 @@ public class Utilities {
 
         View view = LayoutInflater.from(context).inflate(R.layout.server_error_dialog, null, false);
         Button ok = view.findViewById(R.id.ok_btn);
-        TextView titleTv = view.findViewById(R.id.title);
         TextView msg = view.findViewById(R.id.message);
         ConstraintLayout container = view.findViewById(R.id.container);
 
-        titleTv.setText(title);
         msg.setText(message);
 
         ok.setOnClickListener(v -> dialog.dismiss());
@@ -40,7 +46,6 @@ public class Utilities {
         dialog.setContentView(view);
         dialog.show();
     }
-
 
     public static void showUpdateDialog(Context context, String message, String title, String status, VersionControlChoiceDialogClickListener versionControlChoiceDialogClickListener) {
 
@@ -113,5 +118,4 @@ public class Utilities {
             Log.e("", e.getMessage());
         }
     }
-
 }

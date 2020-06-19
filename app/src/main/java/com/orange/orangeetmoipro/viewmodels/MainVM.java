@@ -32,8 +32,8 @@ public class MainVM extends AndroidViewModel {
     }
 
 
-    public void getTabMenu() {
-        Call<TabMenuData> call = RestService.getInstance().endpoint().getTabMenu();
+    public void getTabMenu(String lang) {
+        Call<TabMenuData> call = RestService.getInstance().endpoint().getTabMenu(lang);
         call.enqueue(new Callback<TabMenuData>() {
             @Override
             public void onResponse(Call<TabMenuData> call, Response<TabMenuData> response) {
