@@ -1,23 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".views.main.dashboard.SettingsFragment">
+    android:orientation="vertical"
+    tools:context=".views.main.settings.SettingsFragment">
 
-    <Button
-        android:id="@+id/logout"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/block_parame"
+        android:orientation="vertical"
+        app:layout_constraintHeight_percent="0.21"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentEnd="true"
+            android:scaleType="fitStart"
+            android:src="@drawable/masques_parme" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:fontFamily="@font/helvneueblack"
+            android:paddingTop="5dp"
+            android:text="Paramètres"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/settings_recycler"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:background="@color/orange"
-        android:fontFamily="@font/helveticabold"
-        android:paddingHorizontal="20dp"
-        android:text="Deconnexion"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="16sp" />
+        app:layout_constraintTop_toBottomOf="@id/header"
+        tools:itemCount="6"
+        tools:listitem="@layout/settings_item_layout" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

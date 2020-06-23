@@ -26,19 +26,24 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.orange.orangeetmoipro.R;
 import com.orange.orangeetmoipro.datamanager.sharedpref.PreferenceManager;
+import com.orange.orangeetmoipro.models.login.LoginData;
+import com.orange.orangeetmoipro.utilities.Connectivity;
 import com.orange.orangeetmoipro.utilities.Constants;
 import com.orange.orangeetmoipro.utilities.PasswordStrength;
 import com.orange.orangeetmoipro.utilities.Utilities;
+import com.orange.orangeetmoipro.viewmodels.AuthenticationVM;
+import com.orange.orangeetmoipro.views.authentication.AuthenticationActivity;
 import com.orange.orangeetmoipro.views.main.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SigninFragment extends Fragment {
+public class SignInFragment extends Fragment {
 
     private static final int REQUEST_CODE = 100;
 
@@ -70,17 +75,25 @@ public class SigninFragment extends Fragment {
     ImageView background;
     private Boolean checked = false;
     private PreferenceManager preferenceManager;
+    private Connectivity connectivity;
+    private AuthenticationVM authenticationVM;
 
-    public SigninFragment() {
+    public SignInFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        authenticationVM = ViewModelProviders.of(this).get(AuthenticationVM.class);
+        connectivity = new Connectivity(getContext(), this);
+
         preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
+
+        authenticationVM.getSignInMutableLiveData().observe(this, this::handleSignInResponse);
+
     }
 
     @Override
@@ -105,26 +118,20 @@ public class SigninFragment extends Fragment {
         }
     }
 
-    @OnClick({R.id.sign_up_btn, R.id.cgu_btn, R.id.valid_btn, R.id.credentials_layout, R.id.show_password_btn, R.id.close_btn})
+    @OnClick({R.id.login_btn, R.id.cgu_btn, R.id.valid_btn, R.id.credentials_layout, R.id.show_password_btn, R.id.close_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.sign_up_btn:
-                getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.container, new LoginFragment()).
-                        addToBackStack(null).
-                        commit();
+            case R.id.login_btn:
+                ((AuthenticationActivity) getActivity()).replaceFragment(new LoginFragment());
                 break;
             case R.id.cgu_btn:
                 Utilities.hideSoftKeyboard(getContext(), getView());
                 CGUFragment cguFragment = new CGUFragment();
                 cguFragment.setTargetFragment(this, REQUEST_CODE);
-                getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.container, cguFragment).
-                        addToBackStack(null).
-                        commit();
+                ((AuthenticationActivity) getActivity()).replaceFragment(cguFragment);
                 break;
             case R.id.valid_btn:
-                saveInformation();
+                SignIn();
                 break;
             case R.id.credentials_layout:
                 Utilities.hideSoftKeyboard(getContext(), getView());
@@ -230,14 +237,6 @@ public class SigninFragment extends Fragment {
         }
     }
 
-    private void saveInformation() {
-        preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        intent.putExtra("show_popup", true);
-        startActivity(intent);
-        getActivity().finish();
-    }
-
     private void calculatePasswordStrength(String str) {
         int passwordStrength = PasswordStrength.calculate(str);
         switch (passwordStrength) {
@@ -286,6 +285,34 @@ public class SigninFragment extends Fragment {
         } else {
             Typeface face = ResourcesCompat.getFont(getContext(), R.font.helveticalight);
             password.setTypeface(face);
+        }
+    }
+
+    private void SignIn() {
+        if (connectivity.isConnected())
+            authenticationVM.signIn(id.getText().toString(), cin.getText().toString(), email.getText().toString(), password.getText().toString(), "fr");
+        else {
+            errorLayout.setVisibility(View.VISIBLE);
+            errorDescription.setText(getString(R.string.no_internet));
+        }
+    }
+
+    private void handleSignInResponse(LoginData loginData) {
+        if (loginData == null) {
+            errorLayout.setVisibility(View.VISIBLE);
+            errorDescription.setText(getString(R.string.generic_error));
+        } else {
+            int code = loginData.getHeader().getCode();
+            if (code == 200) {
+                preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra("show_popup", true);
+                startActivity(intent);
+                getActivity().finish();
+            } else {
+                errorLayout.setVisibility(View.VISIBLE);
+                errorDescription.setText(loginData.getHeader().getMessage());
+            }
         }
     }
 

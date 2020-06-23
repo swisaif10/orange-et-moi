@@ -38,5 +38,8 @@
     <string name="no">Non</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="account_manger_btn">Changer votre gestionnaire de compte</string>
+    <string name="billing_btn">Payer vos factures</string>
+    <string name="visitor_mode_title">Mode Visiteur</string>
 
 </resources>

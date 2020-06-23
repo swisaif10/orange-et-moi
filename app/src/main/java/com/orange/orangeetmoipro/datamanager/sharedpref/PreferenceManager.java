@@ -27,7 +27,7 @@ public class PreferenceManager {
 
     @SuppressLint("CommitPrefEdits")
     private void setup(Builder builder) {
-        Context context = builder.context.getApplicationContext();
+        Context context = builder.context;
         int mode = builder.preferencesMode;
         String name = builder.preferencesName.trim().replace(" ", "");
         Activity activity = builder.preferencesActivity;

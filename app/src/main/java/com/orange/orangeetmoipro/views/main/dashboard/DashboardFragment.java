@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +15,7 @@ import com.orange.orangeetmoipro.R;
 import com.orange.orangeetmoipro.models.dashboard.ItemButton;
 import com.orange.orangeetmoipro.models.dashboard.ItemString;
 import com.orange.orangeetmoipro.models.dashboard.Template;
+import com.orange.orangeetmoipro.views.base.BaseFragment;
 import com.orange.orangeetmoipro.views.main.adapters.DashboardAdapter;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DashboardFragment extends Fragment {
+public class DashboardFragment extends BaseFragment {
 
     @BindView(R.id.dashboard_recycler)
     RecyclerView dashboardRecycler;

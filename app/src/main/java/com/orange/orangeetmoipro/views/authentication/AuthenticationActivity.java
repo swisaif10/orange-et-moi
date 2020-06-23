@@ -3,7 +3,8 @@ package com.orange.orangeetmoipro.views.authentication;
 import android.os.Bundle;
 
 import com.orange.orangeetmoipro.R;
-import com.orange.orangeetmoipro.views.authentication.fragments.SigninFragment;
+import com.orange.orangeetmoipro.views.authentication.fragments.LoginFragment;
+import com.orange.orangeetmoipro.views.authentication.fragments.SignInFragment;
 import com.orange.orangeetmoipro.views.base.BaseActivity;
 
 import butterknife.ButterKnife;
@@ -15,8 +16,20 @@ public class AuthenticationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication);
         ButterKnife.bind(this);
-        getSupportFragmentManager().beginTransaction().
-                add(R.id.container, new SigninFragment()).
-                commit();
+
+        if (getIntent().getBooleanExtra("from_logout",false))
+            addFragment(new LoginFragment(),"login");
+        else
+            addFragment(new SignInFragment(),"sign_in");
+    }
+
+    @Override
+    public void onBackPressed(){
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1){
+            finish();
+        }
+        else {
+            super.onBackPressed();
+        }
     }
 }

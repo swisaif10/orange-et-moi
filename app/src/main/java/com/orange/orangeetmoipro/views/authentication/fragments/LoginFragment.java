@@ -30,6 +30,7 @@ import com.orange.orangeetmoipro.utilities.Connectivity;
 import com.orange.orangeetmoipro.utilities.Constants;
 import com.orange.orangeetmoipro.utilities.Utilities;
 import com.orange.orangeetmoipro.viewmodels.AuthenticationVM;
+import com.orange.orangeetmoipro.views.authentication.AuthenticationActivity;
 import com.orange.orangeetmoipro.views.main.MainActivity;
 
 import butterknife.BindView;
@@ -95,11 +96,11 @@ public class LoginFragment extends Fragment {
         init();
     }
 
-    @OnClick({R.id.sign_up_btn, R.id.valid_btn, R.id.container, R.id.show_password_btn, R.id.close_btn})
+    @OnClick({R.id.signin_btn, R.id.valid_btn, R.id.container, R.id.show_password_btn, R.id.close_btn, R.id.visitor_mode})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.sign_up_btn:
-                getActivity().onBackPressed();
+            case R.id.signin_btn:
+                ((AuthenticationActivity) getActivity()).replaceFragment(new SignInFragment());
                 break;
             case R.id.valid_btn:
                 login();
@@ -117,7 +118,10 @@ public class LoginFragment extends Fragment {
             case R.id.close_btn:
                 errorLayout.setVisibility(View.INVISIBLE);
                 break;
+            case R.id.visitor_mode:
+                ((AuthenticationActivity) getActivity()).replaceFragment(new VisitorFragment());
             default:
+                break;
         }
     }
 

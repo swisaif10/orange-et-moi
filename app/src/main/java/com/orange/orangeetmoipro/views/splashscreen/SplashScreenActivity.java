@@ -27,7 +27,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     private Connectivity connectivity;
     private PreferenceManager preferenceManager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

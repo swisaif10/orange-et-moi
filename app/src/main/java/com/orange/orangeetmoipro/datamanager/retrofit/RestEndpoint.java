@@ -3,6 +3,7 @@ package com.orange.orangeetmoipro.datamanager.retrofit;
 import com.orange.orangeetmoipro.models.cgu.CGUData;
 import com.orange.orangeetmoipro.models.controlversion.ControlVersionData;
 import com.orange.orangeetmoipro.models.login.LoginData;
+import com.orange.orangeetmoipro.models.settings.SettingsData;
 import com.orange.orangeetmoipro.models.tabmenu.TabMenuData;
 
 import retrofit2.Call;
@@ -21,10 +22,19 @@ public interface RestEndpoint {
     Call<CGUData> getCGU(@Field("tag") String tag, @Path("locale") String lang);
 
     @FormUrlEncoded
+    @POST(ApiUrls.SIGN_IN_URL)
+    Call<LoginData> signIn(@Field("identifier") String id, @Field("cinPassport") String cin,
+                           @Field("email") String email, @Field("password") String password, @Path("locale") String lang);
+    
+    @FormUrlEncoded
     @POST(ApiUrls.LOGIN_URL)
     Call<LoginData> login(@Field("login") String login, @Field("password") String password, @Path("locale") String lang);
 
     @POST(ApiUrls.GET_TAB_MENU_URL)
     Call<TabMenuData> getTabMenu(@Path("locale") String lang);
+
+    @POST(ApiUrls.GET_SETTINGS_URL)
+    Call<SettingsData> getSettings();
+
 
 }

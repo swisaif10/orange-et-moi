@@ -1,0 +1,113 @@
+package com.orange.orangeetmoipro.views.main.settings;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.orange.orangeetmoipro.R;
+import com.orange.orangeetmoipro.datamanager.sharedpref.PreferenceManager;
+import com.orange.orangeetmoipro.listeners.OnItemSelectedListener;
+import com.orange.orangeetmoipro.models.settings.SettingsData;
+import com.orange.orangeetmoipro.models.settings.SettingsItem;
+import com.orange.orangeetmoipro.utilities.Connectivity;
+import com.orange.orangeetmoipro.utilities.Constants;
+import com.orange.orangeetmoipro.utilities.Utilities;
+import com.orange.orangeetmoipro.viewmodels.SettingsVM;
+import com.orange.orangeetmoipro.views.authentication.AuthenticationActivity;
+import com.orange.orangeetmoipro.views.base.BaseFragment;
+import com.orange.orangeetmoipro.views.main.adapters.SettingsAdapter;
+
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class SettingsFragment extends BaseFragment implements OnItemSelectedListener {
+
+    @BindView(R.id.settings_recycler)
+    RecyclerView settingsRecycler;
+    private PreferenceManager preferenceManager;
+    private SettingsVM settingsVM;
+    private Connectivity connectivity;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        settingsVM = ViewModelProviders.of(this).get(SettingsVM.class);
+        connectivity = new Connectivity(getContext(), this);
+
+        settingsVM.getSettingsMutableLiveData().observe(this, this::handleSettingsData);
+
+
+        preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
+                .name(Constants.SHARED_PREFS_NAME)
+                .build();
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getSettings();
+    }
+
+    @Override
+    public void onItemSelected(String action) {
+        switch (action) {
+            case "logout":
+                preferenceManager.putValue(Constants.IS_LOGGED_IN, false);
+                Intent intent = new Intent(getActivity(), AuthenticationActivity.class);
+                intent.putExtra("from_logout", true);
+                startActivity(intent);
+                getActivity().finish();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void init(ArrayList<SettingsItem> settingsItems) {
+        settingsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        SettingsAdapter settingsAdapter = new SettingsAdapter(getContext(), settingsItems, this::onItemSelected);
+        settingsRecycler.setAdapter(settingsAdapter);
+
+    }
+
+    private void getSettings() {
+        if (connectivity.isConnected())
+            settingsVM.getSettings();
+        else
+            Utilities.showErrorPopup(getContext(), getString(R.string.no_internet), "");
+    }
+
+    private void handleSettingsData(SettingsData settingsData) {
+        if (settingsData == null) {
+            Utilities.showErrorPopup(getContext(), getString(R.string.generic_error), "");
+        } else {
+            int code = settingsData.getHeader().getCode();
+            if (code == 200) {
+                init(settingsData.getResponse().getData());
+            } else
+                Utilities.showErrorPopup(getContext(), settingsData.getHeader().getMessage(), "");
+        }
+    }
+
+}

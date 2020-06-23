@@ -2,18 +2,17 @@ package com.orange.orangeetmoipro.views.selectlanguage;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.orange.orangeetmoipro.OrangeEtMoiPro;
 import com.orange.orangeetmoipro.R;
 import com.orange.orangeetmoipro.datamanager.sharedpref.PreferenceManager;
 import com.orange.orangeetmoipro.utilities.Constants;
+import com.orange.orangeetmoipro.utilities.LocaleManager;
 import com.orange.orangeetmoipro.views.authentication.AuthenticationActivity;
 import com.orange.orangeetmoipro.views.base.BaseActivity;
-
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,24 +45,14 @@ public class SelectLanguageActivity extends BaseActivity {
                 changeLanguage("fr");
                 break;
             case R.id.arabic_btn:
-                //changeLanguage("ar");
+                changeLanguage("ar");
                 break;
         }
     }
 
     private void changeLanguage(String lang) {
-        Locale myLocale;
-        if (lang.equalsIgnoreCase("fr")) {
-            myLocale = new Locale(lang, "FR");
-        } else {
-            myLocale = new Locale(lang, "TN");
-        }
-        Locale.setDefault(myLocale);
-        Configuration config = new Configuration();
-        config.locale = myLocale;
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+        LocaleManager.setNewLocale(this, lang);
 
-        preferenceManager.putValue(Constants.LANGUAGE_KEY, lang);
         preferenceManager.putValue(Constants.FIRST_TIME, false);
 
         Intent intent = new Intent(this, AuthenticationActivity.class);

@@ -17,6 +17,7 @@ import retrofit2.Response;
 public class AuthenticationVM extends AndroidViewModel {
 
     private MutableLiveData<LoginData> loginMutableLiveData;
+    private MutableLiveData<LoginData> signInMutableLiveData;
     private MutableLiveData<CGUData> cguMutableLiveData;
 
     public AuthenticationVM(@NonNull Application application) {
@@ -33,9 +34,14 @@ public class AuthenticationVM extends AndroidViewModel {
         return cguMutableLiveData;
     }
 
+    public MutableLiveData<LoginData> getSignInMutableLiveData() {
+        return signInMutableLiveData;
+    }
+
     private void init() {
         loginMutableLiveData = new MutableLiveData<>();
         cguMutableLiveData = new MutableLiveData<>();
+        signInMutableLiveData = new MutableLiveData<>();
     }
 
     public void login(String login, String password, String lang) {
@@ -67,4 +73,20 @@ public class AuthenticationVM extends AndroidViewModel {
             }
         });
     }
+
+    public void signIn(String id, String cin, String email, String password, String lang) {
+        Call<LoginData> call = RestService.getInstance().endpoint().signIn(id, cin, email, password, lang);
+        call.enqueue(new Callback<LoginData>() {
+            @Override
+            public void onResponse(Call<LoginData> call, Response<LoginData> response) {
+                signInMutableLiveData.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<LoginData> call, Throwable t) {
+                signInMutableLiveData.setValue(null);
+            }
+        });
+    }
+
 }

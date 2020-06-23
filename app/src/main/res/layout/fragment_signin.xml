@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".views.authentication.fragments.SigninFragment">
+    tools:context=".views.authentication.fragments.SignInFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -42,7 +42,7 @@
                 android:textSize="30sp" />
 
             <Button
-                android:id="@+id/sign_up_btn"
+                android:id="@+id/login_btn"
                 android:layout_width="185dp"
                 android:layout_height="40dp"
                 android:layout_gravity="end"

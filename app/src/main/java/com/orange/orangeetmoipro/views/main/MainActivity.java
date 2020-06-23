@@ -9,31 +9,30 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.orange.orangeetmoipro.R;
 import com.orange.orangeetmoipro.listeners.VersionControlChoiceDialogClickListener;
-import com.orange.orangeetmoipro.models.dashboard.ItemButton;
-import com.orange.orangeetmoipro.models.dashboard.ItemString;
-import com.orange.orangeetmoipro.models.dashboard.Template;
 import com.orange.orangeetmoipro.models.tabmenu.TabMenuData;
 import com.orange.orangeetmoipro.models.tabmenu.TabMenuItem;
 import com.orange.orangeetmoipro.utilities.Connectivity;
+import com.orange.orangeetmoipro.utilities.FragNavController;
+import com.orange.orangeetmoipro.utilities.FragmentHistory;
 import com.orange.orangeetmoipro.utilities.Utilities;
 import com.orange.orangeetmoipro.viewmodels.MainVM;
 import com.orange.orangeetmoipro.views.base.BaseActivity;
-import com.orange.orangeetmoipro.views.main.adapters.DashboardAdapter;
+import com.orange.orangeetmoipro.views.base.BaseFragment;
+import com.orange.orangeetmoipro.views.main.billing.BillingFragment;
 import com.orange.orangeetmoipro.views.main.dashboard.DashboardFragment;
-import com.orange.orangeetmoipro.views.main.dashboard.SettingsFragment;
+import com.orange.orangeetmoipro.views.main.settings.SettingsFragment;
+import com.orange.orangeetmoipro.views.main.webview.WebViewFragment;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements BaseFragment.FragmentNavigation, FragNavController.TransactionListener, FragNavController.RootFragmentListener {
 
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
@@ -41,6 +40,9 @@ public class MainActivity extends BaseActivity {
     private MainVM mainVM;
     private Connectivity connectivity;
     private ArrayList<Fragment> fragments;
+    private FragNavController fragNavController;
+    private FragmentHistory fragmentHistory;
+    private Bundle savedInstanceState;
 
 
     @Override
@@ -48,6 +50,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        this.savedInstanceState = savedInstanceState;
 
         mainVM = ViewModelProviders.of(this).get(MainVM.class);
         connectivity = new Connectivity(this, this);
@@ -57,9 +60,57 @@ public class MainActivity extends BaseActivity {
         getTabMenu();
     }
 
-    private void init(TabMenuData tabMenuData) {
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (fragNavController != null) {
+            fragNavController.onSaveInstanceState(outState);
+        }
+    }
 
-        int i = 0;
+    @Override
+    public void onBackPressed() {
+        if (!fragNavController.isRootFragment()) {
+            fragNavController.popFragment();
+        } else {
+            if (fragmentHistory.isEmpty()) {
+                super.onBackPressed();
+            } else {
+                if (fragmentHistory.getStackSize() > 1) {
+                    int position = fragmentHistory.popPrevious();
+                    switchTab(position);
+                } else {
+                    switchTab(0);
+                    fragmentHistory.emptyStack();
+                }
+            }
+        }
+    }
+
+    @Override
+    public Fragment getRootFragment(int index) {
+        return fragments.get(index);
+    }
+
+    @Override
+    public void onTabTransaction(Fragment fragment, int index) {
+
+    }
+
+    @Override
+    public void onFragmentTransaction(Fragment fragment, FragNavController.TransactionType transactionType) {
+
+    }
+
+    @Override
+    public void pushFragment(Fragment fragment) {
+        if (fragNavController != null) {
+            fragNavController.pushFragment(fragment);
+        }
+    }
+
+    private void init(TabMenuData tabMenuData) {
+        fragments = new ArrayList<>();
         for (TabMenuItem item : tabMenuData.getTabMenuResponse().getData()) {
             TabLayout.Tab tab = tabLayout.newTab();
             View view = tab.getCustomView() == null ? LayoutInflater.from(tabLayout.getContext()).inflate(R.layout.custom_tab, null) : tab.getCustomView();
@@ -73,48 +124,42 @@ public class MainActivity extends BaseActivity {
             int icon = getResources().getIdentifier(item.getIconDisabled(), "drawable", getPackageName());
             tabImageView.setImageDrawable(getDrawable(icon));
             tabLayout.addTab(tab);
-            LinearLayout layout = ((LinearLayout) ((LinearLayout) tabLayout.getChildAt(0)).getChildAt(i));
+            LinearLayout layout = ((LinearLayout) ((LinearLayout) tabLayout.getChildAt(0)).getChildAt(tabMenuData.getTabMenuResponse().getData().indexOf(item)));
             layout.setBackground(null);
 
 
-            Fragment fragment = new Fragment();
-            switch (item.getTitle()) {
-                case "Accueil":
-                case "Paiement":
-                case "Parrainage":
+            Fragment fragment;
+            switch (item.getAction()) {
+                case "home":
                     fragment = new DashboardFragment();
                     break;
-                case "Paramètres":
+                case "setting":
                     fragment = new SettingsFragment();
                     break;
+                case "billing":
+                    fragment = new BillingFragment();
+                    break;
+                default:
+                    fragment = new WebViewFragment();
+                    break;
             }
-            //fragments.add(fragment);
-            i++;
+            fragments.add(fragment);
         }
 
-        getSupportFragmentManager().beginTransaction().
-                add(R.id.container, new DashboardFragment()).
-                commit();
+        fragmentHistory = new FragmentHistory();
+        fragNavController = FragNavController.newBuilder(savedInstanceState, getSupportFragmentManager(), R.id.container)
+                .transactionListener(this)
+                .rootFragmentListener(this, fragments.size())
+                .build();
+
+        switchTab(0);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
-
-                switch (position) {
-                    case 0:
-                    case 1:
-                    case 2:
-                        getSupportFragmentManager().beginTransaction().
-                                add(R.id.container, new DashboardFragment()).
-                                commit();
-                        break;
-                    case 3:
-                        getSupportFragmentManager().beginTransaction().
-                                add(R.id.container, new SettingsFragment()).
-                                commit();
-                        break;
-                }
+                fragmentHistory.push(position);
+                switchTab(position);
             }
 
             @Override
@@ -124,6 +169,8 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                fragNavController.clearStack();
+                switchTab(tab.getPosition());
             }
         });
 
@@ -140,6 +187,10 @@ public class MainActivity extends BaseActivity {
 
                 }
             });
+    }
+
+    private void switchTab(int position) {
+        fragNavController.switchTab(position);
     }
 
     private void getTabMenu() {
