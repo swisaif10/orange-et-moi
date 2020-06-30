@@ -17,10 +17,7 @@ public class AuthenticationActivity extends BaseActivity {
         setContentView(R.layout.activity_authentication);
         ButterKnife.bind(this);
 
-        if (getIntent().getBooleanExtra("from_logout",false))
-            addFragment(new LoginFragment(),"login");
-        else
-            addFragment(new SignInFragment(),"sign_in");
+        addFragment(new LoginFragment(),"login");
     }
 
     @Override

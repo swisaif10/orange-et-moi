@@ -25,6 +25,7 @@ import com.orange.orangeetmoipro.viewmodels.SettingsVM;
 import com.orange.orangeetmoipro.views.authentication.AuthenticationActivity;
 import com.orange.orangeetmoipro.views.base.BaseFragment;
 import com.orange.orangeetmoipro.views.main.adapters.SettingsAdapter;
+import com.orange.orangeetmoipro.views.main.dialogs.ChangeLanguageDialog;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,7 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
     private PreferenceManager preferenceManager;
     private SettingsVM settingsVM;
     private Connectivity connectivity;
+    private ChangeLanguageDialog changeLanguageDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,12 +74,13 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
     @Override
     public void onItemSelected(String action) {
         switch (action) {
-            case "logout":
+            case "deconnexion":
                 preferenceManager.putValue(Constants.IS_LOGGED_IN, false);
-                Intent intent = new Intent(getActivity(), AuthenticationActivity.class);
-                intent.putExtra("from_logout", true);
-                startActivity(intent);
+                startActivity(new Intent(getActivity(), AuthenticationActivity.class));
                 getActivity().finish();
+                break;
+            case "action_language":
+                new ChangeLanguageDialog(getActivity(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr")).show();
                 break;
             default:
                 break;
@@ -85,15 +88,16 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
     }
 
     private void init(ArrayList<SettingsItem> settingsItems) {
-        settingsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        SettingsAdapter settingsAdapter = new SettingsAdapter(getContext(), settingsItems, this::onItemSelected);
+        settingsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        SettingsAdapter settingsAdapter = new SettingsAdapter(getContext(), settingsItems, this::onItemSelected, preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
         settingsRecycler.setAdapter(settingsAdapter);
+
 
     }
 
     private void getSettings() {
         if (connectivity.isConnected())
-            settingsVM.getSettings();
+            settingsVM.getSettingsList(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
         else
             Utilities.showErrorPopup(getContext(), getString(R.string.no_internet), "");
     }

@@ -1,12 +1,12 @@
 package com.orange.orangeetmoipro;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
 
 import androidx.multidex.MultiDexApplication;
 
 import com.orange.orangeetmoipro.utilities.LocaleManager;
+
 
 public class OrangeEtMoiPro extends MultiDexApplication {
 

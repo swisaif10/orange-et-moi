@@ -22,6 +22,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.res.ResourcesCompat;
@@ -33,7 +34,6 @@ import com.orange.orangeetmoipro.datamanager.sharedpref.PreferenceManager;
 import com.orange.orangeetmoipro.models.login.LoginData;
 import com.orange.orangeetmoipro.utilities.Connectivity;
 import com.orange.orangeetmoipro.utilities.Constants;
-import com.orange.orangeetmoipro.utilities.PasswordStrength;
 import com.orange.orangeetmoipro.utilities.Utilities;
 import com.orange.orangeetmoipro.viewmodels.AuthenticationVM;
 import com.orange.orangeetmoipro.views.authentication.AuthenticationActivity;
@@ -73,6 +73,11 @@ public class SignInFragment extends Fragment {
     ConstraintLayout securityLevelLayout;
     @BindView(R.id.background)
     ImageView background;
+    @BindView(R.id.security_description)
+    TextView securityDescription;
+    @BindView(R.id.show_password_btn)
+    AppCompatCheckBox showPasswordBtn;
+
     private Boolean checked = false;
     private PreferenceManager preferenceManager;
     private Connectivity connectivity;
@@ -118,7 +123,7 @@ public class SignInFragment extends Fragment {
         }
     }
 
-    @OnClick({R.id.login_btn, R.id.cgu_btn, R.id.valid_btn, R.id.credentials_layout, R.id.show_password_btn, R.id.close_btn})
+    @OnClick({R.id.login_btn, R.id.cgu_btn, R.id.valid_btn, R.id.constraintLayout, R.id.show_password_btn, R.id.close_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.login_btn:
@@ -133,7 +138,7 @@ public class SignInFragment extends Fragment {
             case R.id.valid_btn:
                 SignIn();
                 break;
-            case R.id.credentials_layout:
+            case R.id.constraintLayout:
                 Utilities.hideSoftKeyboard(getContext(), getView());
                 break;
             case R.id.show_password_btn:
@@ -145,7 +150,7 @@ public class SignInFragment extends Fragment {
                 password.setSelection(password.getText().length());
                 break;
             case R.id.close_btn:
-                errorLayout.setVisibility(View.INVISIBLE);
+                errorLayout.setVisibility(View.GONE);
                 break;
             default:
         }
@@ -163,11 +168,11 @@ public class SignInFragment extends Fragment {
             ConstraintSet constraintSet = new ConstraintSet();
             constraintSet.clone(constraintLayout);
             if (viewHeight - contentHeight < 0) {
-                constraintSet.clear(R.id.valid_btn, ConstraintSet.BOTTOM);
-                constraintSet.connect(R.id.valid_btn, ConstraintSet.TOP, R.id.credentials_layout, ConstraintSet.BOTTOM, 0);
+                constraintSet.clear(R.id.footer, ConstraintSet.BOTTOM);
+                constraintSet.connect(R.id.footer, ConstraintSet.TOP, R.id.credentials_layout, ConstraintSet.BOTTOM, 0);
             } else {
-                constraintSet.clear(R.id.valid_btn, ConstraintSet.TOP);
-                constraintSet.connect(R.id.valid_btn, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
+                constraintSet.clear(R.id.footer, ConstraintSet.TOP);
+                constraintSet.connect(R.id.footer, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
             }
             constraintSet.applyTo(constraintLayout);
         });
@@ -192,30 +197,36 @@ public class SignInFragment extends Fragment {
         };
 
         id.addTextChangedListener(textWatcher);
+        id.getText().clear();
         cin.addTextChangedListener(textWatcher);
+        cin.getText().clear();
         password.addTextChangedListener(textWatcher);
+        password.getText().clear();
         email.addTextChangedListener(textWatcher);
+        email.getText().clear();
 
         email.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus)
                 checkEmail();
         });
-
         password.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus)
                 container.smoothScrollTo(securityLevelLayout.getLeft(), securityLevelLayout.getTop());
         });
-
         cguCheck.setOnCheckedChangeListener((buttonView, isChecked) -> validateForm());
-
         cguCheck.setChecked(checked);
+
+        if (showPasswordBtn.isChecked())
+            password.setTransformationMethod(null);
     }
 
     private void validateForm() {
         if (password.getText().length() >= 8)
             calculatePasswordStrength(password.getText().toString());
-        else if (password.getText().length() < 8)
+        else if (password.getText().length() < 8) {
             securityLevel.setBackgroundColor(getResources().getColor(R.color.grey_light));
+            securityDescription.setText(getString(R.string.security_level_description));
+        }
 
         validBtn.setEnabled(id.getText().length() > 0 && cin.getText().length() > 0 && password.getText().length() >= 8 && cguCheck.isChecked() && checkEmail());
     }
@@ -224,7 +235,7 @@ public class SignInFragment extends Fragment {
 
         if (email.getText().length() > 0) {
             if (Constants.EMAIL_ADDRESS_PATTERN.matcher(email.getText().toString()).matches()) {
-                errorLayout.setVisibility(View.INVISIBLE);
+                errorLayout.setVisibility(View.GONE);
                 return true;
             } else {
                 errorDescription.setText(getString(R.string.email_error));
@@ -232,22 +243,25 @@ public class SignInFragment extends Fragment {
                 return false;
             }
         } else {
-            errorLayout.setVisibility(View.INVISIBLE);
+            errorLayout.setVisibility(View.GONE);
             return true;
         }
     }
 
     private void calculatePasswordStrength(String str) {
-        int passwordStrength = PasswordStrength.calculate(str);
+        int passwordStrength = Utilities.calculate(str, "");
         switch (passwordStrength) {
             case 1:
                 securityLevel.setBackgroundColor(getResources().getColor(R.color.red));
+                securityDescription.setText(getString(R.string.weak_password_security));
                 break;
             case 2:
                 securityLevel.setBackgroundColor(getResources().getColor(R.color.medium_password));
+                securityDescription.setText(getString(R.string.medium_password_security));
                 break;
             default:
                 securityLevel.setBackgroundColor(getResources().getColor(R.color.strong_password));
+                securityDescription.setText(getString(R.string.strong_password_security));
         }
     }
 
@@ -272,11 +286,11 @@ public class SignInFragment extends Fragment {
             Typeface face = ResourcesCompat.getFont(getContext(), R.font.helveticaneueregular);
             email.setTypeface(face);
             if (Constants.EMAIL_ADDRESS_PATTERN.matcher(email.getText().toString()).matches())
-                errorLayout.setVisibility(View.INVISIBLE);
+                errorLayout.setVisibility(View.GONE);
         } else {
             Typeface face = ResourcesCompat.getFont(getContext(), R.font.helveticalight);
             email.setTypeface(face);
-            errorLayout.setVisibility(View.INVISIBLE);
+            errorLayout.setVisibility(View.GONE);
         }
 
         if (password.getText().length() > 0) {
@@ -290,7 +304,7 @@ public class SignInFragment extends Fragment {
 
     private void SignIn() {
         if (connectivity.isConnected())
-            authenticationVM.signIn(id.getText().toString(), cin.getText().toString(), email.getText().toString(), password.getText().toString(), "fr");
+            authenticationVM.signIn(id.getText().toString(), cin.getText().toString(), email.getText().toString(), password.getText().toString(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
         else {
             errorLayout.setVisibility(View.VISIBLE);
             errorDescription.setText(getString(R.string.no_internet));

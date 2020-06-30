@@ -20,52 +20,108 @@
         android:scaleType="fitStart"
         android:src="@drawable/downmosaique" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/helveticabold"
+        android:text="@string/welcome"
+        android:textColor="@color/black"
+        android:textSize="35sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:orientation="vertical"
-        android:paddingHorizontal="30dp">
+        android:layout_marginHorizontal="20dp"
+        android:orientation="vertical">
 
-        <TextView
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:scaleType="fitStart"
+            android:src="@drawable/logo_orange_pro" />
+
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/helveticabold"
-            android:text="@string/welcome"
-            android:textColor="@color/black"
-            android:textSize="35sp" />
+            android:layout_marginTop="40dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginTop="40dp"
-            android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/french_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/french_btn"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="15dp"
-                android:layout_weight="0.5"
-                android:background="@drawable/selector_orange_btn_background"
-                android:fontFamily="@font/helveticamedium"
-                android:text="@string/french"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+                <CheckBox
+                    android:id="@+id/french_checkbox"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/selector_custom_checkbox"
+                    android:button="@null"
+                    android:buttonTint="@color/grey"
+                    android:checked="true"
+                    android:clickable="false"
+                    android:fontFamily="@font/helveticamedium" />
 
-            <Button
-                android:id="@+id/arabic_btn"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_weight="0.5"
-                android:background="@drawable/selector_grey_border_btn_background"
-                android:fontFamily="@font/helveticamedium"
-                android:text="@string/arabic"
-                android:textAllCaps="false"
-                android:textColor="@drawable/selector_btn_text_color"
-                android:textSize="18sp" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/french_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/helveticabold"
+                    android:text="@string/french"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/arabic_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/french_layout"
+                android:layout_alignStart="@id/french_layout"
+                android:layout_alignEnd="@id/french_layout"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/arabic_checkbox"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/selector_custom_checkbox"
+                    android:button="@null"
+                    android:buttonTint="@color/grey"
+                    android:clickable="false"
+                    android:fontFamily="@font/helveticamedium" />
+
+                <TextView
+                    android:id="@+id/arabic_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/helveticabold"
+                    android:gravity="center_horizontal"
+                    android:text="@string/arabic"
+                    android:textColor="@color/grey"
+                    android:textSize="22sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
     </LinearLayout>
+
+    <Button
+        android:id="@+id/next_btn"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/selector_orange_btn_background"
+        android:fontFamily="@font/helveticamedium"
+        android:text="@string/next_btn"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 </RelativeLayout>

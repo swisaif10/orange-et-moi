@@ -10,6 +10,7 @@ public class ApiUrls {
     public static final String SIGN_IN_URL = "{locale}/api/account/login";
     public static final String LOGIN_URL = "{locale}/api/account/login";
     public static final String GET_TAB_MENU_URL = "{locale}/api/tab-menu/list";
-    public static final String GET_SETTINGS_URL = "https://run.mocky.io/v3/097fa7b4-bd36-4c11-b458-5d7a0388e627";
+    public static final String GET_SETTINGS_LIST_URL = "{locale}/api/setting/list";
+    public static final String GET_DASHBOARD_LIST_URL = "https://run.mocky.io/v3/313e0acc-f16b-410b-a27a-d1bc23e38874";
 
 }

@@ -8,6 +8,9 @@ public class Constants {
     public static final String FIRST_TIME = "FIRST_TIME";
     public static final String IS_LOGGED_IN = "LOGGED_IN";
     public static final String LANGUAGE_KEY = "LANGUAGE_KEY";
+    public static final String LOGIN_KEY = "LOGIN_KEY";
+    public static final String PASSWORD_KEY = "PASSWORD_KEY";
+    public static final String SAVE_CREDENTIALS_KEY = "SAVE_CREDENTIALS_KEY";
 
 
     public static final String __firstpart = "[A-Z0-9a-z]([A-Z0-9a-z._%+-]{0,30}[A-Z0-9a-z])?";

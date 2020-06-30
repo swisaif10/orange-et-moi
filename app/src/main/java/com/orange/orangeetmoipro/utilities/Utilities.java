@@ -3,9 +3,6 @@ package com.orange.orangeetmoipro.utilities;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +13,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.orange.orangeetmoipro.R;
-import com.orange.orangeetmoipro.listeners.VersionControlChoiceDialogClickListener;
-
-import java.lang.reflect.Method;
-
-import static android.content.pm.PackageManager.GET_META_DATA;
-import static android.os.Build.VERSION_CODES.P;
+import com.orange.orangeetmoipro.listeners.DialogButtonsClickListener;
 
 
 public class Utilities {
@@ -47,7 +39,7 @@ public class Utilities {
         dialog.show();
     }
 
-    public static void showUpdateDialog(Context context, String message, String title, String status, VersionControlChoiceDialogClickListener versionControlChoiceDialogClickListener) {
+    public static void showUpdateDialog(Context context, String message, String title, String status, DialogButtonsClickListener dialogButtonsClickListener) {
 
         if (context == null) {
             return;
@@ -69,17 +61,17 @@ public class Utilities {
 
         update.setOnClickListener(v -> {
             dialog.dismiss();
-            versionControlChoiceDialogClickListener.onAccept();
+            dialogButtonsClickListener.firstChoice();
         });
         cancel.setOnClickListener(v -> {
             dialog.dismiss();
-            versionControlChoiceDialogClickListener.onRefuse();
+            dialogButtonsClickListener.secondChoice();
         });
         dialog.setContentView(view);
         dialog.show();
     }
 
-    public static void showCompleteProfileDialog(Context context, String message, String title, VersionControlChoiceDialogClickListener versionControlChoiceDialogClickListener) {
+    public static void showCompleteProfileDialog(Context context, String message, String title, DialogButtonsClickListener dialogButtonsClickListener) {
 
         if (context == null) {
             return;
@@ -96,11 +88,11 @@ public class Utilities {
 
         ok.setOnClickListener(v -> {
             dialog.dismiss();
-            versionControlChoiceDialogClickListener.onAccept();
+            dialogButtonsClickListener.firstChoice();
         });
         cancel.setOnClickListener(v -> {
             dialog.dismiss();
-            versionControlChoiceDialogClickListener.onRefuse();
+            dialogButtonsClickListener.secondChoice();
         });
         dialog.setContentView(view);
         dialog.show();
@@ -117,5 +109,41 @@ public class Utilities {
         } catch (Exception e) {
             Log.e("", e.getMessage());
         }
+    }
+
+    public static int calculate(String password, String lang) {
+        int score = 0;
+        boolean upper = false;
+        boolean lower = false;
+        boolean digit = false;
+        boolean specialChar = false;
+        boolean arabicChar = false;
+        for (int i = 0; i < password.length(); i++) {
+            char c = password.charAt(i);
+
+            if (!arabicChar && isArabic(password.codePointAt(i))) {
+                arabicChar = true;
+                score++;
+            } else if (!specialChar && !isArabic(password.codePointAt(i)) && !Character.isLetterOrDigit(c)) {
+                score++;
+                specialChar = true;
+            } else {
+                if (!digit && Character.isDigit(c)) {
+                    score++;
+                    digit = true;
+                } else if (Character.isUpperCase(c) && !upper && !arabicChar) {
+                    score++;
+                    upper = true;
+                } else if (Character.isLowerCase(c) && !lower && !arabicChar) {
+                    score++;
+                    lower = true;
+                }
+            }
+        }
+        return score;
+    }
+
+    public static boolean isArabic(int c) {
+        return c >= 0x0600 && c <= 0x06E0;
     }
 }

@@ -24,11 +24,13 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
     private Context context;
     private ArrayList<SettingsItem> arrayList;
     private OnItemSelectedListener onItemSelectedListener;
+    private String lang;
 
-    public SettingsAdapter(Context context, ArrayList<SettingsItem> arrayList, OnItemSelectedListener onItemSelectedListener) {
+    public SettingsAdapter(Context context, ArrayList<SettingsItem> arrayList, OnItemSelectedListener onItemSelectedListener, String lang) {
         this.context = context;
         this.arrayList = arrayList;
         this.onItemSelectedListener = onItemSelectedListener;
+        this.lang = lang;
     }
 
     @NonNull
@@ -40,18 +42,21 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        //int icon = context.getResources().getIdentifier(arrayList.get(position).getIcon(), "drawable", context.getPackageName());
-        //holder.icon.setImageDrawable(context.getResources().getDrawable(icon));
+        int icon = context.getResources().getIdentifier(arrayList.get(position).getIcon(), "drawable", context.getPackageName());
+        holder.icon.setImageDrawable(context.getResources().getDrawable(icon));
         holder.title.setText(arrayList.get(position).getTitle());
+        String langTxt = context.getString(R.string.french);
+        if (lang.equalsIgnoreCase("ar")) {
+            holder.arrow.setScaleX(-1);
+            langTxt = context.getString(R.string.arabic);
+        }
+        holder.language.setText(langTxt);
+        if (position == 0)
+            holder.language.setVisibility(View.VISIBLE);
         if (holder.separator != null)
             holder.separator.setVisibility(position == arrayList.size() - 1 ? View.INVISIBLE : View.VISIBLE);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemSelectedListener.onItemSelected(arrayList.get(position).getAction());
-            }
-        });
+        holder.itemView.setOnClickListener(v -> onItemSelectedListener.onItemSelected(arrayList.get(position).getAction()));
     }
 
     @Override
@@ -66,6 +71,10 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
         TextView title;
         @BindView(R.id.separator)
         View separator;
+        @BindView(R.id.arrow)
+        ImageView arrow;
+        @BindView(R.id.language)
+        TextView language;
 
         ViewHolder(View itemView) {
             super(itemView);

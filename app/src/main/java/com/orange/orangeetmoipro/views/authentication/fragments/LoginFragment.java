@@ -50,10 +50,6 @@ public class LoginFragment extends Fragment {
     AppCompatCheckBox saveBtn;
     @BindView(R.id.valid_btn)
     Button validBtn;
-    @BindView(R.id.forgot_password_btn)
-    TextView forgotPasswordBtn;
-    @BindView(R.id.change_btn)
-    TextView changeBtn;
     @BindView(R.id.error_layout)
     RelativeLayout errorLayout;
     @BindView(R.id.error_description)
@@ -115,8 +111,9 @@ public class LoginFragment extends Fragment {
                     password.setTransformationMethod(new PasswordTransformationMethod());
                 }
                 password.setSelection(password.getText().length());
+                break;
             case R.id.close_btn:
-                errorLayout.setVisibility(View.INVISIBLE);
+                errorLayout.setVisibility(View.GONE);
                 break;
             case R.id.visitor_mode:
                 ((AuthenticationActivity) getActivity()).replaceFragment(new VisitorFragment());
@@ -128,6 +125,11 @@ public class LoginFragment extends Fragment {
     private void init() {
         if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar"))
             background.setScaleX(-1);
+
+        id.setText(preferenceManager.getValue(Constants.LOGIN_KEY, ""));
+        password.setText(preferenceManager.getValue(Constants.PASSWORD_KEY, ""));
+        saveBtn.setChecked(preferenceManager.getValue(Constants.SAVE_CREDENTIALS_KEY, false));
+        validBtn.setEnabled(id.getText().length() > 0 && password.getText().length() > 0);
 
         updateFontFamily();
         TextWatcher textWatcher = new TextWatcher() {
@@ -149,11 +151,14 @@ public class LoginFragment extends Fragment {
 
         id.addTextChangedListener(textWatcher);
         password.addTextChangedListener(textWatcher);
+
+        if (showPasswordBtn.isChecked())
+            password.setTransformationMethod(null);
     }
 
     private void login() {
         if (connectivity.isConnected())
-            authenticationVM.login(id.getText().toString().trim(), password.toString().trim(), "fr");
+            authenticationVM.login(id.getText().toString().trim(), password.toString().trim(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
         else {
             errorLayout.setVisibility(View.VISIBLE);
             errorDescription.setText(getString(R.string.no_internet));
@@ -169,8 +174,12 @@ public class LoginFragment extends Fragment {
             if (code == 200) {
                 startActivity(new Intent(getActivity(), MainActivity.class));
                 getActivity().finish();
-                if (saveBtn.isChecked())
+                if (saveBtn.isChecked()) {
                     preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
+                    preferenceManager.putValue(Constants.LOGIN_KEY, id.getText().toString());
+                    preferenceManager.putValue(Constants.PASSWORD_KEY, password.getText().toString());
+                    preferenceManager.putValue(Constants.SAVE_CREDENTIALS_KEY, true);
+                }
             } else {
                 errorLayout.setVisibility(View.VISIBLE);
                 errorDescription.setText(loginData.getHeader().getMessage());

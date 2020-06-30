@@ -6,22 +6,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.orange.orangeetmoipro.R;
 import com.orange.orangeetmoipro.datamanager.sharedpref.PreferenceManager;
-import com.orange.orangeetmoipro.listeners.VersionControlChoiceDialogClickListener;
+import com.orange.orangeetmoipro.listeners.DialogButtonsClickListener;
 import com.orange.orangeetmoipro.models.controlversion.ControlVersionData;
 import com.orange.orangeetmoipro.utilities.Connectivity;
 import com.orange.orangeetmoipro.utilities.Constants;
 import com.orange.orangeetmoipro.utilities.Utilities;
 import com.orange.orangeetmoipro.viewmodels.SpalshVM;
 import com.orange.orangeetmoipro.views.authentication.AuthenticationActivity;
+import com.orange.orangeetmoipro.views.base.BaseActivity;
 import com.orange.orangeetmoipro.views.main.MainActivity;
 import com.orange.orangeetmoipro.views.selectlanguage.SelectLanguageActivity;
 
-public class SplashScreenActivity extends AppCompatActivity {
+public class SplashScreenActivity extends BaseActivity {
 
     private SpalshVM spalshVM;
     private Connectivity connectivity;
@@ -59,7 +59,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void getVersionCheck() {
         if (connectivity.isConnected()) {
-            spalshVM.getVersionCheck("fr");
+            spalshVM.getVersionCheck(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
         } else
             goToNextActivity();
     }
@@ -74,14 +74,14 @@ public class SplashScreenActivity extends AppCompatActivity {
                 if (status.equalsIgnoreCase("current")) {
                     goToNextActivity();
                 } else {
-                    Utilities.showUpdateDialog(this, "", "", status, new VersionControlChoiceDialogClickListener() {
+                    Utilities.showUpdateDialog(this, "", "", status, new DialogButtonsClickListener() {
                         @Override
-                        public void onAccept() {
+                        public void firstChoice() {
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(controlVersionData.getResponse().getLink())));
                         }
 
                         @Override
-                        public void onRefuse() {
+                        public void secondChoice() {
                             goToNextActivity();
                         }
                     });

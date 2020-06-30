@@ -32,8 +32,8 @@ public class SettingsVM extends AndroidViewModel {
     }
 
 
-    public void getSettings() {
-        Call<SettingsData> call = RestService.getInstance().endpoint().getSettings();
+    public void getSettingsList(String lang) {
+        Call<SettingsData> call = RestService.getInstance().endpoint().getSettingsList(lang);
         call.enqueue(new Callback<SettingsData>() {
             @Override
             public void onResponse(Call<SettingsData> call, Response<SettingsData> response) {

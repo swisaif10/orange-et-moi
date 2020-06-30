@@ -1,130 +1,102 @@
+
 package com.orange.orangeetmoipro.models.dashboard;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
 public class Template {
 
-    private int icon1;
-    private int icon2;
-    private String title1;
-    private String title2;
-    private String color1;
-    private String color2;
-    private String type1;
-    private String type2;
-    private ArrayList<ItemButton> itemButtons1;
-    private ArrayList<ItemButton> itemButtons2;
-    private ArrayList<ItemString> itemStrings1;
-    private ArrayList<ItemString> itemStrings2;
+    @SerializedName("color_icone")
+    private String colorIcone;
+    @SerializedName("element_complex")
+    private ArrayList<ElementComplex> elementComplex;
+    @Expose
+    private String icon;
+    @Expose
+    private Long order;
+    @Expose
+    private String status;
+    @Expose
+    private String size;
+    @SerializedName("template_key")
+    private String templateKey;
+    @Expose
+    private String title;
+    @SerializedName("type_template")
+    private String typeTemplate;
 
-    public Template(int icon1, int icon2, String title1, String title2, String color1, String color2, String type1, String type2, ArrayList<ItemButton> itemButtons1, ArrayList<ItemButton> itemButtons2, ArrayList<ItemString> itemStrings1, ArrayList<ItemString> itemStrings2) {
-        this.icon1 = icon1;
-        this.icon2 = icon2;
-        this.title1 = title1;
-        this.title2 = title2;
-        this.color1 = color1;
-        this.color2 = color2;
-        this.type1 = type1;
-        this.type2 = type2;
-        this.itemButtons1 = itemButtons1;
-        this.itemButtons2 = itemButtons2;
-        this.itemStrings1 = itemStrings1;
-        this.itemStrings2 = itemStrings2;
+    public String getColorIcone() {
+        return colorIcone;
     }
 
-    public int getIcon1() {
-        return icon1;
+    public void setColorIcone(String colorIcone) {
+        this.colorIcone = colorIcone;
     }
 
-    public void setIcon1(int icon1) {
-        this.icon1 = icon1;
+    public ArrayList<ElementComplex> getElementComplex() {
+        return elementComplex;
     }
 
-    public int getIcon2() {
-        return icon2;
+    public void setElementComplex(ArrayList<ElementComplex> elementComplex) {
+        this.elementComplex = elementComplex;
     }
 
-    public void setIcon2(int icon2) {
-        this.icon2 = icon2;
+    public String getIcon() {
+        return icon;
     }
 
-    public String getTitle1() {
-        return title1;
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
-    public void setTitle1(String title1) {
-        this.title1 = title1;
+    public Long getOrder() {
+        return order;
     }
 
-    public String getTitle2() {
-        return title2;
+    public void setOrder(Long order) {
+        this.order = order;
     }
 
-    public void setTitle2(String title2) {
-        this.title2 = title2;
+    public String getStatus() {
+        return status;
     }
 
-    public String getColor1() {
-        return color1;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public void setColor1(String color1) {
-        this.color1 = color1;
+    public String getSize() {
+        return size;
     }
 
-    public String getColor2() {
-        return color2;
+    public void setSize(String size) {
+        this.size = size;
     }
 
-    public void setColor2(String color2) {
-        this.color2 = color2;
+    public String getTemplateKey() {
+        return templateKey;
     }
 
-    public String getType1() {
-        return type1;
+    public void setTemplateKey(String templateKey) {
+        this.templateKey = templateKey;
     }
 
-    public void setType1(String type1) {
-        this.type1 = type1;
+    public String getTitle() {
+        return title;
     }
 
-    public String getType2() {
-        return type2;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setType2(String type2) {
-        this.type2 = type2;
+    public String getTypeTemplate() {
+        return typeTemplate;
     }
 
-    public ArrayList<ItemButton> getItemButtons1() {
-        return itemButtons1;
+    public void setTypeTemplate(String typeTemplate) {
+        this.typeTemplate = typeTemplate;
     }
 
-    public void setItemButtons1(ArrayList<ItemButton> itemButtons1) {
-        this.itemButtons1 = itemButtons1;
-    }
-
-    public ArrayList<ItemButton> getItemButtons2() {
-        return itemButtons2;
-    }
-
-    public void setItemButtons2(ArrayList<ItemButton> itemButtons2) {
-        this.itemButtons2 = itemButtons2;
-    }
-
-    public ArrayList<ItemString> getItemStrings1() {
-        return itemStrings1;
-    }
-
-    public void setItemStrings1(ArrayList<ItemString> itemStrings1) {
-        this.itemStrings1 = itemStrings1;
-    }
-
-    public ArrayList<ItemString> getItemStrings2() {
-        return itemStrings2;
-    }
-
-    public void setItemStrings2(ArrayList<ItemString> itemStrings2) {
-        this.itemStrings2 = itemStrings2;
-    }
 }

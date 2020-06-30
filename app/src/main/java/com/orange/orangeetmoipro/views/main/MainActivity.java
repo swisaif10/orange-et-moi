@@ -1,5 +1,6 @@
 package com.orange.orangeetmoipro.views.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +13,12 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.tabs.TabLayout;
 import com.orange.orangeetmoipro.R;
-import com.orange.orangeetmoipro.listeners.VersionControlChoiceDialogClickListener;
+import com.orange.orangeetmoipro.datamanager.sharedpref.PreferenceManager;
+import com.orange.orangeetmoipro.listeners.DialogButtonsClickListener;
 import com.orange.orangeetmoipro.models.tabmenu.TabMenuData;
 import com.orange.orangeetmoipro.models.tabmenu.TabMenuItem;
 import com.orange.orangeetmoipro.utilities.Connectivity;
+import com.orange.orangeetmoipro.utilities.Constants;
 import com.orange.orangeetmoipro.utilities.FragNavController;
 import com.orange.orangeetmoipro.utilities.FragmentHistory;
 import com.orange.orangeetmoipro.utilities.Utilities;
@@ -43,6 +46,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
     private FragNavController fragNavController;
     private FragmentHistory fragmentHistory;
     private Bundle savedInstanceState;
+    private PreferenceManager preferenceManager;
 
 
     @Override
@@ -55,6 +59,9 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         mainVM = ViewModelProviders.of(this).get(MainVM.class);
         connectivity = new Connectivity(this, this);
 
+        preferenceManager = new PreferenceManager.Builder(this, Context.MODE_PRIVATE)
+                .name(Constants.SHARED_PREFS_NAME)
+                .build();
         mainVM.getTabMenuMutableLiveData().observe(this, this::handleTabMenuResponse);
 
         getTabMenu();
@@ -176,14 +183,14 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
 
 
         if (getIntent().getBooleanExtra("show_popup", false))
-            Utilities.showCompleteProfileDialog(this, "", "", new VersionControlChoiceDialogClickListener() {
+            Utilities.showCompleteProfileDialog(this, "", "", new DialogButtonsClickListener() {
                 @Override
-                public void onAccept() {
+                public void firstChoice() {
 
                 }
 
                 @Override
-                public void onRefuse() {
+                public void secondChoice() {
 
                 }
             });
@@ -195,7 +202,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
 
     private void getTabMenu() {
         if (connectivity.isConnected()) {
-            mainVM.getTabMenu("fr");
+            mainVM.getTabMenu(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
         } else
             Utilities.showErrorPopup(this, getString(R.string.no_internet), "");
 

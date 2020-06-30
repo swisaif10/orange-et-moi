@@ -22,10 +22,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:fontFamily="@font/helveticabold"
+            android:text="@string/cgu_title"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="80dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginHorizontal="20dp"
             android:src="@drawable/logo_orange_pro"
             app:layout_constraintBottom_toBottomOf="@+id/background"
             app:layout_constraintStart_toStartOf="parent" />
@@ -42,9 +54,11 @@
     <LinearLayout
         android:id="@+id/buttons"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="45dp"
         android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp"
         android:orientation="horizontal">
 
         <Button
@@ -55,7 +69,7 @@
             android:layout_weight="0.5"
             android:background="@drawable/selector_orange_btn_background"
             android:fontFamily="@font/helveticamedium"
-            android:text="@string/yes"
+            android:text="@string/agree_btn"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="18sp" />

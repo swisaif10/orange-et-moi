@@ -14,50 +14,38 @@
         <ImageView
             android:id="@+id/background"
             android:layout_width="240dp"
-            android:layout_height="180dp"
+            android:layout_height="150dp"
             android:layout_alignParentEnd="true"
             android:scaleType="fitStart"
             android:src="@drawable/mosi" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="20dp"
+            android:fontFamily="@font/helveticabold"
+            android:text="@string/authentication"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
 
         <LinearLayout
             android:id="@+id/body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/background"
             android:orientation="vertical"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="20dp">
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/helveticabold"
-                android:text="@string/authentication"
-                android:textColor="@color/black"
-                android:textSize="30sp" />
-
-            <Button
-                android:id="@+id/signin_btn"
-                android:layout_width="185dp"
-                android:layout_height="40dp"
-                android:layout_gravity="end"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/selector_black_btn_background"
-                android:fontFamily="@font/helveticamedium"
-                android:text="@string/sign_up"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+            android:paddingHorizontal="10dp">
 
             <RelativeLayout
                 android:id="@+id/error_layout"
                 android:layout_width="match_parent"
                 android:layout_height="28dp"
-                android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
                 android:background="@color/red"
                 android:paddingStart="10dp"
-                android:visibility="invisible">
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/error_icon"
@@ -147,7 +135,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatCheckBox
@@ -165,14 +153,27 @@
                     android:fontFamily="@font/helveticamedium"
                     android:text="@string/stay_connected"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="15sp" />
             </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/body"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="10dp"
+            android:gravity="bottom"
+            android:orientation="vertical"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="20dp">
 
             <Button
                 android:id="@+id/valid_btn"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginTop="60dp"
                 android:background="@drawable/selector_orange_btn_background"
                 android:enabled="false"
                 android:fontFamily="@font/helveticamedium"
@@ -180,18 +181,22 @@
                 android:textAllCaps="false"
                 android:textColor="@drawable/selector_text_color"
                 android:textSize="17sp" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/footer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/body"
-            android:layout_alignParentBottom="true"
-            android:gravity="bottom"
-            android:orientation="vertical"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="20dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginVertical="15dp"
+                android:background="@color/grey" />
+
+            <TextView
+                android:id="@+id/signin_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:fontFamily="@font/helveticalight"
+                android:text="@string/sign_up"
+                android:textColor="@drawable/selector_button_text_color"
+                android:textSize="18sp" />
 
             <View
                 android:layout_width="match_parent"
@@ -206,7 +211,7 @@
                 android:layout_marginBottom="15dp"
                 android:fontFamily="@font/helveticalight"
                 android:text="@string/visitor_mode"
-                android:textColor="@color/black"
+                android:textColor="@drawable/selector_button_text_color"
                 android:textSize="18sp" />
 
             <View
@@ -216,13 +221,13 @@
                 android:background="@color/grey" />
 
             <TextView
-                android:id="@+id/forgot_password_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:fontFamily="@font/helveticalight"
                 android:text="@string/forgotten_password"
-                android:textColor="@color/black"
+                android:textColor="@drawable/selector_button_text_color"
+                android:clickable="true"
                 android:textSize="18sp" />
 
             <View
@@ -232,13 +237,14 @@
                 android:background="@color/grey" />
 
             <TextView
-                android:id="@+id/change_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/helveticalight"
                 android:text="@string/change_account_manager"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textColor="@drawable/selector_button_text_color"
+                android:clickable="true"
+                android:textSize="18sp"/>
+
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>

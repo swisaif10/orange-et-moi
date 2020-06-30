@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.TextView;
 
-import com.orange.orangeetmoipro.OrangeEtMoiPro;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.orange.orangeetmoipro.R;
 import com.orange.orangeetmoipro.datamanager.sharedpref.PreferenceManager;
 import com.orange.orangeetmoipro.utilities.Constants;
@@ -20,10 +22,16 @@ import butterknife.OnClick;
 
 public class SelectLanguageActivity extends BaseActivity {
 
-    @BindView(R.id.french_btn)
-    Button frenchBtn;
-    @BindView(R.id.arabic_btn)
-    Button arabicBtn;
+
+    @BindView(R.id.french_checkbox)
+    CheckBox frenchCheckbox;
+    @BindView(R.id.french_txt)
+    TextView frenchTxt;
+    @BindView(R.id.arabic_checkbox)
+    CheckBox arabicCheckbox;
+    @BindView(R.id.arabic_txt)
+    TextView arabicTxt;
+    private String selectedLang = LocaleManager.ENGLISH;
     private PreferenceManager preferenceManager;
 
     @Override
@@ -38,20 +46,33 @@ public class SelectLanguageActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.french_btn, R.id.arabic_btn})
+    @OnClick({R.id.french_layout, R.id.arabic_layout, R.id.next_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.french_btn:
-                changeLanguage("fr");
+            case R.id.french_layout:
+                frenchCheckbox.setChecked(true);
+                arabicCheckbox.setChecked(false);
+                frenchTxt.setTextColor(getResources().getColor(R.color.black));
+                arabicTxt.setTextColor(getResources().getColor(R.color.grey));
+                selectedLang = LocaleManager.ENGLISH;
                 break;
-            case R.id.arabic_btn:
-                changeLanguage("ar");
+            case R.id.arabic_layout:
+                frenchCheckbox.setChecked(false);
+                arabicCheckbox.setChecked(true);
+                frenchTxt.setTextColor(getResources().getColor(R.color.grey));
+                arabicTxt.setTextColor(getResources().getColor(R.color.black));
+                selectedLang = LocaleManager.ARABIC;
+                break;
+            case R.id.next_btn:
+                setNewLocale(this, selectedLang);
+                break;
+            default:
                 break;
         }
     }
 
-    private void changeLanguage(String lang) {
-        LocaleManager.setNewLocale(this, lang);
+    private void setNewLocale(AppCompatActivity mContext, @LocaleManager.LocaleDef String language) {
+        LocaleManager.setNewLocale(this, language);
 
         preferenceManager.putValue(Constants.FIRST_TIME, false);
 
@@ -59,5 +80,4 @@ public class SelectLanguageActivity extends BaseActivity {
         startActivity(intent);
         finish();
     }
-
 }

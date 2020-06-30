@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
     <application
         android:name=".OrangeEtMoiPro"
         android:allowBackup="true"
@@ -14,16 +13,24 @@
         android:networkSecurityConfig="@xml/network_traffic_config"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.authentication.AuthenticationActivity" />
-        <activity android:name=".views.selectlanguage.SelectLanguageActivity" />
-        <activity android:name=".views.splashscreen.SplashScreenActivity">
+        <activity
+            android:name=".views.authentication.AuthenticationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.selectlanguage.SelectLanguageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.splashscreen.SplashScreenActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".views.main.MainActivity" />
+        <activity
+            android:name=".views.main.MainActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

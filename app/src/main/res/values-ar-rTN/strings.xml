@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Orange &amp; Moi Pro</string>
+    <string name="app_name">Orange et Moi Pro</string>
 
     <string name="welcome">مرحبا</string>
     <string name="french">Français</string>
@@ -28,12 +28,24 @@
     <string name="sign_btn">تسجيل</string>
     <string name="security_level_description">يجب أن تحتوي كلمة مرورك على 8 أحرف على الأقل</string>
     <string name="cancel_update_btn">Plus tard</string>
-    <string name="email_error">Merci de saisir une adresse mail valide</string>
+    <string name="email_error">"من فضلك أدخل بريد أليكترونى صحيح‎ "</string>
     <string name="complete_profile_later_btn">Me le rappeler plus tard</string>
     <string name="Complete_profile">Compléter mon profil</string>
     <string name="complete_profile_description">Renseignez dès à présent vos infos personnelles pour profiter pleinement des avantages Orange et moi pro.</string>
     <string name="complete_profile_title">Bienvenue sur Orange et moi pro</string>
     <string name="yes">Oui</string>
-    <string name="no">Non</string>
+    <string name="no">لا</string>
+    <string name="account_manger_btn">Changer votre gestionnaire de compte</string>
+    <string name="billing_btn">Payer vos factures</string>
+    <string name="visitor_mode_title">Mode Visiteur</string>
+    <string name="strong_password_security">securité : Fort</string>
+    <string name="medium_password_security">securité : Moyen</string>
+    <string name="weak_password_security">securité : Faible</string>
+    <string name="agree_btn">أوافق</string>
+    <string name="cgu_title">شروط استخدام</string>
+    <string name="apply_btn">Appliquer</string>
+    <string name="next_btn">Passer</string>
+    <string name="language_dialog_title">Langue</string>
+    <string name="settings_title">Paramètres</string>
 
 </resources>

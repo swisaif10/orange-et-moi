@@ -1,26 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="15dp"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/value"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/layout_1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/helveticabold"
-        android:text="02"
-        android:textColor="@color/orange"
-        android:textSize="16sp" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/value1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:fontFamily="@font/helveticabold"
+            android:textColor="@color/orange"
+            android:textSize="16sp"
+            tools:text="102" />
+
+        <TextView
+            android:id="@+id/name1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="0.7"
+            android:fontFamily="@font/helveticaneueregular"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            tools:text="Factures à payer" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:fontFamily="@font/helveticaneueregular"
-        android:text="Factures à payer"
-        android:textColor="@color/black"
-        android:textSize="12sp" />
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/value2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/helveticabold"
+            android:gravity="end"
+            android:textColor="@color/orange"
+            android:textSize="16sp"
+            tools:text="102" />
+
+        <TextView
+            android:id="@+id/name2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/helveticaneueregular"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            tools:text="Factures à payer" />
+    </LinearLayout>
 </LinearLayout>

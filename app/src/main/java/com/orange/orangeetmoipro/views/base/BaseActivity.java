@@ -1,27 +1,51 @@
 package com.orange.orangeetmoipro.views.base;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.orange.orangeetmoipro.OrangeEtMoiPro;
 import com.orange.orangeetmoipro.R;
 import com.orange.orangeetmoipro.utilities.LocaleManager;
+
+import static android.content.pm.PackageManager.GET_META_DATA;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        resetTitles();
     }
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
+    }
+
+    @Override
+    public void applyOverrideConfiguration(Configuration overrideConfiguration) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1)
+            getResources();
+        //LocaleManager.setLocale(this);
+        super.applyOverrideConfiguration(overrideConfiguration);
+    }
+
+    protected void resetTitles() {
+        try {
+            ActivityInfo info = getPackageManager().getActivityInfo(getComponentName(), GET_META_DATA);
+            if (info.labelRes != 0) {
+                setTitle(info.labelRes);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addFragment(Fragment fragment, String tag) {
@@ -34,18 +58,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-    public void replaceFragment (Fragment fragment){
-        String backStateName =  fragment.getClass().getName();
+    public void replaceFragment(Fragment fragment) {
 
-        boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate (backStateName, 0);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack(null)
+                .commit();
 
-        if (!fragmentPopped && getSupportFragmentManager().findFragmentByTag(backStateName) == null){
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.container, fragment, backStateName);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.addToBackStack(backStateName);
-            ft.commit();
-        }
     }
 
     public void switchFragmentWithoutAnimation(Fragment fragment, String tag) {
