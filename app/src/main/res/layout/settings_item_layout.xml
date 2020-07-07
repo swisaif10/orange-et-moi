@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:layout_marginHorizontal="15dp">
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingHorizontal="15dp"
+    android:background="@drawable/selectore_setting_bg">
 
     <ImageView
         android:id="@+id/icon"

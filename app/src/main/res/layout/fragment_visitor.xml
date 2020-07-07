@@ -34,9 +34,12 @@
     <RelativeLayout
         android:id="@+id/billing_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:paddingHorizontal="10dp"
-        android:paddingTop="20dp">
+        android:paddingTop="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/selectore_setting_bg">
 
         <ImageView
             android:id="@+id/icon"
@@ -71,16 +74,19 @@
             android:layout_height="0.5dp"
             android:layout_below="@+id/icon"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="19.5dp"
             android:background="@color/grey" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/account_manager_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:paddingHorizontal="10dp"
-        android:paddingTop="20dp">
+        android:paddingTop="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/selectore_setting_bg">
 
         <ImageView
             android:id="@+id/icon2"

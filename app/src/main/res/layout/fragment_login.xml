@@ -86,7 +86,7 @@
             <EditText
                 android:id="@+id/id"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:autofillHints=""
                 android:background="@drawable/edittext_underline"
                 android:fontFamily="@font/helveticalight"
@@ -108,7 +108,7 @@
                 <EditText
                     android:id="@+id/password"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:autofillHints=""
                     android:background="@drawable/edittext_underline"
                     android:fontFamily="@font/helveticalight"
