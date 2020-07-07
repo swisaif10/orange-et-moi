@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import com.orange.orangeetmoipro.viewmodels.AuthenticationVM;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pl.droidsonroids.gif.GifImageView;
 
 public class CGUFragment extends Fragment {
 
@@ -36,6 +38,8 @@ public class CGUFragment extends Fragment {
     WebView webview;
     @BindView(R.id.background)
     ImageView background;
+    @BindView(R.id.loader)
+    GifImageView loader;
     private AuthenticationVM authenticationVM;
     private Connectivity connectivity;
     private PreferenceManager preferenceManager;
@@ -69,6 +73,8 @@ public class CGUFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar"))
+            background.setScaleX(-1);
         getCGU();
     }
 
@@ -88,10 +94,14 @@ public class CGUFragment extends Fragment {
     }
 
     private void init(String data) {
-        if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar"))
-            background.setScaleX(-1);
         webview.setOnLongClickListener(v -> true);
         webview.setLongClickable(false);
+        webview.setWebViewClient(new WebViewClient() {
+
+            public void onPageFinished(WebView view, String url) {
+                loader.setVisibility(View.GONE);
+            }
+        });
         webview.getSettings().setDefaultTextEncodingName("utf-8");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             LocaleManager.setLocale(getContext());
@@ -101,8 +111,10 @@ public class CGUFragment extends Fragment {
     }
 
     private void getCGU() {
-        if (connectivity.isConnected())
+        if (connectivity.isConnected()) {
+            loader.setVisibility(View.VISIBLE);
             authenticationVM.getCGU(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
+        }
     }
 
     private void handleCGULoginResponse(CGUData cguData) {

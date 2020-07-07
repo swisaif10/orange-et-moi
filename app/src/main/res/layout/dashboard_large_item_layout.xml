@@ -68,27 +68,6 @@
                 tools:itemCount="8"
                 tools:listitem="@layout/dashboard_button_subitem_layout" />
 
-            <com.hhl.recyclerviewindicator.CirclePageIndicator
-                android:id="@+id/indicator"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="2dp"
-                app:fillColor="@color/orange"
-                app:strokeColor="@color/orange" />
-
-            <!--<com.rd.PageIndicatorView
-                android:id="@+id/page_indicator_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:paddingTop="3dp"
-                app:piv_animationType="fill"
-                app:piv_count="2"
-                app:piv_radius="3dp"
-                app:piv_rtl_mode="on"
-                app:piv_selectedColor="@color/orange"
-                app:piv_unselectedColor="@color/orange" />-->
         </LinearLayout>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

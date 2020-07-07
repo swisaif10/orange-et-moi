@@ -82,6 +82,7 @@ public class SignInFragment extends Fragment {
     private PreferenceManager preferenceManager;
     private Connectivity connectivity;
     private AuthenticationVM authenticationVM;
+    private Boolean from_cgu = false;
 
     public SignInFragment() {
         // Required empty public constructor
@@ -120,6 +121,7 @@ public class SignInFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             checked = data.getBooleanExtra("cgu", false);
+            from_cgu = true;
         }
     }
 
@@ -127,6 +129,7 @@ public class SignInFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.login_btn:
+                from_cgu = false;
                 ((AuthenticationActivity) getActivity()).replaceFragment(new LoginFragment());
                 break;
             case R.id.cgu_btn:
@@ -197,13 +200,16 @@ public class SignInFragment extends Fragment {
         };
 
         id.addTextChangedListener(textWatcher);
-        id.getText().clear();
         cin.addTextChangedListener(textWatcher);
-        cin.getText().clear();
         password.addTextChangedListener(textWatcher);
-        password.getText().clear();
         email.addTextChangedListener(textWatcher);
-        email.getText().clear();
+
+        if (!from_cgu) {
+            id.getText().clear();
+            cin.getText().clear();
+            password.getText().clear();
+            email.getText().clear();
+        }
 
         email.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus)

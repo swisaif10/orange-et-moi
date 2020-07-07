@@ -31,15 +31,17 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import pl.droidsonroids.gif.GifImageView;
 
 public class SettingsFragment extends BaseFragment implements OnItemSelectedListener {
 
     @BindView(R.id.settings_recycler)
     RecyclerView settingsRecycler;
+    @BindView(R.id.loader)
+    GifImageView loader;
     private PreferenceManager preferenceManager;
     private SettingsVM settingsVM;
     private Connectivity connectivity;
-    private ChangeLanguageDialog changeLanguageDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,13 +98,16 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
     }
 
     private void getSettings() {
-        if (connectivity.isConnected())
+        if (connectivity.isConnected()){
+            loader.setVisibility(View.VISIBLE);
             settingsVM.getSettingsList(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
+        }
         else
             Utilities.showErrorPopup(getContext(), getString(R.string.no_internet), "");
     }
 
     private void handleSettingsData(SettingsData settingsData) {
+        loader.setVisibility(View.GONE);
         if (settingsData == null) {
             Utilities.showErrorPopup(getContext(), getString(R.string.generic_error), "");
         } else {

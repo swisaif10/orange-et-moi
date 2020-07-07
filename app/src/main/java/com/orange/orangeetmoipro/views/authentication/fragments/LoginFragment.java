@@ -179,6 +179,10 @@ public class LoginFragment extends Fragment {
                     preferenceManager.putValue(Constants.LOGIN_KEY, id.getText().toString());
                     preferenceManager.putValue(Constants.PASSWORD_KEY, password.getText().toString());
                     preferenceManager.putValue(Constants.SAVE_CREDENTIALS_KEY, true);
+                } else {
+                    preferenceManager.clearValue(Constants.LOGIN_KEY);
+                    preferenceManager.clearValue(Constants.PASSWORD_KEY);
+                    preferenceManager.clearValue(Constants.SAVE_CREDENTIALS_KEY);
                 }
             } else {
                 errorLayout.setVisibility(View.VISIBLE);
