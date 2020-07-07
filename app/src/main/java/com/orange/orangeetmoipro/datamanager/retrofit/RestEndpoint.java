@@ -35,7 +35,7 @@ public interface RestEndpoint {
     Call<TabMenuData> getTabMenu(@Path("locale") String lang);
 
     @POST(ApiUrls.GET_DASHBOARD_LIST_URL)
-    Call<DashboardData> getDashboardList();
+    Call<DashboardData> getDashboardList(@Path("locale") String lang);
 
     @POST(ApiUrls.GET_SETTINGS_LIST_URL)
     Call<SettingsData> getSettingsList(@Path("locale") String lang);

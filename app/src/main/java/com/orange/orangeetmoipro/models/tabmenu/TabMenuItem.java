@@ -18,7 +18,7 @@ public class TabMenuItem {
     @Expose
     private String title;
     @Expose
-    private String inApp;
+    private Boolean inApp;
 
     public String getAction() {
         return action;
@@ -68,11 +68,11 @@ public class TabMenuItem {
         this.title = title;
     }
 
-    public String getInApp() {
+    public Boolean getInApp() {
         return inApp;
     }
 
-    public void setInApp(String inApp) {
+    public void setInApp(Boolean inApp) {
         this.inApp = inApp;
     }
 }

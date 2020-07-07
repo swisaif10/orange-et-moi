@@ -2,7 +2,6 @@ package com.orange.orangeetmoipro.views.main.dashboard;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -146,7 +145,7 @@ public class DashboardFragment extends BaseFragment {
 
     private void getDashboardList() {
         if (connectivity.isConnected())
-            dashboardVM.getDashboardList();
+            dashboardVM.getDashboardList(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
         else
             Utilities.showErrorPopup(getContext(), getString(R.string.no_internet), "");
     }

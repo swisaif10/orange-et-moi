@@ -50,7 +50,7 @@ dependencies {
     implementation 'com.romandanylyk:pageindicatorview:1.0.3'
     implementation 'com.hhl:gridpagersnaphelper:1.0.0'
     implementation 'com.hhl:recyclerviewindicator:1.0.0'
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.16'
 
 }

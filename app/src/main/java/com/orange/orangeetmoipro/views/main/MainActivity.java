@@ -25,7 +25,7 @@ import com.orange.orangeetmoipro.utilities.Utilities;
 import com.orange.orangeetmoipro.viewmodels.MainVM;
 import com.orange.orangeetmoipro.views.base.BaseActivity;
 import com.orange.orangeetmoipro.views.base.BaseFragment;
-import com.orange.orangeetmoipro.views.main.billing.BillingFragment;
+import com.orange.orangeetmoipro.views.main.blank.BlankFragment;
 import com.orange.orangeetmoipro.views.main.dashboard.DashboardFragment;
 import com.orange.orangeetmoipro.views.main.settings.SettingsFragment;
 import com.orange.orangeetmoipro.views.main.webview.WebViewFragment;
@@ -134,21 +134,24 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             LinearLayout layout = ((LinearLayout) ((LinearLayout) tabLayout.getChildAt(0)).getChildAt(tabMenuData.getTabMenuResponse().getData().indexOf(item)));
             layout.setBackground(null);
 
-
             Fragment fragment;
-            switch (item.getAction()) {
-                case "home":
-                    fragment = new DashboardFragment();
-                    break;
-                case "setting":
-                    fragment = new SettingsFragment();
-                    break;
-                case "billing":
-                    fragment = new BillingFragment();
-                    break;
-                default:
-                    fragment = new WebViewFragment();
-                    break;
+
+            if (item.getActionType().equalsIgnoreCase("internal")) {
+                switch (item.getAction()) {
+                    case "home":
+                        fragment = new DashboardFragment();
+                        break;
+                    case "setting":
+                        fragment = new SettingsFragment();
+                        break;
+                    default:
+                        fragment = new BlankFragment();
+                        break;
+                }
+            } else if (item.getInApp()) {
+                fragment = WebViewFragment.newInstance(item.getAction());
+            } else {
+                fragment = BlankFragment.newInstance(item.getAction());
             }
             fragments.add(fragment);
         }
