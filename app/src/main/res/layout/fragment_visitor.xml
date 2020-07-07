@@ -39,7 +39,7 @@
         android:paddingTop="20dp"
         android:clickable="true"
         android:focusable="true"
-        android:background="@drawable/selectore_setting_bg">
+        android:background="@drawable/selector_grey_btn_background">
 
         <ImageView
             android:id="@+id/icon"

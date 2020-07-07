@@ -77,9 +77,16 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
     public void onItemSelected(String action) {
         switch (action) {
             case "deconnexion":
-                preferenceManager.putValue(Constants.IS_LOGGED_IN, false);
-                startActivity(new Intent(getActivity(), AuthenticationActivity.class));
-                getActivity().finish();
+                new LogoutDialog(getActivity(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), new LogoutDialog.DialogCallBack() {
+                    @Override
+                    public void onConfirm(LogoutDialog dialog) {
+                        preferenceManager.putValue(Constants.IS_LOGGED_IN, false);
+                        startActivity(new Intent(getActivity(), AuthenticationActivity.class));
+                        dialog.dismiss();
+                        getActivity().finish();
+                    }
+                }).show();
+
                 break;
             case "action_language":
                 new ChangeLanguageDialog(getActivity(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr")).show();

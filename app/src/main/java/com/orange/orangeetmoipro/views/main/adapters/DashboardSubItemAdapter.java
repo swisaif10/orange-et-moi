@@ -162,7 +162,7 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
 
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(0, 0);
         params.height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
-        params.width = size.x * 43 / 100;
+        params.width = size.x * 41 / 100;
         params.setMargins(0, 0, px, px);
         holder.itemView.setLayoutParams(params);
     }

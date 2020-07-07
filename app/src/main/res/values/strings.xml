@@ -48,5 +48,8 @@
     <string name="apply_btn">Appliquer</string>
     <string name="next_btn">Passer</string>
     <string name="settings_title">Paramètres</string>
+    <string name="logout_dialog_title">Confirmation</string>
+    <string name="logout_dialog_messsage">Voulez-vous vraiment vous déconnecter\nde l\'application ?</string>
+    <string name="confirm">Confirmer</string>
 
 </resources>
