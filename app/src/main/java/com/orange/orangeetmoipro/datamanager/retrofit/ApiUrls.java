@@ -11,6 +11,7 @@ public class ApiUrls {
     public static final String LOGIN_URL = "{locale}/api/account/login";
     public static final String GET_TAB_MENU_URL = "{locale}/api/tab-menu/list";
     public static final String GET_SETTINGS_LIST_URL = "{locale}/api/setting/list";
-    public static final String GET_DASHBOARD_LIST_URL = "https://run.mocky.io/v3/313e0acc-f16b-410b-a27a-d1bc23e38874";
+    //public static final String GET_DASHBOARD_LIST_URL = "https://run.mocky.io/v3/313e0acc-f16b-410b-a27a-d1bc23e38874";
+    public static final String GET_DASHBOARD_LIST_URL = "https://run.mocky.io/v3/79a3a00f-e694-42fc-a924-a64de0a15bed";
 
 }

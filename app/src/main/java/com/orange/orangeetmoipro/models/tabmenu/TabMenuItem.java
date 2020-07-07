@@ -17,6 +17,8 @@ public class TabMenuItem {
     private String status;
     @Expose
     private String title;
+    @Expose
+    private String inApp;
 
     public String getAction() {
         return action;
@@ -66,4 +68,11 @@ public class TabMenuItem {
         this.title = title;
     }
 
+    public String getInApp() {
+        return inApp;
+    }
+
+    public void setInApp(String inApp) {
+        this.inApp = inApp;
+    }
 }

@@ -4,7 +4,7 @@
     <string name="welcome">مرحبا</string>
     <string name="french">Français</string>
     <string name="arabic">العربية</string>
-    <string name="visitor_mode">Mode Visiteur</string>
+    <string name="visitor_mode">"وضع الزائر‎ "</string>
     <string name="authentication">تسجيل الدخول</string>
     <string name="sign_up">قوموا بالتسجيل</string>
     <string name="id_hint">السجل التجاري أو الرخصة</string>
@@ -37,15 +37,15 @@
     <string name="no">لا</string>
     <string name="account_manger_btn">Changer votre gestionnaire de compte</string>
     <string name="billing_btn">Payer vos factures</string>
-    <string name="visitor_mode_title">Mode Visiteur</string>
-    <string name="strong_password_security">securité : Fort</string>
-    <string name="medium_password_security">securité : Moyen</string>
-    <string name="weak_password_security">securité : Faible</string>
+    <string name="visitor_mode_title">وضع الزائر‎</string>
+    <string name="strong_password_security">الأمان: قوي</string>
+    <string name="medium_password_security">الأمان: متوسط</string>
     <string name="agree_btn">أوافق</string>
     <string name="cgu_title">شروط استخدام</string>
     <string name="apply_btn">Appliquer</string>
     <string name="next_btn">Passer</string>
     <string name="language_dialog_title">Langue</string>
     <string name="settings_title">Paramètres</string>
+    <string name="weak_password_security">الأمان: ضعيف‎</string>
 
 </resources>

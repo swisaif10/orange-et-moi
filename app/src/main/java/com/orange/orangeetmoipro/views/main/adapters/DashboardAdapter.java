@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hhl.gridpagersnaphelper.GridPagerSnapHelper;
 import com.hhl.recyclerviewindicator.CirclePageIndicator;
-import com.hhl.recyclerviewindicator.OnPageChangeListener;
 import com.orange.orangeetmoipro.R;
 import com.orange.orangeetmoipro.models.dashboard.Template;
+import com.orange.orangeetmoipro.utilities.LinePagerIndicatorDecoration;
 
 import java.util.ArrayList;
 
@@ -85,8 +85,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 gridPagerSnapHelper.setRow(2).setColumn(2);
                 gridPagerSnapHelper.attachToRecyclerView(holder.recycler);
 
-                holder.indicator.setRecyclerView(holder.recycler);
-                holder.indicator.setPageColumn(2);
+                //holder.indicator.setRecyclerView(holder.recycler);
+                //holder.indicator.setPageColumn(2);
+
+                holder.recycler.addItemDecoration(new LinePagerIndicatorDecoration(6, 6 + 5 , 0, context.getResources().getColor(R.color.orange), context.getResources().getColor(R.color.orange),context));
 
             }
         }
@@ -106,9 +108,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         TextView title;
         @BindView(R.id.recycler)
         RecyclerView recycler;
-        @Nullable
-        @BindView(R.id.indicator)
-        CirclePageIndicator indicator;
 
         ViewHolder(View itemView) {
             super(itemView);
