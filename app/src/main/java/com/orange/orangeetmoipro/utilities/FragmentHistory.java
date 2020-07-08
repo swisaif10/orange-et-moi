@@ -15,7 +15,7 @@ public class FragmentHistory {
     public void push(int entry) {
 
         if (isAlreadyExists(entry)) {
-            return;
+            stackArr.remove(stackArr.indexOf(entry));
         }
         stackArr.add(entry);
 
@@ -39,11 +39,11 @@ public class FragmentHistory {
 
     public int popPrevious() {
 
-        int entry = -1;
+        int entry = 0;
 
         if(!isEmpty()){
-            entry = stackArr.get(stackArr.size() - 2);
-            stackArr.remove(stackArr.size() - 2);
+            entry = stackArr.get(stackArr.size() - 1);
+            stackArr.remove(stackArr.size() - 1);
         }
         return entry;
     }

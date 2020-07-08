@@ -19,6 +19,8 @@ import com.hhl.recyclerviewindicator.CirclePageIndicator;
 import com.orange.orangeetmoipro.R;
 import com.orange.orangeetmoipro.models.dashboard.Template;
 import com.orange.orangeetmoipro.utilities.LinePagerIndicatorDecoration;
+import com.orange.orangeetmoipro.views.main.dashboard.DashboardFragment;
+import com.orange.orangeetmoipro.views.main.listeners.SubItemClickedListener;
 
 import java.util.ArrayList;
 
@@ -29,21 +31,25 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     private Context context;
     private ArrayList<Template> arrayList;
+    SubItemClickedListener subItemClickedListener;
 
-    public DashboardAdapter(Context context, ArrayList<Template> arrayList) {
+    public DashboardAdapter(Context context, ArrayList<Template> arrayList,SubItemClickedListener subItemClickedListener) {
         this.context = context;
         this.arrayList = arrayList;
+        this.subItemClickedListener = subItemClickedListener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
-            case 0:
+            case Template.TEMPLATE_SMALL_LIST:
                 return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_small_simple_item_layout, parent, false));
-            case 1:
+            case Template.TEMPLATE_BILLING:
                 return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_small_compound_item_layout, parent, false));
-            case 2:
+            case Template.TEMPLATE_PARCK:
+                return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_small_compound_item_layout, parent, false));
+            case Template.TEMPLATE_LIST_SLIDER:
                 return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_large_item_layout, parent, false));
             default:
                 return null;
@@ -52,13 +58,21 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     @Override
     public int getItemViewType(int position) {
-        if (arrayList.get(position).getSize().equalsIgnoreCase("small")) {
-            if (arrayList.get(position).getTypeTemplate().equalsIgnoreCase("list"))
-                return 1;
-            else
-                return 0;
-        } else
-            return 2;
+        switch (arrayList.get(position).getTemplateKey()){
+            case "template_billing" :return Template.TEMPLATE_BILLING;
+            case "template_parck" :return Template.TEMPLATE_PARCK;
+            case "template_list_slider" :return Template.TEMPLATE_LIST_SLIDER;
+            case "template_small_list" :return Template.TEMPLATE_SMALL_LIST;
+            default: return -1;
+        }
+
+//        if (arrayList.get(position).getSize().equalsIgnoreCase("small")) {
+//            if (arrayList.get(position).getTypeTemplate().equalsIgnoreCase("list"))
+//                return 1;
+//            else
+//                return 0;
+//        } else
+//            return 2;
     }
 
     @Override
@@ -73,12 +87,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         if (arrayList.get(position).getSize().equalsIgnoreCase("small")) {
             layoutManager = new LinearLayoutManager(context);
             holder.recycler.setLayoutManager(layoutManager);
-            holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements()));
+            holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements(),subItemClickedListener));
         } else {
             holder.recycler.setHasFixedSize(true);
             layoutManager = new GridLayoutManager(context, 2, LinearLayoutManager.HORIZONTAL, false);
             holder.recycler.setLayoutManager(layoutManager);
-            holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements()));
+            holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements(),subItemClickedListener));
 
             if (template.getElementComplex().get(0).getCompoundElements().size() > 2) {
                 GridPagerSnapHelper gridPagerSnapHelper = new GridPagerSnapHelper();

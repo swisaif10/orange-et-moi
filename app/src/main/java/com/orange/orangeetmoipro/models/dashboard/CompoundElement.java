@@ -2,6 +2,7 @@
 package com.orange.orangeetmoipro.models.dashboard;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
@@ -11,6 +12,14 @@ public class CompoundElement {
     private ArrayList<Element> elements;
     @Expose
     private Long order;
+    @Expose
+    @SerializedName("actionType")
+    private String actionType;
+    @Expose
+    private String action;
+    @Expose
+    @SerializedName("in_app")
+    private boolean inApp;
 
     public ArrayList<Element> getElements() {
         return elements;
@@ -28,4 +37,27 @@ public class CompoundElement {
         this.order = order;
     }
 
+    public String getActionType() {
+        return actionType;
+    }
+
+    public void setActionType(String actionType) {
+        this.actionType = actionType;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public boolean getInApp() {
+        return inApp;
+    }
+
+    public void setInApp(boolean inApp) {
+        this.inApp = inApp;
+    }
 }

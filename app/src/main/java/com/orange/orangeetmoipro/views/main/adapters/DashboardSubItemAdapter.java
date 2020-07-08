@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +24,7 @@ import com.orange.orangeetmoipro.R;
 import com.orange.orangeetmoipro.models.dashboard.CompoundElement;
 import com.orange.orangeetmoipro.utilities.LocaleManager;
 import com.orange.orangeetmoipro.views.main.MainActivity;
+import com.orange.orangeetmoipro.views.main.listeners.SubItemClickedListener;
 
 import java.util.ArrayList;
 
@@ -33,10 +36,12 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
 
     private Context context;
     private ArrayList<CompoundElement> arrayList;
+    private SubItemClickedListener listener;
 
-    public DashboardSubItemAdapter(Context context, ArrayList<CompoundElement> arrayList) {
+    public DashboardSubItemAdapter(Context context, ArrayList<CompoundElement> arrayList,SubItemClickedListener listener) {
         this.context = context;
         this.arrayList = arrayList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -101,6 +106,9 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
             holder.title.setText(arrayList.get(position).getElements().get(1).getValue());
             if (LocaleManager.getLanguagePref(context).equalsIgnoreCase("ar"))
                 holder.arrow.setScaleX(-1);
+            if(holder.layout!=null){
+                holder.layout.setOnClickListener(v-> listener.onItemClicked(arrayList.get(position)));
+            }
         }
 
     }
@@ -141,6 +149,9 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         @Nullable
         @BindView(R.id.arrow)
         ImageView arrow;
+        @Nullable
+        @BindView(R.id.layout_item)
+        ConstraintLayout layout;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -162,7 +173,14 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
 
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(0, 0);
         params.height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
-        params.width = size.x * 41 / 100;
+        switch (context.getResources().getDisplayMetrics().densityDpi){
+            case 280:params.width = (int)(size.x * 0.42);break;
+            case 320:params.width = (int)(size.x * 0.41);break;
+            case 480:params.width = (int)(size.x * 0.41);break;
+            case 420:params.width = (int)(size.x * 0.42);break;
+            case 560:params.width = (int)(size.x * 0.42);break;
+            default: params.width = (int)(size.x * 0.41);break;
+        }
         params.setMargins(0, 0, px, px);
         holder.itemView.setLayoutParams(params);
     }

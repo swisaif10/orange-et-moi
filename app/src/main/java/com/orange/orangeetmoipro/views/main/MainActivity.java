@@ -2,11 +2,13 @@ package com.orange.orangeetmoipro.views.main;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -85,9 +87,10 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             } else {
                 if (fragmentHistory.getStackSize() > 1) {
                     int position = fragmentHistory.popPrevious();
-                    switchTab(position);
+                    tabLayout.getTabAt(position).setTag("bp");
+                    tabLayout.getTabAt(position).select();
                 } else {
-                    switchTab(0);
+                    tabLayout.getTabAt(0).select();
                     fragmentHistory.emptyStack();
                 }
             }
@@ -162,13 +165,14 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                 .rootFragmentListener(this, fragments.size())
                 .build();
 
-        switchTab(0);
-
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
-                fragmentHistory.push(position);
+                if(tab.getTag()==null||!tab.getTag().equals("bp"))
+                    fragmentHistory.push(position);
+                else
+                    tab.setTag(null);
                 switchTab(position);
             }
 
@@ -184,6 +188,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             }
         });
 
+        tabLayout.getTabAt(0).select();
 
         if (getIntent().getBooleanExtra("show_popup", false))
             Utilities.showCompleteProfileDialog(this, "", "", new DialogButtonsClickListener() {

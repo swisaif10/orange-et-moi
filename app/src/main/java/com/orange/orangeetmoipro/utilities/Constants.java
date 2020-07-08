@@ -17,4 +17,8 @@ public class Constants {
     public static final String __serverpart = "([A-Z0-9a-z]([A-Z0-9a-z-]{0,30}[A-Z0-9a-z])?\\.){1,5}";
     public static final String __emailRegex = __firstpart + "@" + __serverpart + "[A-Za-z]{2,8}";
     public static final Pattern EMAIL_ADDRESS_PATTERN = Pattern.compile(__emailRegex);
+
+    public class Action{
+        public static final String VIEW_BILLING = "view_billing";
+    }
 }

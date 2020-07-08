@@ -6,9 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
@@ -17,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.orange.orangeetmoipro.R;
 import com.orange.orangeetmoipro.datamanager.sharedpref.PreferenceManager;
+import com.orange.orangeetmoipro.models.dashboard.CompoundElement;
 import com.orange.orangeetmoipro.models.dashboard.DashboardData;
 import com.orange.orangeetmoipro.models.dashboard.Template;
 import com.orange.orangeetmoipro.utilities.Connectivity;
@@ -25,6 +28,7 @@ import com.orange.orangeetmoipro.utilities.Utilities;
 import com.orange.orangeetmoipro.viewmodels.DashboardVM;
 import com.orange.orangeetmoipro.views.base.BaseFragment;
 import com.orange.orangeetmoipro.views.main.adapters.DashboardAdapter;
+import com.orange.orangeetmoipro.views.main.listeners.SubItemClickedListener;
 
 import java.util.ArrayList;
 
@@ -32,7 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.droidsonroids.gif.GifImageView;
 
-public class DashboardFragment extends BaseFragment {
+public class DashboardFragment extends BaseFragment implements SubItemClickedListener {
 
     @BindView(R.id.dashboard_recycler)
     RecyclerView dashboardRecycler;
@@ -138,7 +142,7 @@ public class DashboardFragment extends BaseFragment {
         });
 
         dashboardRecycler.setLayoutManager(layoutManager);
-        DashboardAdapter dashboardAdapter = new DashboardAdapter(getContext(), arrayList);
+        DashboardAdapter dashboardAdapter = new DashboardAdapter(getContext(), arrayList,this);
         dashboardRecycler.setAdapter(dashboardAdapter);
 
     }
@@ -164,4 +168,14 @@ public class DashboardFragment extends BaseFragment {
     }
 
 
+    @Override
+    public void onItemClicked(CompoundElement compoundElement) {
+//        TODO implement method
+//        Toast.makeText(getContext(), "action : "+compoundElement.getAction()+", action type : "+compoundElement.getActionType()+" in app "+compoundElement.getInApp(), Toast.LENGTH_SHORT).show();
+//        switch (compoundElement.getAction()){
+//            case Constants.Action.VIEW_BILLING:
+//
+//                break;
+//        }
+    }
 }

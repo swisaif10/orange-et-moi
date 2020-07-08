@@ -8,6 +8,12 @@ import java.util.ArrayList;
 
 public class Template {
 
+    public static final int TEMPLATE_BILLING = 0;
+    public static final int TEMPLATE_PARCK = 1;
+    public static final int TEMPLATE_LIST_SLIDER = 2;
+    public static final int TEMPLATE_SMALL_LIST = 3;
+    public static final int TEMPLATE_LIST = 4; //mode visiteur
+
     @SerializedName("color_icone")
     private String colorIcone;
     @SerializedName("element_complex")
