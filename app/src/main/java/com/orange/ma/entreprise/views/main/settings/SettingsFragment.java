@@ -60,7 +60,7 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                 .build();
         //firebaseAnalyticsEvent
 
-        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(),"page_parametres", LocaleManager.getLanguagePref(getContext()));
+        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_parametres", LocaleManager.getLanguagePref(getContext()));
 
     }
 
@@ -91,19 +91,16 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                         getActivity().finish();
                     }
                 }).show();
-
                 //firebaseAnalyticsEvent
                 Bundle bundle = new Bundle();
                 bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
                 bundle.putString("RC_entreprise", preferenceManager.getValue(Constants.LOGIN_KEY, ""));
                 bundle.putString("Nom_Element_params", action);
                 OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_parametres", bundle);
-
-
                 break;
             case "action_language":
                 new ChangeLanguageDialog(getActivity(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr")).show();
-                    bundle = new Bundle();
+                bundle = new Bundle();
                 bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
                 bundle.putString("Nom_Element_params", action);
                 OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_parametres", bundle);
@@ -122,11 +119,10 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
     }
 
     private void getSettings() {
-        if (connectivity.isConnected()){
+        if (connectivity.isConnected()) {
             loader.setVisibility(View.VISIBLE);
             settingsVM.getSettingsList(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
-        }
-        else
+        } else
             Utilities.showErrorPopup(getContext(), getString(R.string.no_internet), "");
     }
 

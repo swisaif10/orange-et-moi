@@ -47,7 +47,7 @@ public class SplashScreenActivity extends BaseActivity {
             deepLink();
 
         //firebaseAnalyticsEvent
-        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this,"page_splash", null);
+        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "page_splash", null);
     }
 
     private void goToNextActivity() {

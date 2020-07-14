@@ -140,6 +140,7 @@ public class DashboardFragment extends BaseFragment implements OnDashboardItemSe
 
     @Override
     public void onDashboardItemSelected(CompoundElement compoundElement) {
+        
         if (!compoundElement.getActionType().equalsIgnoreCase("none")) {
             Fragment fragment;
             if (compoundElement.getActionType().equalsIgnoreCase("internal")) {

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hhl.gridpagersnaphelper.GridPagerSnapHelper;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.listeners.OnDashboardItemSelectedListener;
+import com.orange.ma.entreprise.models.dashboard.CompoundElement;
 import com.orange.ma.entreprise.models.dashboard.Template;
 import com.orange.ma.entreprise.utilities.LinePagerIndicatorDecoration;
 import com.orange.ma.entreprise.views.main.MainActivity;
@@ -87,7 +88,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements(), onDashboardItemSelectedListener, holder.getItemViewType()));
         } else {
             holder.recycler.setHasFixedSize(true);
+
+
             layoutManager = new GridLayoutManager(context, 2, LinearLayoutManager.HORIZONTAL, false);
+
             holder.recycler.setLayoutManager(layoutManager);
             holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements(), onDashboardItemSelectedListener, holder.getItemViewType()));
 
