@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:elevation="40dp"
+        android:elevation="10dp"
         android:minHeight="?actionBarSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:tabGravity="fill"

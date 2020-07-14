@@ -15,12 +15,11 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@color/black"
             android:fontFamily="@font/helveticabold"
-            android:paddingVertical="10dp"
+            android:gravity="center"
             android:text="@string/app_name"
-            android:textAlignment="center"
             android:textColor="@color/white" />
 
         <RelativeLayout
@@ -96,13 +95,12 @@
         </RelativeLayout>
     </LinearLayout>
 
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.79">
+        app:layout_constraintHeight_percent="0.76">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dashboard_recycler"

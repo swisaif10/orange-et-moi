@@ -52,5 +52,7 @@ dependencies {
     implementation 'com.hhl:recyclerviewindicator:1.0.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.16'
+    implementation "androidx.browser:browser:1.2.0"
+
 
 }

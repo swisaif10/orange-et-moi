@@ -14,9 +14,8 @@
 
         <TextView
             android:id="@+id/value1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2"
             android:fontFamily="@font/helveticabold"
             android:textColor="@color/orange"
             android:textSize="16sp"
@@ -24,13 +23,12 @@
 
         <TextView
             android:id="@+id/name1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_weight="0.7"
-            android:fontFamily="@font/helveticaneueregular"
+            android:fontFamily="@font/helveticamedium"
             android:textColor="@color/black"
-            android:textSize="12sp"
+            android:textSize="14sp"
             tools:text="Factures à payer" />
     </LinearLayout>
 
@@ -56,9 +54,40 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:fontFamily="@font/helveticaneueregular"
+            android:fontFamily="@font/helveticamedium"
             android:textColor="@color/black"
-            android:textSize="12sp"
+            android:textSize="11sp"
+            tools:text="Factures à payer" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/value3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.21"
+            android:fontFamily="@font/helveticabold"
+            android:gravity="end"
+            android:maxLength="3"
+            android:textColor="@color/orange"
+            android:textSize="16sp"
+            tools:text="102" />
+
+        <TextView
+            android:id="@+id/name3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_weight="0.95"
+            android:fontFamily="@font/helveticamedium"
+            android:textColor="@color/black"
+            android:textSize="14sp"
             tools:text="Factures à payer" />
     </LinearLayout>
 </LinearLayout>

@@ -2,18 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="10dp"
-    android:layout_marginBottom="10dp"
-    android:id="@+id/layout_item">
+    android:layout_marginBottom="10dp">
 
     <ImageView
         android:id="@+id/icon"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:scaleType="fitStart"
-        android:paddingStart="5dp"
         android:src="@drawable/icon_roaming"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,21 +20,21 @@
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
         android:gravity="center_vertical"
         android:textColor="@color/black"
-        android:textSize="12sp"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toStartOf="@id/arrow"
         app:layout_constraintBottom_toBottomOf="@id/icon"
-        app:layout_constraintEnd_toStartOf="@+id/arrow"
         app:layout_constraintStart_toEndOf="@+id/icon"
         app:layout_constraintTop_toTopOf="@+id/icon"
         tools:text="Rooaming" />
 
     <ImageView
         android:id="@+id/arrow"
-        android:layout_width="15dp"
+        android:layout_width="10dp"
         android:layout_height="10dp"
+        android:layout_marginEnd="5dp"
         android:src="@drawable/flesh"
         app:layout_constraintBottom_toBottomOf="@id/icon"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,6 +46,6 @@
         android:layout_height="0.5dp"
         android:layout_marginTop="10dp"
         android:background="@color/grey"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/icon" />
 </androidx.constraintlayout.widget.ConstraintLayout>
