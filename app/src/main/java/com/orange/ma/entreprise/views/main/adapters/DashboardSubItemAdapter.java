@@ -18,11 +18,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.listeners.OnDashboardItemSelectedListener;
 import com.orange.ma.entreprise.models.dashboard.CompoundElement;
 import com.orange.ma.entreprise.models.dashboard.Template;
 import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.views.main.MainActivity;
-import com.orange.ma.entreprise.views.main.listeners.SubItemClickedListener;
 
 import java.util.ArrayList;
 
@@ -34,13 +34,13 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
 
     private Context context;
     private ArrayList<CompoundElement> arrayList;
-    private SubItemClickedListener listener;
+    private OnDashboardItemSelectedListener onDashboardItemSelectedListener;
     private int templateKey;
 
-    public DashboardSubItemAdapter(Context context, ArrayList<CompoundElement> arrayList, SubItemClickedListener listener, int templateKey) {
+    public DashboardSubItemAdapter(Context context, ArrayList<CompoundElement> arrayList, OnDashboardItemSelectedListener onDashboardItemSelectedListener, int templateKey) {
         this.context = context;
         this.arrayList = arrayList;
-        this.listener = listener;
+        this.onDashboardItemSelectedListener = onDashboardItemSelectedListener;
         this.templateKey = templateKey;
     }
 
@@ -109,17 +109,14 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
 
         } else {
             if (arrayList.size() > 2)
-                setLayoutParams(holder,position);
+                setLayoutParams(holder, position);
             int icon = context.getResources().getIdentifier(arrayList.get(position).getElements().get(0).getValue(), "drawable", context.getPackageName());
             holder.icon.setImageResource(icon);
             holder.title.setText(arrayList.get(position).getElements().get(1).getValue());
             if (LocaleManager.getLanguagePref(context).equalsIgnoreCase("ar"))
                 holder.arrow.setScaleX(-1);
-            if (holder.layout != null) {
-                holder.layout.setOnClickListener(v -> listener.onItemClicked(arrayList.get(position)));
-            }
         }
-
+        holder.itemView.setOnClickListener(v -> onDashboardItemSelectedListener.onDashboardItemSelected(arrayList.get(position)));
     }
 
     @Override
@@ -158,9 +155,6 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         @Nullable
         @BindView(R.id.arrow)
         ImageView arrow;
-        @Nullable
-        @BindView(R.id.layout_item)
-        ConstraintLayout layout;
         @Nullable
         @BindView(R.id.value3)
         TextView value3;

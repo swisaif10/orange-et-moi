@@ -1,6 +1,7 @@
 package com.orange.ma.entreprise.views.main.dashboard;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,9 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
@@ -17,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
+import com.orange.ma.entreprise.listeners.OnDashboardItemSelectedListener;
 import com.orange.ma.entreprise.models.dashboard.CompoundElement;
 import com.orange.ma.entreprise.models.dashboard.DashboardData;
 import com.orange.ma.entreprise.models.dashboard.Template;
@@ -25,8 +30,9 @@ import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.DashboardVM;
 import com.orange.ma.entreprise.views.base.BaseFragment;
+import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.adapters.DashboardAdapter;
-import com.orange.ma.entreprise.views.main.listeners.SubItemClickedListener;
+import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
 import java.util.ArrayList;
 
@@ -34,7 +40,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.droidsonroids.gif.GifImageView;
 
-public class DashboardFragment extends BaseFragment implements SubItemClickedListener {
+public class DashboardFragment extends BaseFragment implements OnDashboardItemSelectedListener {
 
     @BindView(R.id.dashboard_recycler)
     RecyclerView dashboardRecycler;
@@ -122,6 +128,32 @@ public class DashboardFragment extends BaseFragment implements SubItemClickedLis
         });
     }
 
+    @Override
+    public void onDashboardItemSelected(CompoundElement compoundElement) {
+        if (!compoundElement.getActionType().equalsIgnoreCase("none")) {
+            Fragment fragment;
+            if (compoundElement.getActionType().equalsIgnoreCase("internal")) {
+                switch (compoundElement.getAction()) {
+                    case "home":
+                        getDashboardList();
+                        break;
+                    case "parametres":
+                        ((MainActivity) getActivity()).moveToSettingsFragment();
+                        break;
+                }
+            } else if (compoundElement.getInApp()) {
+                fragment = WebViewFragment.newInstance(compoundElement.getAction(), "");
+                if (fragmentNavigation != null)
+                    fragmentNavigation.pushFragment(fragment);
+            } else {
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
+                CustomTabsIntent customTabsIntent = builder.build();
+                customTabsIntent.launchUrl(getContext(), Uri.parse(compoundElement.getAction()));
+            }
+        }
+    }
+
     private void init(ArrayList<Template> arrayList) {
         if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar")) {
             background1.setScaleX(-1);
@@ -140,7 +172,7 @@ public class DashboardFragment extends BaseFragment implements SubItemClickedLis
         });
 
         dashboardRecycler.setLayoutManager(layoutManager);
-        DashboardAdapter dashboardAdapter = new DashboardAdapter(getContext(), arrayList,this);
+        DashboardAdapter dashboardAdapter = new DashboardAdapter(getContext(), arrayList, this::onDashboardItemSelected);
         dashboardRecycler.setAdapter(dashboardAdapter);
 
     }
@@ -165,15 +197,4 @@ public class DashboardFragment extends BaseFragment implements SubItemClickedLis
         }
     }
 
-
-    @Override
-    public void onItemClicked(CompoundElement compoundElement) {
-//        TODO implement method
-//        Toast.makeText(getContext(), "action : "+compoundElement.getAction()+", action type : "+compoundElement.getActionType()+" in app "+compoundElement.getInApp(), Toast.LENGTH_SHORT).show();
-//        switch (compoundElement.getAction()){
-//            case Constants.Action.VIEW_BILLING:
-//
-//                break;
-//        }
-    }
 }

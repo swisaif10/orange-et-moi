@@ -558,7 +558,8 @@ public class FragNavController {
         if (!fragmentStack.isEmpty()) {
             fragment = mFragmentManager.findFragmentByTag(fragmentStack.peek().getTag());
             if (fragment != null) {
-                ft.show(fragment);
+                //ft.show(fragment);
+                ft.replace(mContainerId, fragment, generateTag(fragment));
             }
         }
         return fragment;
@@ -572,7 +573,8 @@ public class FragNavController {
     private void detachCurrentFragment(@NonNull FragmentTransaction ft) {
         Fragment oldFrag = getCurrentFrag();
         if (oldFrag != null) {
-            ft.hide(oldFrag);
+            //ft.hide(oldFrag);
+            ft.remove(oldFrag);
         }
     }
 

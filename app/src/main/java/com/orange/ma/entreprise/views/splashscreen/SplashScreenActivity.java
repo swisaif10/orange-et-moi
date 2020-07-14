@@ -41,6 +41,9 @@ public class SplashScreenActivity extends BaseActivity {
 
         spalshVM.getversionMutableLiveData().observe(this, this::handleVersionCheckResponse);
         new Handler().postDelayed(this::getVersionCheck, 3000);
+
+        if (getIntent().getData() != null)
+            deepLink();
     }
 
     private void goToNextActivity() {
@@ -88,6 +91,28 @@ public class SplashScreenActivity extends BaseActivity {
                 }
             } else
                 Utilities.showErrorPopup(this, controlVersionData.getResponse().getMessage(), "");
+        }
+    }
+
+    private void deepLink() {
+        String host = getIntent().getData().getHost();
+        Intent intent;
+        switch (host) {
+            case "inscription":
+                intent = new Intent(SplashScreenActivity.this, AuthenticationActivity.class);
+                intent.putExtra("link", host);
+                startActivity(intent);
+                break;
+            case "login":
+                startActivity(new Intent(SplashScreenActivity.this, AuthenticationActivity.class));
+                break;
+            case "parametres":
+                intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                intent.putExtra("link", host);
+                startActivity(intent);
+                break;
+            default:
+                startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
         }
     }
 }

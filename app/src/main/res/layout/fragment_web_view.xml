@@ -28,7 +28,7 @@
             android:layout_height="16dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
-            android:src="@drawable/flash_back" />
+            android:src="@drawable/selector_back_button" />
 
     </RelativeLayout>
 

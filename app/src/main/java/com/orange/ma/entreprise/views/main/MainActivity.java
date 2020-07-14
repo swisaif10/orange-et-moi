@@ -152,9 +152,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             } else if (item.getInApp())
                 fragment = WebViewFragment.newInstance(item.getAction(), item.getTitle());
             else
-                fragment = WebViewFragment.newInstance(item.getAction(), item.getTitle());
-
-            //fragment = BrowserFragment.newInstance(item.getAction());
+                fragment = BrowserFragment.newInstance(item.getAction());
 
             fragments.add(fragment);
         }
@@ -188,7 +186,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             }
         });
 
-        tabLayout.getTabAt(0).select();
 
         if (getIntent().getBooleanExtra("show_popup", false))
             Utilities.showCompleteProfileDialog(this, "", "", new DialogButtonsClickListener() {
@@ -202,6 +199,12 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
 
                 }
             });
+
+        if (getIntent().getStringExtra("link") != null && getIntent().getStringExtra("link").equalsIgnoreCase("parametres"))
+            moveToSettingsFragment();
+        else
+            tabLayout.getTabAt(0).select();
+
     }
 
     private void switchTab(int position) {
@@ -228,4 +231,15 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         }
     }
 
+    public void moveToSettingsFragment() {
+        int index = -1;
+        for (int i = 0; i < fragments.size(); i++) {
+            if (fragments.get(i) instanceof SettingsFragment) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1)
+            tabLayout.getTabAt(index).select();
+    }
 }
