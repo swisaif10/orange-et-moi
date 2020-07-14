@@ -11,9 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.utilities.Constants;
+import com.orange.ma.entreprise.utilities.LocaleManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +42,9 @@ public class VisitorFragment extends Fragment {
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
 
+        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(),"page_guest", LocaleManager.getLanguagePref(getContext()));
+
+
     }
 
     @Override
@@ -64,8 +69,17 @@ public class VisitorFragment extends Fragment {
                 getActivity().onBackPressed();
                 break;
             case R.id.billing_btn:
+               Bundle bundle = new Bundle();
+                bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
+                bundle.putString("Nom_Element_bloc", getString(R.string.billing_btn));
+                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("Clic_guest_element", bundle);
                 break;
             case R.id.account_manager_btn:
+                //firebaseAnalyticsEvent
+                bundle = new Bundle();
+                bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
+                bundle.putString("Nom_Element_bloc", getString(R.string.account_manger_btn));
+                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("Clic_guest_element", bundle);
                 break;
             default:
                 break;

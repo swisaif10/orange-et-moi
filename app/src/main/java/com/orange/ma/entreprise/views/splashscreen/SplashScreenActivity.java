@@ -8,6 +8,7 @@ import android.os.Handler;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.listeners.DialogButtonsClickListener;
@@ -44,6 +45,9 @@ public class SplashScreenActivity extends BaseActivity {
 
         if (getIntent().getData() != null)
             deepLink();
+
+        //firebaseAnalyticsEvent
+        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this,"page_splash", null);
     }
 
     private void goToNextActivity() {

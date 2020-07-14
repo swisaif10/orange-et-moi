@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.listeners.OnItemSelectedListener;
@@ -20,6 +21,7 @@ import com.orange.ma.entreprise.models.settings.SettingsData;
 import com.orange.ma.entreprise.models.settings.SettingsItem;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
+import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.SettingsVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
@@ -56,6 +58,9 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
         preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
+        //firebaseAnalyticsEvent
+
+        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(),"page_parametres", LocaleManager.getLanguagePref(getContext()));
 
     }
 
@@ -87,9 +92,21 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                     }
                 }).show();
 
+                //firebaseAnalyticsEvent
+                Bundle bundle = new Bundle();
+                bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
+                bundle.putString("RC_entreprise", preferenceManager.getValue(Constants.LOGIN_KEY, ""));
+                bundle.putString("Nom_Element_params", action);
+                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_parametres", bundle);
+
+
                 break;
             case "action_language":
                 new ChangeLanguageDialog(getActivity(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr")).show();
+                    bundle = new Bundle();
+                bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
+                bundle.putString("Nom_Element_params", action);
+                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_parametres", bundle);
                 break;
             default:
                 break;

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "404400681148",
+    "firebase_url": "https://orangeetmoi-entreprise-test.firebaseio.com",
+    "project_id": "orangeetmoi-entreprise-test",
+    "storage_bucket": "orangeetmoi-entreprise-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:404400681148:android:06faa637eb940fe3c8a0b9",
+        "android_client_info": {
+          "package_name": "com.orange.ma.entreprise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "404400681148-ins9jeqkmh050d4n2sg5iaqb9jde7amm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwVQigQLcQ6FYiiTGHwZtFw5HePGESCOg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "404400681148-ins9jeqkmh050d4n2sg5iaqb9jde7amm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

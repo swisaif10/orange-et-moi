@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.tabs.TabLayout;
+import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.listeners.DialogButtonsClickListener;
@@ -21,6 +22,7 @@ import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.FragNavController;
 import com.orange.ma.entreprise.utilities.FragmentHistory;
+import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.MainVM;
 import com.orange.ma.entreprise.views.base.BaseActivity;
@@ -152,7 +154,9 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             } else if (item.getInApp())
                 fragment = WebViewFragment.newInstance(item.getAction(), item.getTitle());
             else
-                fragment = BrowserFragment.newInstance(item.getAction());
+                fragment = WebViewFragment.newInstance(item.getAction(), item.getTitle());
+
+            //fragment = BrowserFragment.newInstance(item.getAction());
 
             fragments.add(fragment);
         }
@@ -186,17 +190,29 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             }
         });
 
+        tabLayout.getTabAt(0).select();
 
         if (getIntent().getBooleanExtra("show_popup", false))
+        {
+            OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this,"Pop-up_completer_mon_profil", LocaleManager.getLanguagePref(this));
+
             Utilities.showCompleteProfileDialog(this, "", "", new DialogButtonsClickListener() {
                 @Override
                 public void firstChoice() {
-
+                    //firebaseAnalyticsEvent
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Langue", LocaleManager.getLanguagePref(getApplicationContext()));
+                    bundle.putString("RC_entreprise", preferenceManager.getValue(Constants.LOGIN_KEY, ""));
+                    OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("Clic_completer_mon_profil", bundle);
                 }
 
                 @Override
                 public void secondChoice() {
 
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Langue", LocaleManager.getLanguagePref(getApplicationContext()));
+                    bundle.putString("RC_entreprise", preferenceManager.getValue(Constants.LOGIN_KEY, ""));
+                    OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("Clic_ignorer_completer_mon_profil", bundle);
                 }
             });
 
