@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.models.dashboard.CompoundElement;
@@ -22,6 +23,7 @@ import com.orange.ma.entreprise.models.dashboard.DashboardData;
 import com.orange.ma.entreprise.models.dashboard.Template;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
+import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.DashboardVM;
 import com.orange.ma.entreprise.views.base.BaseFragment;
@@ -49,6 +51,7 @@ public class DashboardFragment extends BaseFragment implements SubItemClickedLis
     private Connectivity connectivity;
     private DashboardVM dashboardVM;
     private PreferenceManager preferenceManager;
+    private Bundle bundle;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -66,6 +69,9 @@ public class DashboardFragment extends BaseFragment implements SubItemClickedLis
                 .build();
 
         dashboardVM.getDashboardMutableLiveData().observe(this, this::handleDashboardData);
+
+        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(),"page_dash_activated", LocaleManager.getLanguagePref(getContext()));
+
 
 
     }
@@ -119,6 +125,10 @@ public class DashboardFragment extends BaseFragment implements SubItemClickedLis
         swipeRefresh.setOnRefreshListener(() -> {
             getDashboardList();
             swipeRefresh.setRefreshing(false);
+            bundle = new Bundle();
+            bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
+            OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_dash_updated", bundle);
+
         });
     }
 

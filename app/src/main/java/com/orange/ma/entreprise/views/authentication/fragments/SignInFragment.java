@@ -29,11 +29,13 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.models.login.LoginData;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
+import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.AuthenticationVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
@@ -83,6 +85,7 @@ public class SignInFragment extends Fragment {
     private Connectivity connectivity;
     private AuthenticationVM authenticationVM;
     private Boolean from_cgu = false;
+    private Bundle bundle;
 
     public SignInFragment() {
         // Required empty public constructor
@@ -99,6 +102,9 @@ public class SignInFragment extends Fragment {
                 .build();
 
         authenticationVM.getSignInMutableLiveData().observe(this, this::handleSignInResponse);
+
+        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(),"btn_valider_formulaire_inscription", LocaleManager.getLanguagePref(getContext()));
+
 
     }
 
@@ -131,6 +137,9 @@ public class SignInFragment extends Fragment {
             case R.id.login_btn:
                 from_cgu = false;
                 ((AuthenticationActivity) getActivity()).replaceFragment(new LoginFragment());
+                bundle = new Bundle();
+                bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
+                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_déjà_compte", bundle);
                 break;
             case R.id.cgu_btn:
                 Utilities.hideSoftKeyboard(getContext(), getView());
@@ -139,6 +148,9 @@ public class SignInFragment extends Fragment {
                 ((AuthenticationActivity) getActivity()).replaceFragment(cguFragment);
                 break;
             case R.id.valid_btn:
+                bundle = new Bundle();
+                bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
+                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_creer_compte", bundle);
                 SignIn();
                 break;
             case R.id.constraintLayout:
