@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -83,10 +84,12 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
 
         if (arrayList.get(position).getElements().get(0).getType().equalsIgnoreCase("txt")) {
 
-            if (templateKey == (Template.TEMPLATE_PARCK)) {
+            if (templateKey == Template.TEMPLATE_PARCK) {
                 holder.layout1.setVisibility(View.GONE);
                 holder.layout2.setVisibility(View.GONE);
                 holder.layout3.setVisibility(View.VISIBLE);
+                ViewGroup.LayoutParams p = holder.value3.getLayoutParams();
+                p.width = (int)getElementsMaxWidth();
                 holder.value3.setText(arrayList.get(position).getElements().get(0).getValue());
                 holder.value3.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(0).getColor()));
                 holder.name3.setText(arrayList.get(position).getElements().get(1).getValue());
@@ -108,8 +111,10 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
             }
 
         } else {
+
             if (arrayList.size() > 2)
                 setLayoutParams(holder,position);
+            setSliderParams(holder,position);
             int icon = context.getResources().getIdentifier(arrayList.get(position).getElements().get(0).getValue(), "drawable", context.getPackageName());
             holder.icon.setImageResource(icon);
             holder.title.setText(arrayList.get(position).getElements().get(1).getValue());
@@ -120,6 +125,17 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
             }
         }
 
+    }
+
+    private void setSliderParams(ViewHolder holder, int position) {
+        if(templateKey==Template.TEMPLATE_LIST_SLIDER && position<2){
+            holder.layout.setPadding(0,0,15,0);
+        }
+        else if(templateKey==Template.TEMPLATE_LIST_SLIDER && position>=2){
+            holder.layout.setPadding(12,0,10,0);
+        }
+        else if(templateKey==Template.TEMPLATE_LIST_SLIDER)
+            holder.layout.setPadding(0,0,5,0);
     }
 
     @Override
@@ -205,6 +221,7 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         switch (context.getResources().getDisplayMetrics().densityDpi) {
             case 280:
             case 420:
+            case 480:
             case 560:
                 params.width = (int) (displayMetrics.widthPixels * 0.47);
                 params.setMargins(px, 0, 0, px);
@@ -219,5 +236,12 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
                 break;
         }
         holder.itemView.setLayoutParams(params);
+    }
+
+    float getElementsMaxWidth(){
+        int max = 1;
+        for (CompoundElement e:arrayList)
+            if(max<e.getElements().get(0).getValue().length()) max = e.getElements().get(0).getValue().length();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,max*9.3f,context.getResources().getDisplayMetrics());
     }
 }

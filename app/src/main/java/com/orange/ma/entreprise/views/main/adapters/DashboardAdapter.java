@@ -2,6 +2,7 @@ package com.orange.ma.entreprise.views.main.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +33,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     private Context context;
     private ArrayList<Template> arrayList;
     SubItemClickedListener subItemClickedListener;
+    float aspect = 1;
 
     public DashboardAdapter(Context context, ArrayList<Template> arrayList, SubItemClickedListener subItemClickedListener) {
         this.context = context;
         this.arrayList = arrayList;
         this.subItemClickedListener = subItemClickedListener;
+        this.aspect = (float)context.getResources().getDisplayMetrics().heightPixels/(float) context.getResources().getDisplayMetrics().widthPixels;
     }
 
     @NonNull
@@ -112,19 +115,37 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(holder.itemView.getLayoutParams().width, 0);
 
-        if (context.getResources().getDisplayMetrics().densityDpi != 640) {
+        if (aspect>1.78) {
             switch (holder.getItemViewType()) {
                 case Template.TEMPLATE_BILLING:
                 case Template.TEMPLATE_PARCK:
-                    params.height = (int) (height * 0.21);
+                    params.height = (int) (height * 0.20);
                     break;
                 case Template.TEMPLATE_LIST_SLIDER:
-                    params.height = (int) (height * 0.25);
-                    break;
-                case Template.TEMPLATE_SMALL_LIST:
                     params.height = (int) (height * 0.23);
                     break;
+                case Template.TEMPLATE_SMALL_LIST:
+                    params.height = (int) (height * 0.21);
+                    break;
             }
+            params.topMargin = 7;
+            params.bottomMargin = 7;
+            holder.itemView.setLayoutParams(params);
+        }else{
+            switch (holder.getItemViewType()) {
+                case Template.TEMPLATE_BILLING:
+                case Template.TEMPLATE_PARCK:
+                    params.height = (int) (height * 0.22);
+                    break;
+                case Template.TEMPLATE_LIST_SLIDER:
+                    params.height = (int) (height * 0.26);
+                    break;
+                case Template.TEMPLATE_SMALL_LIST:
+                    params.height = (int) (height * 0.24);
+                    break;
+            }
+            params.topMargin = 5;
+            params.bottomMargin = 5;
             holder.itemView.setLayoutParams(params);
         }
     }

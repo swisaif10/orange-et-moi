@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="wrap_content"
     android:background="@color/grey"
     android:elevation="8dp"
     app:cardCornerRadius="0dp"
@@ -58,6 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_gravity="start"
                 tools:itemCount="2"
                 tools:listitem="@layout/dashboard_string_subitem_layout" />
         </LinearLayout>
