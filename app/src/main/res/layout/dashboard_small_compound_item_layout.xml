@@ -3,41 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/_135sdp"
     android:background="@color/grey"
     android:elevation="8dp"
     app:cardCornerRadius="0dp"
     app:cardElevation="5dp"
     app:cardUseCompatPadding="true">
-
-    <LinearLayout
+    <View
+        android:id="@+id/color"
+        android:layout_width="3dp"
+        android:layout_height="match_parent"
+        android:background="@color/black" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <View
-            android:id="@+id/color"
-            android:layout_width="3dp"
-            android:layout_height="match_parent"
-            android:background="@color/black" />
+
 
         <LinearLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/_3sdp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingHorizontal="10dp">
+                android:layout_marginTop="@dimen/_3sdp"
+                android:paddingHorizontal="@dimen/_8sdp">
 
                 <ImageView
                     android:id="@+id/icon"
-                    android:layout_width="20dp"
-                    android:layout_height="25dp"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_22sdp"
                     tools:src="@drawable/icon_mes_factures" />
 
                 <TextView
@@ -45,11 +50,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:fontFamily="@font/helveticabold"
                     android:gravity="center_vertical"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="@dimen/_12sdp"
                     tools:text="Mes Factures" />
             </LinearLayout>
 
@@ -58,10 +63,11 @@
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 tools:itemCount="2"
                 tools:listitem="@layout/dashboard_button_subitem_layout" />
         </LinearLayout>
     </LinearLayout>
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>

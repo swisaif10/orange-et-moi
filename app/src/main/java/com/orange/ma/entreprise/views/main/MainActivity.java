@@ -72,8 +72,17 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
     @Override
     protected void onResume() {
         super.onResume();
-        if(getIntent().getData()!=null)
+        if(getIntent().getData()!=null){
+            if(getIntent().getStringExtra("endpointdata")!=null){
+                handleInApp(getIntent().getStringExtra("endpoint"),getIntent().getStringExtra("endpointdata"));
+            }else
             handleAppView(getIntent().getStringExtra("endpoint"));
+        }
+    }
+
+    private void handleInApp(String endpoint, String endpointdata) {
+        fragment = WebViewFragment.newInstance(endpoint, endpointdata);
+        fragNavController.pushFragment(fragment);
     }
 
     private void handleAppView(String endpoint) {

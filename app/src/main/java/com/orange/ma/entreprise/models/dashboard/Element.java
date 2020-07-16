@@ -2,6 +2,7 @@
 package com.orange.ma.entreprise.models.dashboard;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Element {
 
@@ -17,6 +18,9 @@ public class Element {
     private String type;
     @Expose
     private String value;
+    @Expose
+    @SerializedName("hover_txt_color")
+    private String hoverTxtColor;
 
 //    public String getAction() {
 //        return action;
@@ -66,4 +70,11 @@ public class Element {
         this.value = value;
     }
 
+    public String getHoverTxtColor() {
+        return hoverTxtColor;
+    }
+
+    public void setHoverTxtColor(String hoverTxtColor) {
+        this.hoverTxtColor = hoverTxtColor;
+    }
 }

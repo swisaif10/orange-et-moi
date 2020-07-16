@@ -73,7 +73,10 @@ public class NotificationUtils {
             case DEEP_LINK:
                 handleDeepLink(notification.getEndPoint());break;
             case IN_APP_URL:
-                WebViewFragment.newInstance(notification.getEndPoint(),notification.getEndPointTitle());
+                intent = new Intent(mContext, MainActivity.class);
+                intent.putExtra("endpoint", notification.getEndPoint());
+                intent.putExtra("endpointdata", notification.getEndPointTitle());
+                resultPendingIntent = PendingIntent.getActivity(mContext,0,intent,PendingIntent.FLAG_CANCEL_CURRENT);
                 break;
             case OUT_APP_URL:
                 intent = new Intent(Intent.ACTION_VIEW);

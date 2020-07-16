@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp">
+    android:layout_height="@dimen/_30sdp"
+    android:layout_marginBottom="@dimen/_5sdp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,8 +13,8 @@
         android:id="@+id/layout">
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="17dp"
-            android:layout_height="20dp"
+            android:layout_width="@dimen/_14sdp"
+            android:layout_height="@dimen/_17sdp"
             android:scaleType="centerInside"
             android:src="@drawable/icon_roaming"
             android:layout_alignParentStart="true"
@@ -24,18 +24,18 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/_8sdp"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/icon"
             android:layout_toStartOf="@id/arrow"
             android:textColor="@drawable/selector_button_text_color"
-            android:textSize="13sp"
+            android:textSize="@dimen/_11sdp"
             tools:text="Rooaming" />
 
         <ImageView
             android:id="@+id/arrow"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_8sdp"
             android:layout_marginEnd="5dp"
             android:src="@drawable/flesh"
             android:layout_alignParentEnd="true"
@@ -46,7 +46,7 @@
         android:id="@+id/separator"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:background="@color/grey"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/layout" />

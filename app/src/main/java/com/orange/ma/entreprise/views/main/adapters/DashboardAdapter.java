@@ -3,7 +3,10 @@ package com.orange.ma.entreprise.views.main.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +31,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.orange.ma.entreprise.models.dashboard.Template.TEMPLATE_LIST;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
 
@@ -79,7 +84,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        setLayoutParams(holder);
+
         Template template = arrayList.get(position);
         holder.color.setBackgroundColor(Color.parseColor(template.getColorIcone()));
         int icon = context.getResources().getIdentifier(template.getIcon(), "drawable", context.getPackageName());
@@ -89,6 +94,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         if (arrayList.get(position).getSize().equalsIgnoreCase("small")) {
             layoutManager = new LinearLayoutManager(context);
             holder.recycler.setLayoutManager(layoutManager);
+            holder.recycler.setPadding((int)context.getResources().getDimension(R.dimen._2sdp),0,0,0);
             holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements(), onDashboardItemSelectedListener, holder.getItemViewType()));
         } else {
             holder.recycler.setHasFixedSize(true);

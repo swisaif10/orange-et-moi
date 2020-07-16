@@ -154,8 +154,7 @@ public class DashboardFragment extends BaseFragment implements OnDashboardItemSe
                 }
             } else if (compoundElement.getInApp()) {
                 fragment = WebViewFragment.newInstance(compoundElement.getAction(), compoundElement.getElements().get(1).getValue());
-                if (fragmentNavigation != null)
-                    fragmentNavigation.pushFragment(fragment);
+                handleInApp(fragment);
             } else {
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
@@ -208,4 +207,8 @@ public class DashboardFragment extends BaseFragment implements OnDashboardItemSe
         }
     }
 
+    void handleInApp(Fragment fragment){
+        if (fragmentNavigation != null)
+            fragmentNavigation.pushFragment(fragment);
+    }
 }
