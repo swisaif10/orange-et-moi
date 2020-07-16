@@ -13,12 +13,11 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.orange.ma.entreprise.R;
-import com.orange.ma.entreprise.listeners.DialogButtonsClickListener;
+import com.orange.ma.entreprise.listeners.OnDialogButtonsClickListener;
 
+public interface Utilities {
 
-public class Utilities {
-
-    public static void showErrorPopup(Context context, String message, String title) {
+    static void showErrorPopup(Context context, String message) {
 
         if (context == null) {
             return;
@@ -39,7 +38,7 @@ public class Utilities {
         dialog.show();
     }
 
-    public static void showUpdateDialog(Context context, String message, String title, String status, DialogButtonsClickListener dialogButtonsClickListener) {
+    static void showUpdateDialog(Context context, String message, String title, String status, OnDialogButtonsClickListener onDialogButtonsClickListener) {
 
         if (context == null) {
             return;
@@ -61,17 +60,17 @@ public class Utilities {
 
         update.setOnClickListener(v -> {
             dialog.dismiss();
-            dialogButtonsClickListener.firstChoice();
+            onDialogButtonsClickListener.firstChoice();
         });
         cancel.setOnClickListener(v -> {
             dialog.dismiss();
-            dialogButtonsClickListener.secondChoice();
+            onDialogButtonsClickListener.secondChoice();
         });
         dialog.setContentView(view);
         dialog.show();
     }
 
-    public static void showCompleteProfileDialog(Context context, String message, String title, DialogButtonsClickListener dialogButtonsClickListener) {
+    static void showCompleteProfileDialog(Context context, OnDialogButtonsClickListener onDialogButtonsClickListener) {
 
         if (context == null) {
             return;
@@ -82,23 +81,20 @@ public class Utilities {
         View view = LayoutInflater.from(context).inflate(R.layout.complete_profile_dialog, null, false);
         Button ok = view.findViewById(R.id.ok_btn);
         Button cancel = view.findViewById(R.id.cancel_btn);
-        TextView titleTv = view.findViewById(R.id.title);
-        TextView msg = view.findViewById(R.id.description);
-
 
         ok.setOnClickListener(v -> {
             dialog.dismiss();
-            dialogButtonsClickListener.firstChoice();
+            onDialogButtonsClickListener.firstChoice();
         });
         cancel.setOnClickListener(v -> {
             dialog.dismiss();
-            dialogButtonsClickListener.secondChoice();
+            onDialogButtonsClickListener.secondChoice();
         });
         dialog.setContentView(view);
         dialog.show();
     }
 
-    public static void hideSoftKeyboard(Context context, View view) {
+    static void hideSoftKeyboard(Context context, View view) {
         if (context == null || view == null) {
             return;
         }
@@ -111,7 +107,7 @@ public class Utilities {
         }
     }
 
-    public static int calculate(String password, String lang) {
+    static int calculate(String password) {
         int score = 0;
         boolean upper = false;
         boolean lower = false;
@@ -143,7 +139,7 @@ public class Utilities {
         return score;
     }
 
-    public static boolean isArabic(int c) {
+    static boolean isArabic(int c) {
         return c >= 0x0600 && c <= 0x06E0;
     }
 

@@ -15,7 +15,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
-import com.orange.ma.entreprise.listeners.DialogButtonsClickListener;
+import com.orange.ma.entreprise.listeners.OnDialogButtonsClickListener;
 import com.orange.ma.entreprise.models.tabmenu.TabMenuData;
 import com.orange.ma.entreprise.models.tabmenu.TabMenuItem;
 import com.orange.ma.entreprise.utilities.Connectivity;
@@ -40,7 +40,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends BaseActivity implements BaseFragment.FragmentNavigation, FragNavController.TransactionListener, FragNavController.RootFragmentListener {
 
     @BindView(R.id.tabLayout)
-    TabLayout tabLayout;
+    public TabLayout tabLayout;
 
     private MainVM mainVM;
     private Connectivity connectivity;
@@ -221,7 +221,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         if (getIntent().getBooleanExtra("show_popup", false)) {
             OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "Pop-up_completer_mon_profil", LocaleManager.getLanguagePref(this));
 
-            Utilities.showCompleteProfileDialog(this, "", "", new DialogButtonsClickListener() {
+            Utilities.showCompleteProfileDialog(this, new OnDialogButtonsClickListener() {
                 @Override
                 public void firstChoice() {
                     //firebaseAnalyticsEvent
@@ -259,19 +259,19 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         if (connectivity.isConnected()) {
             mainVM.getTabMenu(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
         } else
-            Utilities.showErrorPopup(this, getString(R.string.no_internet), "");
+            Utilities.showErrorPopup(this, getString(R.string.no_internet));
 
     }
 
     private void handleTabMenuResponse(TabMenuData tabMenuData) {
         if (tabMenuData == null) {
-            Utilities.showErrorPopup(this, getString(R.string.generic_error), "");
+            Utilities.showErrorPopup(this, getString(R.string.generic_error));
         } else {
             int code = tabMenuData.getHeader().getCode();
             if (code == 200) {
                 init(tabMenuData);
             } else
-                Utilities.showErrorPopup(this, tabMenuData.getHeader().getMessage(), "");
+                Utilities.showErrorPopup(this, tabMenuData.getHeader().getMessage());
         }
     }
 
@@ -286,4 +286,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         if (index != -1)
             tabLayout.getTabAt(index).select();
     }
+
+
 }

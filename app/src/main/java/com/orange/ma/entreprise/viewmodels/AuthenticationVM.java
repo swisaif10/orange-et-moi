@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.orange.ma.entreprise.datamanager.retrofit.RestService;
 import com.orange.ma.entreprise.models.cgu.CGUData;
+import com.orange.ma.entreprise.models.commons.ResponseData;
 import com.orange.ma.entreprise.models.login.LoginData;
 
 import retrofit2.Call;
@@ -17,7 +18,7 @@ import retrofit2.Response;
 public class AuthenticationVM extends AndroidViewModel {
 
     private MutableLiveData<LoginData> loginMutableLiveData;
-    private MutableLiveData<LoginData> signInMutableLiveData;
+    private MutableLiveData<ResponseData> signInMutableLiveData;
     private MutableLiveData<CGUData> cguMutableLiveData;
 
     public AuthenticationVM(@NonNull Application application) {
@@ -34,7 +35,7 @@ public class AuthenticationVM extends AndroidViewModel {
         return cguMutableLiveData;
     }
 
-    public MutableLiveData<LoginData> getSignInMutableLiveData() {
+    public MutableLiveData<ResponseData> getSignInMutableLiveData() {
         return signInMutableLiveData;
     }
 
@@ -75,15 +76,15 @@ public class AuthenticationVM extends AndroidViewModel {
     }
 
     public void signIn(String id, String cin, String email, String password, String lang) {
-        Call<LoginData> call = RestService.getInstance().endpoint().signIn(id, cin, email, password, lang);
-        call.enqueue(new Callback<LoginData>() {
+        Call<ResponseData> call = RestService.getInstance().endpoint().signIn(id, cin, email, password, lang);
+        call.enqueue(new Callback<ResponseData>() {
             @Override
-            public void onResponse(Call<LoginData> call, Response<LoginData> response) {
+            public void onResponse(Call<ResponseData> call, Response<ResponseData> response) {
                 signInMutableLiveData.setValue(response.body());
             }
 
             @Override
-            public void onFailure(Call<LoginData> call, Throwable t) {
+            public void onFailure(Call<ResponseData> call, Throwable t) {
                 signInMutableLiveData.setValue(null);
             }
         });

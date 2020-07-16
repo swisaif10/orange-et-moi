@@ -14,7 +14,7 @@
     <string name="connect_btn">Connexion</string>
     <string name="forgotten_password">Mot de passe oublié ?</string>
     <string name="change_account_manager">Changer votre gestionnaire de compte</string>
-    <string name="no_internet">Pas de connexion Internet!</string>
+    <string name="no_internet">Aucune connexion internet détectée. Veuillez vérifier vos paramètres de connexion puis réessayer.</string>
     <string name="generic_error">Une erreur est survenue!</string>
     <string name="update_dialog_title">Mise à jour</string>
     <string name="ok_btn_hint">OK</string>

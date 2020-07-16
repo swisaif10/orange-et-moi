@@ -1,6 +1,5 @@
 package com.orange.ma.entreprise.fcm;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -22,14 +21,14 @@ public class OFirebaseMessagingService extends FirebaseMessagingService {
     private static final String ENDPOINT = "endpoint";
     private static final String ENDPOINT_TITLE = "endpoint_title";
     private static final String ACTION_TYPE = "action";
-    SharedPreferences sharedPreferences;
+
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        if(remoteMessage.getData().size()>0){
+        if (remoteMessage.getData().size() > 0) {
             handleData(remoteMessage.getData());
-        }else if(remoteMessage.getNotification() != null){
+        } else if (remoteMessage.getNotification() != null) {
             handleNotification(remoteMessage.getNotification());
         }
     }
@@ -37,8 +36,8 @@ public class OFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
-        getSharedPreferences(Constants.FCM_PREFS_NAME,MODE_PRIVATE).edit().putString("fb_token",s).apply();
-        Log.d("TAGFCM", "onNewToken: "+s);
+        getSharedPreferences(Constants.FCM_PREFS_NAME, MODE_PRIVATE).edit().putString("fb_token", s).apply();
+        Log.d("TAGFCM", "onNewToken: " + s);
     }
 
     private void handleNotification(RemoteMessage.Notification notification) {
@@ -67,10 +66,10 @@ public class OFirebaseMessagingService extends FirebaseMessagingService {
         makeNotification(notification);
     }
 
-    private void makeNotification(NotificationObject notification){
-        Intent resultIntent =new Intent(getApplicationContext(), SplashScreenActivity.class);
+    private void makeNotification(NotificationObject notification) {
+        Intent resultIntent = new Intent(getApplicationContext(), SplashScreenActivity.class);
         NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
-        notificationUtils.showNotification(notification,resultIntent);
+        notificationUtils.showNotification(notification, resultIntent);
         notificationUtils.playNotificationSound();
     }
 }

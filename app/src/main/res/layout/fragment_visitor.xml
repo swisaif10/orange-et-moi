@@ -46,7 +46,7 @@
             android:id="@+id/icon"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/payer_vos_factures" />
+            android:src="@drawable/icon_payer_vos_facture" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -87,14 +87,14 @@
         android:paddingTop="20dp"
         android:clickable="true"
         android:focusable="true"
-        android:background="@drawable/selectore_setting_bg">
+        android:background="@drawable/selector_grey_btn_background">
 
         <ImageView
             android:id="@+id/icon2"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/changer_votre_gestionnaire_de_compte" />
+            android:src="@drawable/icon_changer_gestionnaire_compte" />
 
         <TextView
             android:layout_width="wrap_content"

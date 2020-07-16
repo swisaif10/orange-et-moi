@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
-import com.orange.ma.entreprise.listeners.DialogButtonsClickListener;
+import com.orange.ma.entreprise.listeners.OnDialogButtonsClickListener;
 import com.orange.ma.entreprise.models.controlversion.ControlVersionData;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
@@ -76,7 +76,7 @@ public class SplashScreenActivity extends BaseActivity {
 
     private void handleVersionCheckResponse(ControlVersionData controlVersionData) {
         if (controlVersionData == null) {
-            Utilities.showErrorPopup(this, getString(R.string.generic_error), "");
+            Utilities.showErrorPopup(this, getString(R.string.generic_error));
         } else {
             int code = controlVersionData.getHeader().getCode();
             if (code == 200 || code == 204) {
@@ -84,7 +84,7 @@ public class SplashScreenActivity extends BaseActivity {
                 if (status.equalsIgnoreCase("current")) {
                     goToNextActivity();
                 } else {
-                    Utilities.showUpdateDialog(this, "", "", status, new DialogButtonsClickListener() {
+                    Utilities.showUpdateDialog(this, "", "", status, new OnDialogButtonsClickListener() {
                         @Override
                         public void firstChoice() {
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(controlVersionData.getResponse().getLink())));
@@ -97,7 +97,7 @@ public class SplashScreenActivity extends BaseActivity {
                     });
                 }
             } else
-                Utilities.showErrorPopup(this, controlVersionData.getResponse().getMessage(), "");
+                Utilities.showErrorPopup(this, controlVersionData.getResponse().getMessage());
         }
     }
 

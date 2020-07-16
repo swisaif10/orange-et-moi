@@ -23,8 +23,8 @@ public class CGUData {
         return response;
     }
 
-    public void setCGUResponse(CGUResponse CGUResponse) {
-        this.response = CGUResponse;
+    public void setCGUResponse(CGUResponse cguResponse) {
+        this.response = cguResponse;
     }
 
 }

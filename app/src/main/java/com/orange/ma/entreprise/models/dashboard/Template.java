@@ -4,7 +4,7 @@ package com.orange.ma.entreprise.models.dashboard;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Template {
 
@@ -17,7 +17,7 @@ public class Template {
     @SerializedName("color_icone")
     private String colorIcone;
     @SerializedName("element_complex")
-    private ArrayList<ElementComplex> elementComplex;
+    private List<ElementComplex> elementComplex;
     @Expose
     private String icon;
     @Expose
@@ -41,11 +41,11 @@ public class Template {
         this.colorIcone = colorIcone;
     }
 
-    public ArrayList<ElementComplex> getElementComplex() {
+    public List<ElementComplex> getElementComplex() {
         return elementComplex;
     }
 
-    public void setElementComplex(ArrayList<ElementComplex> elementComplex) {
+    public void setElementComplex(List<ElementComplex> elementComplex) {
         this.elementComplex = elementComplex;
     }
 

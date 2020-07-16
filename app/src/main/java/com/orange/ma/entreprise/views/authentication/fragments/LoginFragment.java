@@ -154,7 +154,7 @@ public class LoginFragment extends Fragment {
             background.setScaleX(-1);
 
         id.setText(preferenceManager.getValue(Constants.LOGIN_KEY, ""));
-        password.setText(preferenceManager.getValue(Constants.PASSWORD_KEY, ""));
+        password.setText(preferenceManager.getValue(Constants.PASS_KEY, ""));
         saveBtn.setChecked(preferenceManager.getValue(Constants.SAVE_CREDENTIALS_KEY, false));
         validBtn.setEnabled(id.getText().length() > 0 && password.getText().length() > 0);
 
@@ -204,11 +204,11 @@ public class LoginFragment extends Fragment {
                 if (saveBtn.isChecked()) {
                     preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
                     preferenceManager.putValue(Constants.LOGIN_KEY, id.getText().toString());
-                    preferenceManager.putValue(Constants.PASSWORD_KEY, password.getText().toString());
+                    preferenceManager.putValue(Constants.PASS_KEY, password.getText().toString());
                     preferenceManager.putValue(Constants.SAVE_CREDENTIALS_KEY, true);
                 } else {
                     preferenceManager.clearValue(Constants.LOGIN_KEY);
-                    preferenceManager.clearValue(Constants.PASSWORD_KEY);
+                    preferenceManager.clearValue(Constants.PASS_KEY);
                     preferenceManager.clearValue(Constants.SAVE_CREDENTIALS_KEY);
                 }
             } else {

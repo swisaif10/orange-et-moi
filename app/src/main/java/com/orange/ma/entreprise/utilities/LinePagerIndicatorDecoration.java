@@ -17,7 +17,7 @@ import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 public class LinePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
 
     private final int indicatorHeight;
-    private final int indicatorItemPadding;
+    private final float indicatorItemPadding;
     private final int radius;
 
     private final Paint inactivePaint = new Paint();
@@ -60,7 +60,7 @@ public class LinePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
         itemCount = adapter.getItemCount() % 4 == 0 ? adapter.getItemCount() / 4 : adapter.getItemCount() / 4 + 1;
 
         // center horizontally, calculate width and subtract half from center
-        float totalLength = this.radius * 2 * itemCount;
+        float totalLength = this.radius * 2f * itemCount;
         float paddingBetweenItems = Math.max(0, itemCount - 1) * indicatorItemPadding;
         float indicatorTotalWidth = totalLength + paddingBetweenItems;
         float indicatorStartX = (parent.getWidth() - indicatorTotalWidth) / 2f;
@@ -102,7 +102,7 @@ public class LinePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
     private void drawInactiveDots(Canvas c, float indicatorStartX, float indicatorPosY, int itemCount) {
 
         // width of item indicator including padding
-        final float itemWidth = this.radius * 2 + indicatorItemPadding;
+        final float itemWidth = this.radius * 2f + indicatorItemPadding;
 
         float start = indicatorStartX + radius;
         for (int i = 0; i < itemCount; i++) {
@@ -114,7 +114,7 @@ public class LinePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
     private void drawActiveDot(Canvas c, float indicatorStartX, float indicatorPosY, int highlightPosition) {
 
         // width of item indicator including padding
-        final float itemWidth = this.radius * 2 + indicatorItemPadding;
+        final float itemWidth = this.radius * 2f + indicatorItemPadding;
         float highlightStart = indicatorStartX + radius + itemWidth * highlightPosition;
         if (highlightPosition <= itemCount - 1) {
             c.drawCircle(highlightStart, indicatorPosY, radius, activePaint);

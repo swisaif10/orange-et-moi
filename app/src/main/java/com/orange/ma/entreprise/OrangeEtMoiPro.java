@@ -14,7 +14,6 @@ public class OrangeEtMoiPro extends MultiDexApplication {
     private static OrangeEtMoiPro orangeApp;
     private FirebaseAnalytics mFirebaseAnalytics;
 
-
     public static OrangeEtMoiPro getInstance() {
         return orangeApp;
     }

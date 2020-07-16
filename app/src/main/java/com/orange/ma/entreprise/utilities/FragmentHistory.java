@@ -28,7 +28,7 @@ public class FragmentHistory {
     public int pop() {
 
         int entry = -1;
-        if(!isEmpty()){
+        if (!isEmpty()) {
 
             entry = stackArr.get(stackArr.size() - 1);
 
@@ -41,7 +41,7 @@ public class FragmentHistory {
 
         int entry = 0;
 
-        if(!isEmpty()){
+        if (!isEmpty()) {
             entry = stackArr.get(stackArr.size() - 1);
             stackArr.remove(stackArr.size() - 1);
         }
@@ -49,18 +49,18 @@ public class FragmentHistory {
     }
 
     public int peek() {
-        if(!isEmpty()){
+        if (!isEmpty()) {
             return stackArr.get(stackArr.size() - 1);
         }
 
         return -1;
     }
 
-    public boolean isEmpty(){
-        return (stackArr.size() == 0);
+    public boolean isEmpty() {
+        return stackArr.isEmpty();
     }
 
-    public int getStackSize(){
+    public int getStackSize() {
         return stackArr.size();
     }
 

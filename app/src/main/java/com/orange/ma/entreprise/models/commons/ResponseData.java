@@ -1,15 +1,16 @@
 
-package com.orange.ma.entreprise.models.login;
+package com.orange.ma.entreprise.models.commons;
 
 import com.google.gson.annotations.Expose;
 import com.orange.ma.entreprise.models.commons.Header;
 
-public class LoginData {
+@SuppressWarnings("unused")
+public class ResponseData {
 
     @Expose
     private Header header;
     @Expose
-    private LoginResponse response;
+    private Object response;
 
     public Header getHeader() {
         return header;
@@ -19,11 +20,11 @@ public class LoginData {
         this.header = header;
     }
 
-    public LoginResponse getResponse() {
+    public Object getResponse() {
         return response;
     }
 
-    public void setResponse(LoginResponse response) {
+    public void setResponse(Object response) {
         this.response = response;
     }
 
