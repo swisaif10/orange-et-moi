@@ -149,18 +149,13 @@ public class Connectivity implements LifecycleObserver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            ConnectivityChangeDataModel connectivityChangeDataModel = new ConnectivityChangeDataModel();
-            connectivityChangeCallback.onConnectivityChanged(connectivityChangeDataModel);
+            connectivityChangeCallback.onConnectivityChanged();
         }
-    }
-
-    public static class ConnectivityChangeDataModel {
-
     }
 
     // ****************************************** Connectivity interfaces
     public interface ConnectivityChangeCallback {
-        void onConnectivityChanged(ConnectivityChangeDataModel connectivityChangeDataModel);
+        void onConnectivityChanged();
     }
 
 }

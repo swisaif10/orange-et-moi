@@ -13,13 +13,12 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.text.Html;
+import android.util.Log;
 
-import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 
 import com.orange.ma.entreprise.R;
-import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
+import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 import com.orange.ma.entreprise.views.splashscreen.SplashScreenActivity;
@@ -32,60 +31,50 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.orange.ma.entreprise.utilities.Constants.Action.APP_VIEW;
-import static com.orange.ma.entreprise.utilities.Constants.Action.DEEP_LINK;
-import static com.orange.ma.entreprise.utilities.Constants.Action.DEFAULT;
-import static com.orange.ma.entreprise.utilities.Constants.Action.IN_APP_URL;
-import static com.orange.ma.entreprise.utilities.Constants.Action.OUT_APP_URL;
-
 public class NotificationUtils {
 
     private static final String CHANNEL_ID = "myChannel";
     private static final String CHANNEL_NAME = "myChannelName";
-    private static final String URL = "url";
-    Map<String ,Class> activities = new HashMap<>();
+    private Map<String, Class> activities = new HashMap<>();
     private Context mContext;
     private Intent intent;
     private PendingIntent resultPendingIntent;
 
-    public NotificationUtils(Context context){
+    public NotificationUtils(Context context) {
         this.mContext = context;
         // activites to open via notifications
         activities.put("splash", SplashScreenActivity.class);
     }
 
-    public void showNotification(NotificationObject notification, Intent resultIntent){
+    public void showNotification(NotificationObject notification, Intent resultIntent) {
 
         Bitmap image = null;
         intent = resultIntent;
         int icon;
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.P)
-            icon = R.mipmap.ic_launcher;
-        else
-            icon = R.mipmap.ic_launcher;
+        icon = R.mipmap.ic_launcher;
 
-        if(notification.getImageUrl()!=null && !notification.getImageUrl().isEmpty()){
+        if (notification.getImageUrl() != null && !notification.getImageUrl().isEmpty()) {
             image = getBitmapFromURL(notification.getImageUrl());
         }
 
-        switch (notification.getActionType()){
-            case DEEP_LINK:
-                handleDeepLink(notification.getEndPoint());break;
-            case IN_APP_URL:
-                WebViewFragment.newInstance(notification.getEndPoint(),notification.getEndPointTitle());
+        switch (notification.getActionType()) {
+            case Constants.DEEP_LINK:
+                handleDeepLink(notification.getEndPoint());
                 break;
-            case OUT_APP_URL:
+            case Constants.IN_APP_URL:
+                WebViewFragment.newInstance(notification.getEndPoint(), notification.getEndPointTitle());
+                break;
+            case Constants.OUT_APP_URL:
                 intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(notification.getEndPoint()));
-                resultPendingIntent = PendingIntent.getActivity(mContext,0,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+                resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
                 break;
-            case APP_VIEW:
+            case Constants.APP_VIEW:
                 intent = new Intent(mContext, MainActivity.class);
                 intent.putExtra("endpoint", notification.getEndPoint());
-                resultPendingIntent = PendingIntent.getActivity(mContext,0,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+                resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
                 break;
-            case DEFAULT:
+            case Constants.DEFAULT:
             default:
                 resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 resultPendingIntent = PendingIntent.getActivity(mContext, 0, resultIntent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -143,9 +132,8 @@ public class NotificationUtils {
     private void handleDeepLink(String endPoint) {
         intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(endPoint));
-        resultPendingIntent = PendingIntent.getActivity(mContext,0,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+        resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
     }
-
 
     public void playNotificationSound() {
         try {
@@ -153,11 +141,9 @@ public class NotificationUtils {
             Ringtone r = RingtoneManager.getRingtone(mContext, notifSound);
             r.play();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("Exception", e.getMessage());
         }
     }
-
-
 
     public static Bitmap getBitmapFromURL(String src) {
         try {
@@ -166,10 +152,9 @@ public class NotificationUtils {
             connection.setDoInput(true);
             connection.connect();
             InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
+            return BitmapFactory.decodeStream(input);
         } catch (IOException e) {
-            // Log exception
+            Log.e("Exception", e.getMessage());
             return null;
         }
     }

@@ -36,7 +36,7 @@ import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.adapters.DashboardAdapter;
 import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,8 +76,7 @@ public class DashboardFragment extends BaseFragment implements OnDashboardItemSe
 
         dashboardVM.getDashboardMutableLiveData().observe(this, this::handleDashboardData);
 
-        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(),"page_dash_activated", LocaleManager.getLanguagePref(getContext()));
-
+        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_dash_activated", LocaleManager.getLanguagePref(getContext()));
 
 
     }
@@ -140,7 +139,7 @@ public class DashboardFragment extends BaseFragment implements OnDashboardItemSe
 
     @Override
     public void onDashboardItemSelected(CompoundElement compoundElement) {
-        
+
         if (!compoundElement.getActionType().equalsIgnoreCase("none")) {
             Fragment fragment;
             if (compoundElement.getActionType().equalsIgnoreCase("internal")) {
@@ -165,7 +164,7 @@ public class DashboardFragment extends BaseFragment implements OnDashboardItemSe
         }
     }
 
-    private void init(ArrayList<Template> arrayList) {
+    private void init(List<Template> arrayList) {
         if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar")) {
             background1.setScaleX(-1);
             background2.setScaleX(-1);
@@ -192,19 +191,19 @@ public class DashboardFragment extends BaseFragment implements OnDashboardItemSe
         if (connectivity.isConnected())
             dashboardVM.getDashboardList(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
         else
-            Utilities.showErrorPopup(getContext(), getString(R.string.no_internet), "");
+            Utilities.showErrorPopup(getContext(), getString(R.string.no_internet));
     }
 
     private void handleDashboardData(DashboardData dashboardData) {
         loader.setVisibility(View.GONE);
         if (dashboardData == null) {
-            Utilities.showErrorPopup(getContext(), getString(R.string.generic_error), "");
+            Utilities.showErrorPopup(getContext(), getString(R.string.generic_error));
         } else {
             int code = dashboardData.getHeader().getCode();
             if (code == 200) {
                 init(dashboardData.getResponse().getData().getTemplates());
             } else
-                Utilities.showErrorPopup(getContext(), dashboardData.getHeader().getMessage(), "");
+                Utilities.showErrorPopup(getContext(), dashboardData.getHeader().getMessage());
         }
     }
 

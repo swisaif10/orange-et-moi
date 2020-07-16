@@ -12,8 +12,8 @@ public class CGUResponse {
         return data;
     }
 
-    public void setCGU(CGU CGU) {
-        this.data = CGU;
+    public void setCGU(CGU cgu) {
+        this.data = cgu;
     }
 
 }

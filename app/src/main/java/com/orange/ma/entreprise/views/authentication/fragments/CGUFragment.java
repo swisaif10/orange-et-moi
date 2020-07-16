@@ -65,7 +65,6 @@ public class CGUFragment extends Fragment {
 
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -85,17 +84,15 @@ public class CGUFragment extends Fragment {
     @OnClick({R.id.accept_btn, R.id.refuse_btn})
     public void onViewClicked(View view) {
         Intent intent = new Intent();
-        switch (view.getId()) {
-            case R.id.accept_btn:
-                intent.putExtra("cgu", true);
-                //firebaseAnalyticsEvent
-                Bundle bundle = new Bundle();
-                bundle.putString("Langue",LocaleManager.getLanguagePref(getContext()));
-                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("clic_validation_cgu_inscription", bundle);
-                break;
-            case R.id.refuse_btn:
-                intent.putExtra("cgu", false);
-                break;
+        int id = view.getId();
+        if (id == R.id.accept_btn) {
+            intent.putExtra("cgu", true);
+            //firebaseAnalyticsEvent
+            Bundle bundle = new Bundle();
+            bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
+            OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("clic_validation_cgu_inscription", bundle);
+        } else if (id == R.id.refuse_btn) {
+            intent.putExtra("cgu", false);
         }
         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
         getActivity().getSupportFragmentManager().popBackStack();
@@ -127,13 +124,13 @@ public class CGUFragment extends Fragment {
 
     private void handleCGULoginResponse(CGUData cguData) {
         if (cguData == null) {
-            Utilities.showErrorPopup(getContext(), getString(R.string.generic_error), "");
+            Utilities.showErrorPopup(getContext(), getString(R.string.generic_error));
         } else {
             int code = cguData.getHeader().getCode();
             if (code == 200) {
                 init(cguData.getCGUResponse().getCGU().getDescription());
             } else
-                Utilities.showErrorPopup(getContext(), cguData.getHeader().getMessage(), "");
+                Utilities.showErrorPopup(getContext(), cguData.getHeader().getMessage());
         }
     }
 }

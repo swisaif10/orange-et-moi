@@ -2,7 +2,6 @@ package com.orange.ma.entreprise.views.main.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hhl.gridpagersnaphelper.GridPagerSnapHelper;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.listeners.OnDashboardItemSelectedListener;
-import com.orange.ma.entreprise.models.dashboard.CompoundElement;
 import com.orange.ma.entreprise.models.dashboard.Template;
 import com.orange.ma.entreprise.utilities.LinePagerIndicatorDecoration;
 import com.orange.ma.entreprise.views.main.MainActivity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,14 +30,14 @@ import butterknife.ButterKnife;
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
 
     private Context context;
-    private ArrayList<Template> arrayList;
+    private List<Template> arrayList;
     float aspect = 1;
     private OnDashboardItemSelectedListener onDashboardItemSelectedListener;
 
-    public DashboardAdapter(Context context, ArrayList<Template> arrayList, OnDashboardItemSelectedListener onDashboardItemSelectedListener) {
+    public DashboardAdapter(Context context, List<Template> arrayList, OnDashboardItemSelectedListener onDashboardItemSelectedListener) {
         this.context = context;
         this.arrayList = arrayList;
-        this.aspect = (float)context.getResources().getDisplayMetrics().heightPixels/(float) context.getResources().getDisplayMetrics().widthPixels;
+        this.aspect = (float) context.getResources().getDisplayMetrics().heightPixels / (float) context.getResources().getDisplayMetrics().widthPixels;
         this.onDashboardItemSelectedListener = onDashboardItemSelectedListener;
 
     }
@@ -55,6 +53,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_small_compound_item_layout, parent, false));
             case Template.TEMPLATE_LIST_SLIDER:
                 return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_large_item_layout, parent, false));
+            case Template.TEMPLATE_LIST:
+                return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_visitor_item_layout, parent, false));
             default:
                 return null;
         }
@@ -71,6 +71,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 return Template.TEMPLATE_LIST_SLIDER;
             case "template_small_list":
                 return Template.TEMPLATE_SMALL_LIST;
+            case "template_list":
+                return Template.TEMPLATE_LIST;
             default:
                 return -1;
         }
@@ -92,10 +94,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements(), onDashboardItemSelectedListener, holder.getItemViewType()));
         } else {
             holder.recycler.setHasFixedSize(true);
-
-
             layoutManager = new GridLayoutManager(context, 2, LinearLayoutManager.HORIZONTAL, false);
-
             holder.recycler.setLayoutManager(layoutManager);
             holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements(), onDashboardItemSelectedListener, holder.getItemViewType()));
 
@@ -120,13 +119,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(holder.itemView.getLayoutParams().width, 0);
 
-        if (aspect>1.78) {
+        if (aspect > 1.78) {
             switch (holder.getItemViewType()) {
                 case Template.TEMPLATE_BILLING:
                 case Template.TEMPLATE_PARCK:
                     params.height = (int) (height * 0.20);
                     break;
                 case Template.TEMPLATE_LIST_SLIDER:
+                case Template.TEMPLATE_LIST:
                     params.height = (int) (height * 0.23);
                     break;
                 case Template.TEMPLATE_SMALL_LIST:
@@ -135,8 +135,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             }
             params.topMargin = 7;
             params.bottomMargin = 7;
-            holder.itemView.setLayoutParams(params);
-        }else{
+        } else {
             switch (holder.getItemViewType()) {
                 case Template.TEMPLATE_BILLING:
                 case Template.TEMPLATE_PARCK:
@@ -151,10 +150,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             }
             params.topMargin = 5;
             params.bottomMargin = 5;
-            holder.itemView.setLayoutParams(params);
         }
+        holder.itemView.setLayoutParams(params);
     }
-
 
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.color)

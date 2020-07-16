@@ -1,5 +1,7 @@
 package com.orange.ma.entreprise.datamanager.retrofit;
 
+import com.orange.ma.entreprise.BuildConfig;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -11,7 +13,6 @@ public class RestService {
 
     private RestEndpoint restEndpoint;
     private static RestService restService;
-
 
     public static RestService getInstance() {
         if (restService == null) {
@@ -40,12 +41,11 @@ public class RestService {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(ApiUrls.BASE_URL)
+                .baseUrl(BuildConfig.BASEURL)
                 .client(client.build())
                 .build();
         restEndpoint = retrofit.create(RestEndpoint.class);
     }
-
 
     public RestEndpoint endpoint() {
         return restEndpoint;

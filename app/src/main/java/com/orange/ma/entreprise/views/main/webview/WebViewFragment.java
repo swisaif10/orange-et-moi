@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.views.base.BaseFragment;
+import com.orange.ma.entreprise.views.main.MainActivity;
+import com.orange.ma.entreprise.views.main.dashboard.DashboardFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,7 +72,9 @@ public class WebViewFragment extends BaseFragment {
 
     @OnClick(R.id.back_btn)
     public void onViewClicked() {
-        getActivity().onBackPressed();
+        ((MainActivity) getActivity()).tabLayout.getTabAt(0).select();
+        if (fragmentNavigation != null)
+            fragmentNavigation.pushFragment(new DashboardFragment());
     }
 
     private void init() {

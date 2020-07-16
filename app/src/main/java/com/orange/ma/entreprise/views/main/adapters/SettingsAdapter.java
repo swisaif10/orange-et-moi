@@ -14,7 +14,7 @@ import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.listeners.OnItemSelectedListener;
 import com.orange.ma.entreprise.models.settings.SettingsItem;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,11 +22,11 @@ import butterknife.ButterKnife;
 public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHolder> {
 
     private Context context;
-    private ArrayList<SettingsItem> arrayList;
+    private List<SettingsItem> arrayList;
     private OnItemSelectedListener onItemSelectedListener;
     private String lang;
 
-    public SettingsAdapter(Context context, ArrayList<SettingsItem> arrayList, OnItemSelectedListener onItemSelectedListener, String lang) {
+    public SettingsAdapter(Context context, List<SettingsItem> arrayList, OnItemSelectedListener onItemSelectedListener, String lang) {
         this.context = context;
         this.arrayList = arrayList;
         this.onItemSelectedListener = onItemSelectedListener;

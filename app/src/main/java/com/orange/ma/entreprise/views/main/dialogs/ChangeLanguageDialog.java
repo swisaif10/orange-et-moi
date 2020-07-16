@@ -1,7 +1,6 @@
 package com.orange.ma.entreprise.views.main.dialogs;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,7 +37,6 @@ public class ChangeLanguageDialog extends Dialog {
     @BindView(R.id.background2)
     ImageView background2;
     private Activity context;
-    private AlertDialog alertDialog;
     private String selectedLang;
 
     public ChangeLanguageDialog(Activity context, String lang) {
@@ -64,20 +62,23 @@ public class ChangeLanguageDialog extends Dialog {
                 arabicCheckbox.setChecked(false);
                 frenchTxt.setTextColor(context.getResources().getColor(R.color.black));
                 arabicTxt.setTextColor(context.getResources().getColor(R.color.grey));
-                selectedLang = LocaleManager.ENGLISH;
+                //selectedLang = LocaleManager.ENGLISH;
                 break;
             case R.id.arabic_layout:
                 frenchCheckbox.setChecked(false);
                 arabicCheckbox.setChecked(true);
                 frenchTxt.setTextColor(context.getResources().getColor(R.color.grey));
                 arabicTxt.setTextColor(context.getResources().getColor(R.color.black));
-                selectedLang = LocaleManager.ARABIC;
+                //selectedLang = LocaleManager.ARABIC;
                 break;
             case R.id.close_btn:
                 dismiss();
                 break;
             case R.id.next_btn:
-                selectNewLang();
+                if (frenchCheckbox.isChecked())
+                    selectNewLang("fr");
+                else
+                    selectNewLang("ar");
                 break;
             default:
                 break;
@@ -95,10 +96,12 @@ public class ChangeLanguageDialog extends Dialog {
 
     }
 
-    private void selectNewLang() {
-        LocaleManager.setNewLocale(context, selectedLang);
-        Intent intent = context.getIntent();
-        context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+    private void selectNewLang(String lang) {
+        if (!selectedLang.equalsIgnoreCase(lang)) {
+            LocaleManager.setNewLocale(context, lang);
+            Intent intent = context.getIntent();
+            context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+        }
         dismiss();
     }
 }

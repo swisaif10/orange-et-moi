@@ -32,7 +32,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
-import com.orange.ma.entreprise.models.login.LoginData;
+import com.orange.ma.entreprise.models.commons.ResponseData;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.LocaleManager;
@@ -103,7 +103,7 @@ public class SignInFragment extends Fragment {
 
         authenticationVM.getSignInMutableLiveData().observe(this, this::handleSignInResponse);
 
-        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(),"btn_valider_formulaire_inscription", LocaleManager.getLanguagePref(getContext()));
+        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "btn_valider_formulaire_inscription", LocaleManager.getLanguagePref(getContext()));
 
 
     }
@@ -267,7 +267,7 @@ public class SignInFragment extends Fragment {
     }
 
     private void calculatePasswordStrength(String str) {
-        int passwordStrength = Utilities.calculate(str, "");
+        int passwordStrength = Utilities.calculate(str);
         switch (passwordStrength) {
             case 1:
                 securityLevel.setBackgroundColor(getResources().getColor(R.color.red));
@@ -329,12 +329,12 @@ public class SignInFragment extends Fragment {
         }
     }
 
-    private void handleSignInResponse(LoginData loginData) {
-        if (loginData == null) {
+    private void handleSignInResponse(ResponseData responseData) {
+        if (responseData == null) {
             errorLayout.setVisibility(View.VISIBLE);
             errorDescription.setText(getString(R.string.generic_error));
         } else {
-            int code = loginData.getHeader().getCode();
+            int code = responseData.getHeader().getCode();
             if (code == 200) {
                 preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
                 Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -343,7 +343,7 @@ public class SignInFragment extends Fragment {
                 getActivity().finish();
             } else {
                 errorLayout.setVisibility(View.VISIBLE);
-                errorDescription.setText(loginData.getHeader().getMessage());
+                errorDescription.setText(responseData.getHeader().getMessage());
             }
         }
     }

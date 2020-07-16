@@ -3,18 +3,18 @@ package com.orange.ma.entreprise.models.settings;
 
 import com.google.gson.annotations.Expose;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class SettingsResponse {
 
     @Expose
-    private ArrayList<SettingsItem> data;
+    private List<SettingsItem> data;
 
-    public ArrayList<SettingsItem> getData() {
+    public List<SettingsItem> getData() {
         return data;
     }
 
-    public void setData(ArrayList<SettingsItem> data) {
+    public void setData(List<SettingsItem> data) {
         this.data = data;
     }
 

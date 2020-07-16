@@ -47,5 +47,8 @@
     <string name="language_dialog_title">Langue</string>
     <string name="settings_title">Paramètres</string>
     <string name="weak_password_security">الأمان: ضعيف‎</string>
+    <string name="logout_dialog_title">Confirmation</string>
+    <string name="confirm">Confirmer</string>
+    <string name="logout_dialog_messsage">Voulez-vous vraiment vous déconnecter de l\'application ?</string>
 
 </resources>

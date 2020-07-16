@@ -4,12 +4,12 @@ package com.orange.ma.entreprise.models.dashboard;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class CompoundElement {
 
     @Expose
-    private ArrayList<Element> elements;
+    private List<Element> elements;
     @Expose
     private Long order;
     @Expose
@@ -21,11 +21,11 @@ public class CompoundElement {
     @SerializedName("in_app")
     private boolean inApp;
 
-    public ArrayList<Element> getElements() {
+    public List<Element> getElements() {
         return elements;
     }
 
-    public void setElements(ArrayList<Element> elements) {
+    public void setElements(List<Element> elements) {
         this.elements = elements;
     }
 

@@ -1,6 +1,7 @@
 package com.orange.ma.entreprise.datamanager.retrofit;
 
 import com.orange.ma.entreprise.models.cgu.CGUData;
+import com.orange.ma.entreprise.models.commons.ResponseData;
 import com.orange.ma.entreprise.models.controlversion.ControlVersionData;
 import com.orange.ma.entreprise.models.dashboard.DashboardData;
 import com.orange.ma.entreprise.models.login.LoginData;
@@ -24,8 +25,8 @@ public interface RestEndpoint {
 
     @FormUrlEncoded
     @POST(ApiUrls.SIGN_IN_URL)
-    Call<LoginData> signIn(@Field("identifier") String id, @Field("cinPassport") String cin,
-                           @Field("email") String email, @Field("password") String password, @Path("locale") String lang);
+    Call<ResponseData> signIn(@Field("identifier") String id, @Field("cinPassport") String cin,
+                              @Field("email") String email, @Field("password") String password, @Path("locale") String lang);
 
     @FormUrlEncoded
     @POST(ApiUrls.LOGIN_URL)
@@ -39,5 +40,8 @@ public interface RestEndpoint {
 
     @POST(ApiUrls.GET_SETTINGS_LIST_URL)
     Call<SettingsData> getSettingsList(@Path("locale") String lang);
+
+    @POST(ApiUrls.LOGOUT_URL)
+    Call<ResponseData> logout(@Path("locale") String lang);
 
 }

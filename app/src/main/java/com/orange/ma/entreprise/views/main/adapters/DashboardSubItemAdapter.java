@@ -3,6 +3,7 @@ package com.orange.ma.entreprise.views.main.adapters;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +26,7 @@ import com.orange.ma.entreprise.models.dashboard.Template;
 import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.views.main.MainActivity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,11 +35,11 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
 
 
     private Context context;
-    private ArrayList<CompoundElement> arrayList;
+    private List<CompoundElement> arrayList;
     private OnDashboardItemSelectedListener onDashboardItemSelectedListener;
     private int templateKey;
 
-    public DashboardSubItemAdapter(Context context, ArrayList<CompoundElement> arrayList, OnDashboardItemSelectedListener onDashboardItemSelectedListener, int templateKey) {
+    public DashboardSubItemAdapter(Context context, List<CompoundElement> arrayList, OnDashboardItemSelectedListener onDashboardItemSelectedListener, int templateKey) {
         this.context = context;
         this.arrayList = arrayList;
         this.onDashboardItemSelectedListener = onDashboardItemSelectedListener;
@@ -49,24 +49,19 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        switch (viewType) {
-            case 0:
+        switch (templateKey) {
+            case Template.TEMPLATE_BILLING:
+            case Template.TEMPLATE_PARCK:
                 return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_string_subitem_layout, parent, false));
-            case 1:
+            case Template.TEMPLATE_SMALL_LIST:
+            case Template.TEMPLATE_LIST_SLIDER:
+            case Template.TEMPLATE_LIST:
                 return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_button_subitem_layout, parent, false));
             default:
                 return null;
-
         }
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (arrayList.get(position).getElements().get(0).getType().equalsIgnoreCase("txt"))
-            return 0;
-        else
-            return 1;
-    }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -90,7 +85,7 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
                 holder.layout2.setVisibility(View.GONE);
                 holder.layout3.setVisibility(View.VISIBLE);
                 ViewGroup.LayoutParams p = holder.value3.getLayoutParams();
-                p.width = (int)getElementsMaxWidth();
+                p.width = (int) getElementsMaxWidth();
                 holder.value3.setText(arrayList.get(position).getElements().get(0).getValue());
                 holder.value3.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(0).getColor()));
                 holder.name3.setText(arrayList.get(position).getElements().get(1).getValue());
@@ -114,27 +109,18 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         } else {
 
             if (arrayList.size() > 2)
-                setLayoutParams(holder,position);
-            setSliderParams(holder,position);
-
+                setLayoutParams(holder, position);
+            setSliderParams(holder, position);
             int icon = context.getResources().getIdentifier(arrayList.get(position).getElements().get(0).getValue(), "drawable", context.getPackageName());
             holder.icon.setImageResource(icon);
             holder.title.setText(arrayList.get(position).getElements().get(1).getValue());
+            holder.title.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(0).getColor()));
+            //holder.icon.setColorFilter(Color.parseColor(arrayList.get(position).getElements().get(0).getColor()), PorterDuff.Mode.SRC_ATOP);
+
             if (LocaleManager.getLanguagePref(context).equalsIgnoreCase("ar"))
                 holder.arrow.setScaleX(-1);
         }
         holder.itemView.setOnClickListener(v -> onDashboardItemSelectedListener.onDashboardItemSelected(arrayList.get(position)));
-    }
-
-    private void setSliderParams(ViewHolder holder, int position) {
-        if(templateKey==Template.TEMPLATE_LIST_SLIDER && position<2){
-            holder.layout.setPadding(0,0,25,0);
-        }
-        else if(templateKey==Template.TEMPLATE_LIST_SLIDER && position>=2){
-            holder.layout.setPadding(12,0,10,0);
-        }
-        else if(templateKey==Template.TEMPLATE_LIST_SLIDER)
-            holder.layout.setPadding(0,0,5,0);
     }
 
     @Override
@@ -237,10 +223,20 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         holder.itemView.setLayoutParams(params);
     }
 
-    float getElementsMaxWidth(){
+    float getElementsMaxWidth() {
         int max = 1;
-        for (CompoundElement e:arrayList)
-            if(max<e.getElements().get(0).getValue().length()) max = e.getElements().get(0).getValue().length();
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,max*11f,context.getResources().getDisplayMetrics());
+        for (CompoundElement e : arrayList)
+            if (max < e.getElements().get(0).getValue().length())
+                max = e.getElements().get(0).getValue().length();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, max * 11f, context.getResources().getDisplayMetrics());
+    }
+
+    private void setSliderParams(ViewHolder holder, int position) {
+        if (templateKey == Template.TEMPLATE_LIST_SLIDER && position < 2) {
+            holder.layout.setPadding(0, 0, 25, 0);
+        } else if (templateKey == Template.TEMPLATE_LIST_SLIDER && position >= 2) {
+            holder.layout.setPadding(12, 0, 10, 0);
+        } else if (templateKey == Template.TEMPLATE_LIST_SLIDER)
+            holder.layout.setPadding(0, 0, 5, 0);
     }
 }
