@@ -72,12 +72,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
     @Override
     protected void onResume() {
         super.onResume();
-        if(getIntent().getData()!=null){
-            if(getIntent().getStringExtra("endpointdata")!=null){
-                handleInApp(getIntent().getStringExtra("endpoint"),getIntent().getStringExtra("endpointdata"));
-            }else
-            handleAppView(getIntent().getStringExtra("endpoint"));
-        }
     }
 
     private void handleInApp(String endpoint, String endpointdata) {
@@ -97,6 +91,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                 fragment = new BrowserFragment();
                 break;
         }
+        fragNavController.pushFragment(fragment);
     }
 
     @Override
@@ -270,8 +265,18 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             int code = tabMenuData.getHeader().getCode();
             if (code == 200) {
                 init(tabMenuData);
+                handleIntent();
             } else
                 Utilities.showErrorPopup(this, tabMenuData.getHeader().getMessage());
+        }
+    }
+
+    private void handleIntent() {
+        if(getIntent().getExtras()!=null){
+            if(getIntent().getStringExtra("endpointdata")!=null){
+                handleInApp(getIntent().getStringExtra("endpoint"),getIntent().getStringExtra("endpointdata"));
+            }else
+                handleAppView(getIntent().getStringExtra("endpoint"));
         }
     }
 

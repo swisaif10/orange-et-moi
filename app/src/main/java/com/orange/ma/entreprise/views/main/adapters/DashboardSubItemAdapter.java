@@ -26,14 +26,17 @@ import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.listeners.OnDashboardItemSelectedListener;
 import com.orange.ma.entreprise.models.dashboard.CompoundElement;
 import com.orange.ma.entreprise.models.dashboard.Template;
+import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.views.main.MainActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,17 +45,22 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
 
 
     private Context context;
-    private ArrayList<CompoundElement> arrayList;
+    private List<CompoundElement> arrayList;
     private OnDashboardItemSelectedListener onDashboardItemSelectedListener;
     private int templateKey;
+    private PreferenceManager preferenceManager;
+    String lang;
     int max = 1;
 
-    public DashboardSubItemAdapter(Context context, ArrayList<CompoundElement> arrayList, OnDashboardItemSelectedListener onDashboardItemSelectedListener, int templateKey) {
+    public DashboardSubItemAdapter(Context context, List<CompoundElement> arrayList, OnDashboardItemSelectedListener onDashboardItemSelectedListener, int templateKey) {
         this.context = context;
         this.arrayList = arrayList;
         this.onDashboardItemSelectedListener = onDashboardItemSelectedListener;
         this.templateKey = templateKey;
         findMaxLength();
+        preferenceManager = new PreferenceManager.Builder(context, Context.MODE_PRIVATE)
+                .name(Constants.SHARED_PREFS_NAME)
+                .build();
     }
 
     private void findMaxLength() {
@@ -137,9 +145,9 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
             holder.title.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(1).getColor()));
             holder.title.setOnTouchListener((v,e)->{
                 switch (e.getAction()){
-                    case MotionEvent.ACTION_DOWN:holder.title.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(1).getHoverTxtColor()==null?"FE7900":arrayList.get(position).getElements().get(1).getHoverTxtColor()));break;
+                    case MotionEvent.ACTION_DOWN:holder.title.setTextColor(Color.parseColor(Utilities.isNullOrEmpty(arrayList.get(position).getElements().get(1).getHoverTxtColor())?"#FE7900":arrayList.get(position).getElements().get(1).getHoverTxtColor()));break;
                     case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:holder.title.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(1).getColor()==null?"#000000":arrayList.get(position).getElements().get(1).getColor()));break;
+                    case MotionEvent.ACTION_CANCEL:holder.title.setTextColor(Color.parseColor(Utilities.isNullOrEmpty(arrayList.get(position).getElements().get(1).getColor())?"#000000":arrayList.get(position).getElements().get(1).getColor()));break;
                 }
                 return true;
             });
@@ -147,17 +155,6 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
                 holder.arrow.setScaleX(-1);
         }
         holder.itemView.setOnClickListener(v -> onDashboardItemSelectedListener.onDashboardItemSelected(arrayList.get(position)));
-    }
-
-    private void setSliderParams(ViewHolder holder, int position) {
-        if(templateKey==Template.TEMPLATE_LIST_SLIDER && position<2){
-            holder.layout.setPadding(0,0,25,0);
-        }
-        else if(templateKey==Template.TEMPLATE_LIST_SLIDER && position>=2){
-            holder.layout.setPadding(12,0,10,0);
-        }
-        else if(templateKey==Template.TEMPLATE_LIST_SLIDER)
-            holder.layout.setPadding(0,0,5,0);
     }
 
     @Override
@@ -226,60 +223,27 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((MainActivity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams((int)((displayMetrics.widthPixels/1.053)/2)-(int)context.getResources().getDimension(R.dimen._10sdp),(int)context.getResources().getDimension(R.dimen._30sdp));
+        lang = preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr");
 
         if(position%4==0 || (position-1)%4==0)
-            params.setMargins((int)context.getResources().getDimension(R.dimen._4sdp),(int)context.getResources().getDimension(R.dimen._minus1sdp),(int)context.getResources().getDimension(R.dimen._7sdp),(int)context.getResources().getDimension(R.dimen._8sdp));
+            params.setMargins(
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._7sdp:R.dimen._4sdp),
+                    (int)context.getResources().getDimension(R.dimen._minus1sdp),
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._4sdp:R.dimen._7sdp),
+                    (int)context.getResources().getDimension(R.dimen._8sdp));
         else if(((position-3)%4==0 || (position-2)%4==0) && arrayList.size()>6)
-            params.setMargins((int)context.getResources().getDimension(R.dimen._10sdp),(int)context.getResources().getDimension(R.dimen._minus1sdp),(int)context.getResources().getDimension(R.dimen._2sdp),(int)context.getResources().getDimension(R.dimen._8sdp));
+            params.setMargins(
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._2sdp:R.dimen._10sdp),
+                    (int)context.getResources().getDimension(R.dimen._minus1sdp),
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._10sdp:R.dimen._2sdp),
+                    (int)context.getResources().getDimension(R.dimen._8sdp));
         else if (position>=2)
-            params.setMargins((int)context.getResources().getDimension(R.dimen._6sdp),(int)context.getResources().getDimension(R.dimen._minus1sdp),(int)context.getResources().getDimension(R.dimen._6sdp),(int)context.getResources().getDimension(R.dimen._8sdp));
+            params.setMargins(
+                    (int)context.getResources().getDimension(R.dimen._6sdp),
+                    (int)context.getResources().getDimension(R.dimen._minus1sdp),
+                    (int)context.getResources().getDimension(R.dimen._6sdp),
+                    (int)context.getResources().getDimension(R.dimen._8sdp));
         holder.itemView.setLayoutParams(params);
 
-//        new Handler(Looper.getMainLooper()).post(()->{
-//            Log.d("TAGGWD", "setLayoutParams: "+holder.itemView.getMeasuredWidth());
-//
-//        });
-//        DisplayMetrics displayMetrics = new DisplayMetrics();
-//        ((MainActivity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-//
-//        Resources r = context.getResources();
-//        int px = (int) TypedValue.applyDimension(
-//                TypedValue.COMPLEX_UNIT_DIP,
-//                10,
-//                r.getDisplayMetrics()
-//        );
-//
-//        int px2 = (int) TypedValue.applyDimension(
-//                TypedValue.COMPLEX_UNIT_DIP,
-//                20,
-//                r.getDisplayMetrics()
-//        );
-//
-//        int px3 = (int) TypedValue.applyDimension(
-//                TypedValue.COMPLEX_UNIT_DIP,
-//                5,
-//                r.getDisplayMetrics()
-//        );
-//
-//        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(0, 0);
-//        params.height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
-//        switch (context.getResources().getDisplayMetrics().densityDpi) {
-//            case 280:
-//            case 420:
-//            case 480:
-//            case 560:
-//                params.width = (int) (displayMetrics.widthPixels * 0.47);
-//                params.setMargins(px, 0, 0, px);
-//                break;
-//            default:
-//                params.width = (int) (displayMetrics.widthPixels * 0.44);
-//                if (position == (arrayList.size() - 1)) {
-//                    params.setMargins(0, 0, px, px);
-//                } else {
-//                    params.setMargins(0, 0, px2, px);
-//                }
-//                break;
-//        }
-//        holder.itemView.setLayoutParams(params);
     }
 }

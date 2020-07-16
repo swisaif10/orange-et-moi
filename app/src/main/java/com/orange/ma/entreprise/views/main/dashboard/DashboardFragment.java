@@ -3,10 +3,13 @@ package com.orange.ma.entreprise.views.main.dashboard;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,6 +39,7 @@ import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.adapters.DashboardAdapter;
 import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -54,6 +58,12 @@ public class DashboardFragment extends BaseFragment implements OnDashboardItemSe
     SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.loader)
     GifImageView loader;
+    @BindView(R.id.name)
+    TextView businessName;
+    @BindView(R.id.subtitle)
+    TextView fidelity;
+    @BindView(R.id.user_info_layout)
+    RelativeLayout userInfoLayout;
     private Connectivity connectivity;
     private DashboardVM dashboardVM;
     private PreferenceManager preferenceManager;
@@ -163,7 +173,7 @@ public class DashboardFragment extends BaseFragment implements OnDashboardItemSe
         }
     }
 
-    private void init(List<Template> arrayList) {
+    private void init(ArrayList<Template> arrayList) {
         if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar")) {
             background1.setScaleX(-1);
             background2.setScaleX(-1);
@@ -200,7 +210,11 @@ public class DashboardFragment extends BaseFragment implements OnDashboardItemSe
         } else {
             int code = dashboardData.getHeader().getCode();
             if (code == 200) {
+                //if(dashboardData.getResponse().getHashTemplates()) //TODO
                 init(dashboardData.getResponse().getData().getTemplates());
+                userInfoLayout.setVisibility(View.VISIBLE);
+                businessName.setText(dashboardData.getResponse().getData().getUserInfos().getBusinessName());
+                fidelity.setText(Html.fromHtml(dashboardData.getResponse().getData().getUserInfos().getStringFidelity()));
             } else
                 Utilities.showErrorPopup(getContext(), dashboardData.getHeader().getMessage());
         }

@@ -143,8 +143,12 @@ public interface Utilities {
         return c >= 0x0600 && c <= 0x06E0;
     }
 
-    public static String padLeft(String s, int n) {
+    static String padLeft(String s, int n) {
         if(n>0) return String.format("%"+n+"s", s).replace(' ','_');
         return "";
+    }
+
+    static boolean isNullOrEmpty(String value){
+        return value==null||value.trim().isEmpty();
     }
 }

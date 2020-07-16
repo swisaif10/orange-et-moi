@@ -33,11 +33,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.orange.ma.entreprise.utilities.Constants.Action.APP_VIEW;
-import static com.orange.ma.entreprise.utilities.Constants.Action.DEEP_LINK;
-import static com.orange.ma.entreprise.utilities.Constants.Action.DEFAULT;
-import static com.orange.ma.entreprise.utilities.Constants.Action.IN_APP_URL;
-import static com.orange.ma.entreprise.utilities.Constants.Action.OUT_APP_URL;
+import static com.orange.ma.entreprise.utilities.Constants.APP_VIEW;
+import static com.orange.ma.entreprise.utilities.Constants.DEEP_LINK;
+import static com.orange.ma.entreprise.utilities.Constants.DEFAULT;
+import static com.orange.ma.entreprise.utilities.Constants.IN_APP_URL;
+import static com.orange.ma.entreprise.utilities.Constants.OUT_APP_URL;
 
 public class NotificationUtils {
 
@@ -73,7 +73,7 @@ public class NotificationUtils {
             case DEEP_LINK:
                 handleDeepLink(notification.getEndPoint());break;
             case IN_APP_URL:
-                intent = new Intent(mContext, MainActivity.class);
+                intent = new Intent(mContext, SplashScreenActivity.class);
                 intent.putExtra("endpoint", notification.getEndPoint());
                 intent.putExtra("endpointdata", notification.getEndPointTitle());
                 resultPendingIntent = PendingIntent.getActivity(mContext,0,intent,PendingIntent.FLAG_CANCEL_CURRENT);

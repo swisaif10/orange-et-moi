@@ -119,48 +119,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         return arrayList.size();
     }
 
-    private void setLayoutParams(@NonNull ViewHolder holder) {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((MainActivity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
-
-        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(holder.itemView.getLayoutParams().width, 0);
-
-        if (aspect>1.78) {
-            switch (holder.getItemViewType()) {
-                case Template.TEMPLATE_BILLING:
-                case Template.TEMPLATE_PARCK:
-                    params.height = (int) (height * 0.20);
-                    break;
-                case Template.TEMPLATE_LIST_SLIDER:
-                    params.height = (int) (height * 0.23);
-                    break;
-                case Template.TEMPLATE_SMALL_LIST:
-                    params.height = (int) (height * 0.21);
-                    break;
-            }
-            params.topMargin = 7;
-            params.bottomMargin = 7;
-            holder.itemView.setLayoutParams(params);
-        }else{
-            switch (holder.getItemViewType()) {
-                case Template.TEMPLATE_BILLING:
-                case Template.TEMPLATE_PARCK:
-                    params.height = (int) (height * 0.22);
-                    break;
-                case Template.TEMPLATE_LIST_SLIDER:
-                    params.height = (int) (height * 0.26);
-                    break;
-                case Template.TEMPLATE_SMALL_LIST:
-                    params.height = (int) (height * 0.24);
-                    break;
-            }
-            params.topMargin = 5;
-            params.bottomMargin = 5;
-            holder.itemView.setLayoutParams(params);
-        }
-    }
-
 
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.color)

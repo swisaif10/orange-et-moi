@@ -3,19 +3,29 @@ package com.orange.ma.entreprise.models.dashboard;
 
 import com.google.gson.annotations.Expose;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DashboardResponseData {
 
     @Expose
-    private List<Template> templates;
+    private ArrayList<Template> templates;
+    @Expose
+    private DashboardUserInfo userInfos;
 
-    public List<Template> getTemplates() {
+    public ArrayList<Template> getTemplates() {
         return templates;
     }
 
-    public void setTemplates(List<Template> templates) {
+    public void setTemplates(ArrayList<Template> templates) {
         this.templates = templates;
     }
 
+    public DashboardUserInfo getUserInfos() {
+        return userInfos;
+    }
+
+    public void setUserInfos(DashboardUserInfo userInfos) {
+        this.userInfos = userInfos;
+    }
 }

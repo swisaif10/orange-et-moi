@@ -5,9 +5,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
@@ -43,10 +49,30 @@ public class SplashScreenActivity extends BaseActivity {
         spalshVM.getversionMutableLiveData().observe(this, this::handleVersionCheckResponse);
         new Handler().postDelayed(this::getVersionCheck, 3000);
 
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        //Log.d("TAG", "onCreate: Dynamic link host "+ pendingDynamicLinkData.getLink());
+                    }
+                });
 
+        handleInAppAction();
+
+        Log.d("TAG", "onCreate: Firebase token "+ FirebaseInstanceId.getInstance().getToken());
 
         //firebaseAnalyticsEvent
         OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "page_splash", null);
+    }
+
+    private void handleInAppAction() {
+        Intent i = getIntent();
+        if(getIntent().getExtras() !=null){
+            Intent intent = new Intent(this,MainActivity.class);
+            intent.putExtras(getIntent());
+            startActivity(intent);
+        }
     }
 
     private void goToNextActivity() {

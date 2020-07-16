@@ -7,6 +7,10 @@ public class DashboardResponse {
 
     @Expose
     private DashboardResponseData data;
+    @Expose
+    private String hashTabMenu;
+    @Expose
+    private String hashTemplates;
 
     public DashboardResponseData getData() {
         return data;
@@ -16,4 +20,19 @@ public class DashboardResponse {
         this.data = data;
     }
 
+    public String getHashTabMenu() {
+        return hashTabMenu;
+    }
+
+    public void setHashTabMenu(String hashTabMenu) {
+        this.hashTabMenu = hashTabMenu;
+    }
+
+    public String getHashTemplates() {
+        return hashTemplates;
+    }
+
+    public void setHashTemplates(String hashTemplates) {
+        this.hashTemplates = hashTemplates;
+    }
 }
