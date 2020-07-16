@@ -4,6 +4,7 @@ package com.orange.ma.entreprise.utilities;
 import java.util.regex.Pattern;
 
 public class Constants {
+    public static final String FCM_PREFS_NAME = "com.orange.orangeetmoipro.fcm";
     public static final String SHARED_PREFS_NAME = "com.orange.orangeetmoipro";
     public static final String FIRST_TIME = "FIRST_TIME";
     public static final String IS_LOGGED_IN = "LOGGED_IN";
@@ -20,5 +21,10 @@ public class Constants {
 
     public class Action{
         public static final String VIEW_BILLING = "view_billing";
+        public static final String DEEP_LINK = "deep_link";
+        public static final String IN_APP_URL = "in_app_url";
+        public static final String OUT_APP_URL = "out_app_url";
+        public static final String APP_VIEW = "app_view";
+        public static final String DEFAULT = "default";
     }
 }

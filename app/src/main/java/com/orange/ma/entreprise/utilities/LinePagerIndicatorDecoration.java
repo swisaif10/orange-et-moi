@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
+
 public class LinePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
 
     private final int indicatorHeight;
@@ -55,8 +57,7 @@ public class LinePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
             return;
         }
 
-        itemCount = 2;
-
+        itemCount = adapter.getItemCount() % 4 == 0 ? adapter.getItemCount() / 4 : adapter.getItemCount() / 4 + 1;
 
         // center horizontally, calculate width and subtract half from center
         float totalLength = this.radius * 2 * itemCount;
@@ -71,10 +72,20 @@ public class LinePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
 
         final int activePosition;
 
-
         if (parent.getLayoutManager() instanceof GridLayoutManager) {
-            activePosition = ((GridLayoutManager) parent.getLayoutManager()).findFirstCompletelyVisibleItemPosition() == 0 ? 0 : 1;
-        }else {
+            PreferenceManager preferenceManager = new PreferenceManager.Builder(context, Context.MODE_PRIVATE)
+                    .name(Constants.SHARED_PREFS_NAME)
+                    .build();
+            int position = ((GridLayoutManager) parent.getLayoutManager()).findLastVisibleItemPosition() + 1;
+
+            if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar")) {
+                activePosition = position % 4 == 0 ? (itemCount - 1) - (position / 4 - 1) : (itemCount - 1) - (position / 4);
+            } else {
+                activePosition = position % 4 == 0 ? position / 4 - 1 : position / 4;
+            }
+
+
+        } else {
             // not supported layout manager
             return;
         }
@@ -82,12 +93,6 @@ public class LinePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
         if (activePosition == RecyclerView.NO_POSITION) {
             return;
         }
-
-        // find offset of active page if the user is scrolling
-       /* final View activeChild = parent.getLayoutManager().findViewByPosition(activePosition);
-        if (activeChild == null) {
-            return;
-        }*/
 
         drawActiveDot(c, indicatorStartX, indicatorPosY, activePosition);
 
@@ -106,18 +111,14 @@ public class LinePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
-    private void drawActiveDot(Canvas c, float indicatorStartX, float indicatorPosY,
-                               int highlightPosition) {
+    private void drawActiveDot(Canvas c, float indicatorStartX, float indicatorPosY, int highlightPosition) {
 
         // width of item indicator including padding
         final float itemWidth = this.radius * 2 + indicatorItemPadding;
         float highlightStart = indicatorStartX + radius + itemWidth * highlightPosition;
         if (highlightPosition <= itemCount - 1) {
             c.drawCircle(highlightStart, indicatorPosY, radius, activePaint);
-
         }
-
-
     }
 
     @Override

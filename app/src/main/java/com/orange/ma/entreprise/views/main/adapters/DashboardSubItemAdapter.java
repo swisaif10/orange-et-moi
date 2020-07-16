@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,11 +20,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.listeners.OnDashboardItemSelectedListener;
 import com.orange.ma.entreprise.models.dashboard.CompoundElement;
 import com.orange.ma.entreprise.models.dashboard.Template;
 import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.views.main.MainActivity;
-import com.orange.ma.entreprise.views.main.listeners.SubItemClickedListener;
 
 import java.util.ArrayList;
 
@@ -35,13 +36,13 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
 
     private Context context;
     private ArrayList<CompoundElement> arrayList;
-    private SubItemClickedListener listener;
+    private OnDashboardItemSelectedListener onDashboardItemSelectedListener;
     private int templateKey;
 
-    public DashboardSubItemAdapter(Context context, ArrayList<CompoundElement> arrayList, SubItemClickedListener listener, int templateKey) {
+    public DashboardSubItemAdapter(Context context, ArrayList<CompoundElement> arrayList, OnDashboardItemSelectedListener onDashboardItemSelectedListener, int templateKey) {
         this.context = context;
         this.arrayList = arrayList;
-        this.listener = listener;
+        this.onDashboardItemSelectedListener = onDashboardItemSelectedListener;
         this.templateKey = templateKey;
     }
 
@@ -115,21 +116,19 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
             if (arrayList.size() > 2)
                 setLayoutParams(holder,position);
             setSliderParams(holder,position);
+
             int icon = context.getResources().getIdentifier(arrayList.get(position).getElements().get(0).getValue(), "drawable", context.getPackageName());
             holder.icon.setImageResource(icon);
             holder.title.setText(arrayList.get(position).getElements().get(1).getValue());
             if (LocaleManager.getLanguagePref(context).equalsIgnoreCase("ar"))
                 holder.arrow.setScaleX(-1);
-            if (holder.layout != null) {
-                holder.layout.setOnClickListener(v -> listener.onItemClicked(arrayList.get(position)));
-            }
         }
-
+        holder.itemView.setOnClickListener(v -> onDashboardItemSelectedListener.onDashboardItemSelected(arrayList.get(position)));
     }
 
     private void setSliderParams(ViewHolder holder, int position) {
         if(templateKey==Template.TEMPLATE_LIST_SLIDER && position<2){
-            holder.layout.setPadding(0,0,15,0);
+            holder.layout.setPadding(0,0,25,0);
         }
         else if(templateKey==Template.TEMPLATE_LIST_SLIDER && position>=2){
             holder.layout.setPadding(12,0,10,0);
@@ -175,9 +174,6 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         @BindView(R.id.arrow)
         ImageView arrow;
         @Nullable
-        @BindView(R.id.layout_item)
-        ConstraintLayout layout;
-        @Nullable
         @BindView(R.id.value3)
         TextView value3;
         @Nullable
@@ -186,6 +182,9 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         @Nullable
         @BindView(R.id.layout_3)
         LinearLayout layout3;
+        @Nullable
+        @BindView(R.id.layout)
+        RelativeLayout layout;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -242,6 +241,6 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         int max = 1;
         for (CompoundElement e:arrayList)
             if(max<e.getElements().get(0).getValue().length()) max = e.getElements().get(0).getValue().length();
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,max*9.3f,context.getResources().getDisplayMetrics());
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,max*11f,context.getResources().getDisplayMetrics());
     }
 }

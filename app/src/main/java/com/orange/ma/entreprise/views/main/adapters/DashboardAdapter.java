@@ -18,10 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hhl.gridpagersnaphelper.GridPagerSnapHelper;
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.listeners.OnDashboardItemSelectedListener;
+import com.orange.ma.entreprise.models.dashboard.CompoundElement;
 import com.orange.ma.entreprise.models.dashboard.Template;
 import com.orange.ma.entreprise.utilities.LinePagerIndicatorDecoration;
 import com.orange.ma.entreprise.views.main.MainActivity;
-import com.orange.ma.entreprise.views.main.listeners.SubItemClickedListener;
 
 import java.util.ArrayList;
 
@@ -32,14 +33,15 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     private Context context;
     private ArrayList<Template> arrayList;
-    SubItemClickedListener subItemClickedListener;
     float aspect = 1;
+    private OnDashboardItemSelectedListener onDashboardItemSelectedListener;
 
-    public DashboardAdapter(Context context, ArrayList<Template> arrayList, SubItemClickedListener subItemClickedListener) {
+    public DashboardAdapter(Context context, ArrayList<Template> arrayList, OnDashboardItemSelectedListener onDashboardItemSelectedListener) {
         this.context = context;
         this.arrayList = arrayList;
-        this.subItemClickedListener = subItemClickedListener;
         this.aspect = (float)context.getResources().getDisplayMetrics().heightPixels/(float) context.getResources().getDisplayMetrics().widthPixels;
+        this.onDashboardItemSelectedListener = onDashboardItemSelectedListener;
+
     }
 
     @NonNull
@@ -87,12 +89,15 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         if (arrayList.get(position).getSize().equalsIgnoreCase("small")) {
             layoutManager = new LinearLayoutManager(context);
             holder.recycler.setLayoutManager(layoutManager);
-            holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements(), subItemClickedListener, holder.getItemViewType()));
+            holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements(), onDashboardItemSelectedListener, holder.getItemViewType()));
         } else {
             holder.recycler.setHasFixedSize(true);
+
+
             layoutManager = new GridLayoutManager(context, 2, LinearLayoutManager.HORIZONTAL, false);
+
             holder.recycler.setLayoutManager(layoutManager);
-            holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements(), subItemClickedListener, holder.getItemViewType()));
+            holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements(), onDashboardItemSelectedListener, holder.getItemViewType()));
 
             if (template.getElementComplex().get(0).getCompoundElements().size() > 2) {
                 GridPagerSnapHelper gridPagerSnapHelper = new GridPagerSnapHelper();

@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.models.cgu.CGUData;
@@ -59,6 +60,9 @@ public class CGUFragment extends Fragment {
         preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
+
+        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(),"page_cgu_inscription", LocaleManager.getLanguagePref(getContext()));
+
     }
 
 
@@ -84,6 +88,10 @@ public class CGUFragment extends Fragment {
         switch (view.getId()) {
             case R.id.accept_btn:
                 intent.putExtra("cgu", true);
+                //firebaseAnalyticsEvent
+                Bundle bundle = new Bundle();
+                bundle.putString("Langue",LocaleManager.getLanguagePref(getContext()));
+                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("clic_validation_cgu_inscription", bundle);
                 break;
             case R.id.refuse_btn:
                 intent.putExtra("cgu", false);

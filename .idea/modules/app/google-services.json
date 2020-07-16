@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "985969948113",
+    "firebase_url": "https://om-pro-554b0.firebaseio.com",
+    "project_id": "om-pro-554b0",
+    "storage_bucket": "om-pro-554b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985969948113:android:48f41c410c3677da181cf0",
+        "android_client_info": {
+          "package_name": "com.orange.orangeetmoipro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "985969948113-n96pijhu66j9fsi5drjruvt15dkirdkr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.orange.orangeetmoipro",
+            "certificate_hash": "75ede71afd0c58d817ae2bc5d5099bc75c2f6098"
+          }
+        },
+        {
+          "client_id": "985969948113-cp5ftoffivqko3g9g165h1e3h0lhv0tj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCy1aOe7WBwo3dQ73m6kfDhC_ROJUxSYk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "985969948113-cp5ftoffivqko3g9g165h1e3h0lhv0tj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

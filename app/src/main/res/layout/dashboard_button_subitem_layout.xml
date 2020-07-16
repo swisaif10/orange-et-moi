@@ -5,8 +5,7 @@
     android:id="@+id/layout_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
-    android:background="@drawable/selector_grey_btn_background">
+    android:layout_marginBottom="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -29,7 +28,7 @@
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/icon"
             android:layout_toStartOf="@id/arrow"
-            android:textColor="@color/black"
+            android:textColor="@drawable/selector_button_text_color"
             android:textSize="13sp"
             tools:text="Rooaming" />
 

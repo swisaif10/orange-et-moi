@@ -8,6 +8,7 @@ import android.os.Handler;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.listeners.DialogButtonsClickListener;
@@ -41,19 +42,28 @@ public class SplashScreenActivity extends BaseActivity {
 
         spalshVM.getversionMutableLiveData().observe(this, this::handleVersionCheckResponse);
         new Handler().postDelayed(this::getVersionCheck, 3000);
+
+
+
+        //firebaseAnalyticsEvent
+        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "page_splash", null);
     }
 
     private void goToNextActivity() {
-        Intent intent;
-        if (preferenceManager.getValue(Constants.FIRST_TIME, true)) {
-            intent = new Intent(SplashScreenActivity.this, SelectLanguageActivity.class);
-        } else {
-            if (preferenceManager.getValue(Constants.IS_LOGGED_IN, false))
-                intent = new Intent(SplashScreenActivity.this, MainActivity.class);
-            else
-                intent = new Intent(SplashScreenActivity.this, AuthenticationActivity.class);
+        if (getIntent().getData() != null)
+            deepLink();
+        else {
+            Intent intent;
+            if (preferenceManager.getValue(Constants.FIRST_TIME, true)) {
+                intent = new Intent(SplashScreenActivity.this, SelectLanguageActivity.class);
+            } else {
+                if (preferenceManager.getValue(Constants.IS_LOGGED_IN, false))
+                    intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                else
+                    intent = new Intent(SplashScreenActivity.this, AuthenticationActivity.class);
+            }
+            startActivity(intent);
         }
-        startActivity(intent);
         finish();
     }
 
@@ -88,6 +98,28 @@ public class SplashScreenActivity extends BaseActivity {
                 }
             } else
                 Utilities.showErrorPopup(this, controlVersionData.getResponse().getMessage(), "");
+        }
+    }
+
+    private void deepLink() {
+        String host = getIntent().getData().getHost();
+        Intent intent;
+        switch (host) {
+            case "inscription":
+                intent = new Intent(SplashScreenActivity.this, AuthenticationActivity.class);
+                intent.putExtra("link", host);
+                startActivity(intent);
+                break;
+            case "login":
+                startActivity(new Intent(SplashScreenActivity.this, AuthenticationActivity.class));
+                break;
+            case "parametres":
+                intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                intent.putExtra("link", host);
+                startActivity(intent);
+                break;
+            default:
+                startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
         }
     }
 }

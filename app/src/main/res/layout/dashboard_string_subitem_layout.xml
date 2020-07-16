@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="15dp"
-    android:orientation="vertical"
-    android:background="@drawable/selector_grey_btn_background">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/layout_1"
