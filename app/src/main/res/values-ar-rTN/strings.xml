@@ -49,6 +49,6 @@
     <string name="weak_password_security">الأمان: ضعيف‎</string>
     <string name="logout_dialog_title">Confirmation</string>
     <string name="confirm">Confirmer</string>
-    <string name="logout_dialog_messsage">Voulez-vous vraiment vous déconnecter de l\'application ?</string>
+    <string name="logout_dialog_messsage">هل أنت متأكد من أنك تريد تسجيل الخروج من التطبيق؟</string>
 
 </resources>

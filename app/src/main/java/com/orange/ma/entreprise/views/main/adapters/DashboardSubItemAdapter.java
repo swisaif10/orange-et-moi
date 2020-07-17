@@ -224,7 +224,6 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         ((MainActivity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams((int)((displayMetrics.widthPixels/1.053)/2)-(int)context.getResources().getDimension(R.dimen._10sdp),(int)context.getResources().getDimension(R.dimen._30sdp));
         lang = preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr");
-
         if(position%4==0 || (position-1)%4==0)
             params.setMargins(
                     (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._7sdp:R.dimen._4sdp),
@@ -242,6 +241,18 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
                     (int)context.getResources().getDimension(R.dimen._6sdp),
                     (int)context.getResources().getDimension(R.dimen._minus1sdp),
                     (int)context.getResources().getDimension(R.dimen._6sdp),
+                    (int)context.getResources().getDimension(R.dimen._8sdp));
+        if(position>1 && arrayList.size()<=6)
+            params.setMargins(
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._1sdp:R.dimen._17sdp),
+                    (int)context.getResources().getDimension(R.dimen._minus1sdp),
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._17sdp:R.dimen._1sdp),
+                    (int)context.getResources().getDimension(R.dimen._8sdp));
+        if(position<=1 && arrayList.size()<=6)
+            params.setMargins(
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._3sdp:R.dimen._4sdp),
+                    (int)context.getResources().getDimension(R.dimen._minus1sdp),
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._4sdp:R.dimen._3sdp),
                     (int)context.getResources().getDimension(R.dimen._8sdp));
         holder.itemView.setLayoutParams(params);
 
