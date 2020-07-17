@@ -294,5 +294,4 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             tabLayout.getTabAt(index).select();
     }
 
-
 }

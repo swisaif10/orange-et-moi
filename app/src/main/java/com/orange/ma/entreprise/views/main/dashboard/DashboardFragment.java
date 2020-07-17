@@ -176,8 +176,6 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
             background1.setScaleX(-1);
             background2.setScaleX(-1);
         }
-
-        userInfoLayout.setVisibility(View.VISIBLE);
         businessName.setText(dashboardResponseData.getUserInfos().getBusinessName());
         fidelity.setText(Html.fromHtml(dashboardResponseData.getUserInfos().getStringFidelity()));
 
@@ -195,6 +193,7 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
         dashboardRecycler.setLayoutManager(layoutManager);
         DashboardAdapter dashboardAdapter = new DashboardAdapter(getContext(), dashboardResponseData.getTemplates(), this::onTemplateItemSelected);
         dashboardRecycler.setAdapter(dashboardAdapter);
+        userInfoLayout.setVisibility(View.VISIBLE);
 
     }
 
