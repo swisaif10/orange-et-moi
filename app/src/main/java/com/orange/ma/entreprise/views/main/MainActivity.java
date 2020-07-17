@@ -223,6 +223,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
 
         }
 
+
     }
 
     private void switchTab(int position) {
@@ -251,7 +252,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
     }
 
     private void handleIntent() {
-        if (getIntent().getExtras() != null) {
+        if (getIntent().getExtras() != null && getIntent().getStringExtra("endpoint")!=null) {
             if (getIntent().getStringExtra("endpointdata") != null) {
                 handleInApp(getIntent().getStringExtra("endpoint"), getIntent().getStringExtra("endpointdata"));
             } else
@@ -292,5 +293,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         if (index != -1)
             tabLayout.getTabAt(index).select();
     }
+
 
 }

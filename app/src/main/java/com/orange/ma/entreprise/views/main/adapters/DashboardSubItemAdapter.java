@@ -114,6 +114,7 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
             }
 
         } else {
+
             if (arrayList.size() > 2)
                 setLayoutParams(holder, position);
 
@@ -209,24 +210,24 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams((int) ((displayMetrics.widthPixels / 1.053) / 2) - (int) context.getResources().getDimension(R.dimen._10sdp), (int) context.getResources().getDimension(R.dimen._30sdp));
         lang = preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr");
 
-        if (position % 4 == 0 || (position - 1) % 4 == 0)
+        if(position%4==0 || (position-1)%4==0)
             params.setMargins(
-                    (int) context.getResources().getDimension(lang.equalsIgnoreCase("ar") ? R.dimen._7sdp : R.dimen._4sdp),
-                    (int) context.getResources().getDimension(R.dimen._minus1sdp),
-                    (int) context.getResources().getDimension(lang.equalsIgnoreCase("ar") ? R.dimen._4sdp : R.dimen._7sdp),
-                    (int) context.getResources().getDimension(R.dimen._8sdp));
-        else if (((position - 3) % 4 == 0 || (position - 2) % 4 == 0) && arrayList.size() > 6)
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._7sdp:R.dimen._4sdp),
+                    (int)context.getResources().getDimension(R.dimen._minus1sdp),
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._4sdp:R.dimen._7sdp),
+                    (int)context.getResources().getDimension(R.dimen._8sdp));
+        else if(((position-3)%4==0 || (position-2)%4==0) && arrayList.size()>6)
             params.setMargins(
-                    (int) context.getResources().getDimension(lang.equalsIgnoreCase("ar") ? R.dimen._2sdp : R.dimen._10sdp),
-                    (int) context.getResources().getDimension(R.dimen._minus1sdp),
-                    (int) context.getResources().getDimension(lang.equalsIgnoreCase("ar") ? R.dimen._10sdp : R.dimen._2sdp),
-                    (int) context.getResources().getDimension(R.dimen._8sdp));
-        else if (position >= 2)
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._2sdp:R.dimen._10sdp),
+                    (int)context.getResources().getDimension(R.dimen._minus1sdp),
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._10sdp:R.dimen._2sdp),
+                    (int)context.getResources().getDimension(R.dimen._8sdp));
+        else if (position>=2)
             params.setMargins(
-                    (int) context.getResources().getDimension(R.dimen._6sdp),
-                    (int) context.getResources().getDimension(R.dimen._minus1sdp),
-                    (int) context.getResources().getDimension(R.dimen._6sdp),
-                    (int) context.getResources().getDimension(R.dimen._8sdp));
+                    (int)context.getResources().getDimension(R.dimen._6sdp),
+                    (int)context.getResources().getDimension(R.dimen._minus1sdp),
+                    (int)context.getResources().getDimension(R.dimen._6sdp),
+                    (int)context.getResources().getDimension(R.dimen._8sdp));
         holder.itemView.setLayoutParams(params);
 
     }
