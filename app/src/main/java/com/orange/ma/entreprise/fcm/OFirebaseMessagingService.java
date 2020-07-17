@@ -1,7 +1,6 @@
 package com.orange.ma.entreprise.fcm;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;

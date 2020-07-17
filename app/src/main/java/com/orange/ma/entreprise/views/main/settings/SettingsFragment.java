@@ -2,6 +2,7 @@ package com.orange.ma.entreprise.views.main.settings;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +35,7 @@ import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.main.adapters.SettingsAdapter;
 import com.orange.ma.entreprise.views.main.dialogs.ChangeLanguageDialog;
 import com.orange.ma.entreprise.views.main.dialogs.LogoutDialog;
+import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
 import java.util.List;
 
@@ -83,26 +88,39 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
     }
 
     @Override
-    public void onItemSelected(String action) {
-        switch (action) {
-            case "deconnexion":
-                new LogoutDialog(getActivity(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), this).show();
-                //firebaseAnalyticsEvent
-                Bundle bundle = new Bundle();
-                bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
-                bundle.putString("RC_entreprise", preferenceManager.getValue(Constants.LOGIN_KEY, ""));
-                bundle.putString("Nom_Element_params", action);
-                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_parametres", bundle);
-                break;
-            case "action_language":
-                new ChangeLanguageDialog(getActivity(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr")).show();
-                bundle = new Bundle();
-                bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
-                bundle.putString("Nom_Element_params", action);
-                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_parametres", bundle);
-                break;
-            default:
-                break;
+    public void onItemSelected(SettingsItem settingsItem) {
+        if (!settingsItem.getActionType().equalsIgnoreCase("none")) {
+            Fragment fragment;
+            if (settingsItem.getActionType().equalsIgnoreCase("internal")) {
+                switch (settingsItem.getAction()) {
+                    case "deconnexion":
+                        new LogoutDialog(getActivity(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), this).show();
+                        Bundle bundle = new Bundle();
+                        bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
+                        bundle.putString(Constants.FIREBASE_RC_KEY, preferenceManager.getValue(Constants.LOGIN_KEY, ""));
+                        bundle.putString(Constants.FIREBASE_ELEMENT_NAME_KEY, settingsItem.getAction());
+                        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_parametres", bundle);
+                        break;
+                    case "action_language":
+                        new ChangeLanguageDialog(getActivity(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr")).show();
+                        bundle = new Bundle();
+                        bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
+                        bundle.putString(Constants.FIREBASE_ELEMENT_NAME_KEY, settingsItem.getAction());
+                        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_parametres", bundle);
+                        break;
+                    default:
+                        break;
+                }
+            } else if (settingsItem.isInApp()) {
+                fragment = WebViewFragment.newInstance(settingsItem.getAction(), settingsItem.getTitle());
+                if (fragmentNavigation != null)
+                    fragmentNavigation.pushFragment(fragment);
+            } else {
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
+                CustomTabsIntent customTabsIntent = builder.build();
+                customTabsIntent.launchUrl(getContext(), Uri.parse(settingsItem.getAction()));
+            }
         }
     }
 
@@ -125,7 +143,7 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
     private void getSettings() {
         if (connectivity.isConnected()) {
             loader.setVisibility(View.VISIBLE);
-            settingsVM.getSettingsList(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
+            settingsVM.getSettingsList(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), preferenceManager.getValue(Constants.TOKEN_KEY, ""));
         } else
             Utilities.showErrorPopup(getContext(), getString(R.string.no_internet));
     }
@@ -146,7 +164,7 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
     private void logout() {
         if (connectivity.isConnected()) {
             loader.setVisibility(View.VISIBLE);
-            settingsVM.logout(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
+            settingsVM.logout(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), preferenceManager.getValue(Constants.TOKEN_KEY, ""));
         } else
             Utilities.showErrorPopup(getContext(), getString(R.string.no_internet));
     }

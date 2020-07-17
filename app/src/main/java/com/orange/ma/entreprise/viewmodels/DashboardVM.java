@@ -31,9 +31,8 @@ public class DashboardVM extends AndroidViewModel {
         dashboardMutableLiveData = new MutableLiveData<>();
     }
 
-
-    public void getDashboardList(String lang) {
-        Call<DashboardData> call = RestService.getInstance().endpoint().getDashboardList(lang);
+    public void getDashboardList(String lang, String token) {
+        Call<DashboardData> call = RestService.getInstance().endpoint().getDashboardList(lang, token);
         call.enqueue(new Callback<DashboardData>() {
             @Override
             public void onResponse(Call<DashboardData> call, Response<DashboardData> response) {

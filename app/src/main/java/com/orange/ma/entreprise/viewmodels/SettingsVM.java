@@ -38,8 +38,8 @@ public class SettingsVM extends AndroidViewModel {
         logoutLiveData = new MutableLiveData<>();
     }
 
-    public void getSettingsList(String lang) {
-        Call<SettingsData> call = RestService.getInstance().endpoint().getSettingsList(lang);
+    public void getSettingsList(String lang, String token) {
+        Call<SettingsData> call = RestService.getInstance().endpoint().getSettingsList(lang, token);
         call.enqueue(new Callback<SettingsData>() {
             @Override
             public void onResponse(Call<SettingsData> call, Response<SettingsData> response) {
@@ -53,8 +53,8 @@ public class SettingsVM extends AndroidViewModel {
         });
     }
 
-    public void logout(String lang) {
-        Call<ResponseData> call = RestService.getInstance().endpoint().logout(lang);
+    public void logout(String lang, String token) {
+        Call<ResponseData> call = RestService.getInstance().endpoint().logout(lang, token);
         call.enqueue(new Callback<ResponseData>() {
             @Override
             public void onResponse(Call<ResponseData> call, Response<ResponseData> response) {

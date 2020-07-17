@@ -17,7 +17,7 @@
     <string name="generic_error">لقد وقع خطأ!</string>
     <string name="update_dialog_title">Mise à jour</string>
     <string name="ok_btn_hint">OK</string>
-    <string name="cancel_btn_label">Annuler</string>
+    <string name="cancel_btn_label">إلغاء</string>
     <string name="signin">تشغيل حسابي</string>
     <string name="login_btn">مسجل سابقا</string>
     <string name="cin_passeport_hint">البطاقة الوطنية للتعريف او جواز السفر</string>
@@ -42,13 +42,13 @@
     <string name="medium_password_security">الأمان: متوسط</string>
     <string name="agree_btn">أوافق</string>
     <string name="cgu_title">شروط استخدام</string>
-    <string name="apply_btn">Appliquer</string>
-    <string name="next_btn">Passer</string>
-    <string name="language_dialog_title">Langue</string>
-    <string name="settings_title">Paramètres</string>
+    <string name="apply_btn">تطبيق</string>
+    <string name="next_btn">التالى</string>
+    <string name="language_dialog_title">اللغة</string>
+    <string name="settings_title">الإعدادات</string>
     <string name="weak_password_security">الأمان: ضعيف‎</string>
-    <string name="logout_dialog_title">Confirmation</string>
-    <string name="confirm">Confirmer</string>
-    <string name="logout_dialog_messsage">Voulez-vous vraiment vous déconnecter de l\'application ?</string>
+    <string name="logout_dialog_title">تأكيد</string>
+    <string name="confirm">تأكيد</string>
+    <string name="logout_dialog_messsage">هل أنت متأكد من أنك تريد تسجيل الخروج من التطبيق؟</string>
 
 </resources>

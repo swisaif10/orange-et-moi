@@ -74,26 +74,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         super.onResume();
     }
 
-    private void handleInApp(String endpoint, String endpointdata) {
-        fragment = WebViewFragment.newInstance(endpoint, endpointdata);
-        fragNavController.pushFragment(fragment);
-    }
-
-    private void handleAppView(String endpoint) {
-        switch (endpoint){
-            case "home":
-                fragment = new DashboardFragment();
-                break;
-            case "setting":
-                fragment = new SettingsFragment();
-                break;
-            default:
-                fragment = new BrowserFragment();
-                break;
-        }
-        fragNavController.pushFragment(fragment);
-    }
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -221,8 +201,8 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                 public void firstChoice() {
                     //firebaseAnalyticsEvent
                     Bundle bundle = new Bundle();
-                    bundle.putString("Langue", LocaleManager.getLanguagePref(getApplicationContext()));
-                    bundle.putString("RC_entreprise", preferenceManager.getValue(Constants.LOGIN_KEY, ""));
+                    bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getApplicationContext()));
+                    bundle.putString(Constants.FIREBASE_RC_KEY, preferenceManager.getValue(Constants.LOGIN_KEY, ""));
                     OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("Clic_completer_mon_profil", bundle);
                 }
 
@@ -230,8 +210,8 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                 public void secondChoice() {
 
                     Bundle bundle = new Bundle();
-                    bundle.putString("Langue", LocaleManager.getLanguagePref(getApplicationContext()));
-                    bundle.putString("RC_entreprise", preferenceManager.getValue(Constants.LOGIN_KEY, ""));
+                    bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getApplicationContext()));
+                    bundle.putString(Constants.FIREBASE_RC_KEY, preferenceManager.getValue(Constants.LOGIN_KEY, ""));
                     OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("Clic_ignorer_completer_mon_profil", bundle);
                 }
             });
@@ -243,7 +223,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
 
         }
 
-
     }
 
     private void switchTab(int position) {
@@ -252,7 +231,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
 
     private void getTabMenu() {
         if (connectivity.isConnected()) {
-            mainVM.getTabMenu(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
+            mainVM.getTabMenu(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), preferenceManager.getValue(Constants.TOKEN_KEY, ""));
         } else
             Utilities.showErrorPopup(this, getString(R.string.no_internet));
 
@@ -272,11 +251,33 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
     }
 
     private void handleIntent() {
-        if(getIntent().getExtras()!=null){
-            if(getIntent().getStringExtra("endpointdata")!=null){
-                handleInApp(getIntent().getStringExtra("endpoint"),getIntent().getStringExtra("endpointdata"));
-            }else
+        if (getIntent().getExtras() != null) {
+            if (getIntent().getStringExtra("endpointdata") != null) {
+                handleInApp(getIntent().getStringExtra("endpoint"), getIntent().getStringExtra("endpointdata"));
+            } else
                 handleAppView(getIntent().getStringExtra("endpoint"));
+        }
+    }
+
+    private void handleInApp(String endpoint, String endpointdata) {
+        fragment = WebViewFragment.newInstance(endpoint, endpointdata);
+        fragNavController.pushFragment(fragment);
+    }
+
+    private void handleAppView(String endpoint) {
+        if (endpoint != null) {
+            switch (endpoint) {
+                case "home":
+                    fragment = new DashboardFragment();
+                    break;
+                case "setting":
+                    fragment = new SettingsFragment();
+                    break;
+                default:
+                    fragment = new BrowserFragment();
+                    break;
+            }
+            fragNavController.pushFragment(fragment);
         }
     }
 
@@ -291,6 +292,5 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         if (index != -1)
             tabLayout.getTabAt(index).select();
     }
-
 
 }

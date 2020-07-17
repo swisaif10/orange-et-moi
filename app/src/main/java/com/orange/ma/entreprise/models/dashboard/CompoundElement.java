@@ -13,11 +13,9 @@ public class CompoundElement {
     @Expose
     private Long order;
     @Expose
-    @SerializedName("actionType")
     private String actionType;
     @Expose
     private String action;
-    @Expose
     @SerializedName("in_app")
     private boolean inApp;
 

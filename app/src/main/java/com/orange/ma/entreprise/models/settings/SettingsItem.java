@@ -2,6 +2,7 @@
 package com.orange.ma.entreprise.models.settings;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class SettingsItem {
 
@@ -15,6 +16,8 @@ public class SettingsItem {
     private String status;
     @Expose
     private String title;
+    @Expose
+    private boolean inApp;
 
     public String getAction() {
         return action;
@@ -56,4 +59,11 @@ public class SettingsItem {
         this.title = title;
     }
 
+    public boolean isInApp() {
+        return inApp;
+    }
+
+    public void setInApp(boolean inApp) {
+        this.inApp = inApp;
+    }
 }

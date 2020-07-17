@@ -31,9 +31,8 @@ public class MainVM extends AndroidViewModel {
         tabMenuMutableLiveData = new MutableLiveData<>();
     }
 
-
-    public void getTabMenu(String lang) {
-        Call<TabMenuData> call = RestService.getInstance().endpoint().getTabMenu(lang);
+    public void getTabMenu(String lang, String token) {
+        Call<TabMenuData> call = RestService.getInstance().endpoint().getTabMenu(lang,token);
         call.enqueue(new Callback<TabMenuData>() {
             @Override
             public void onResponse(Call<TabMenuData> call, Response<TabMenuData> response) {

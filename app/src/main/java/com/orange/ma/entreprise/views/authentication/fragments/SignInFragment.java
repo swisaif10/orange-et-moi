@@ -32,7 +32,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
-import com.orange.ma.entreprise.models.commons.ResponseData;
+import com.orange.ma.entreprise.models.login.LoginData;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.LocaleManager;
@@ -138,7 +138,7 @@ public class SignInFragment extends Fragment {
                 from_cgu = false;
                 ((AuthenticationActivity) getActivity()).replaceFragment(new LoginFragment());
                 bundle = new Bundle();
-                bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
+                bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
                 OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_déjà_compte", bundle);
                 break;
             case R.id.cgu_btn:
@@ -149,7 +149,7 @@ public class SignInFragment extends Fragment {
                 break;
             case R.id.valid_btn:
                 bundle = new Bundle();
-                bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
+                bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
                 OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_creer_compte", bundle);
                 SignIn();
                 break;
@@ -329,7 +329,7 @@ public class SignInFragment extends Fragment {
         }
     }
 
-    private void handleSignInResponse(ResponseData responseData) {
+    private void handleSignInResponse(LoginData responseData) {
         if (responseData == null) {
             errorLayout.setVisibility(View.VISIBLE);
             errorDescription.setText(getString(R.string.generic_error));
@@ -337,6 +337,7 @@ public class SignInFragment extends Fragment {
             int code = responseData.getHeader().getCode();
             if (code == 200) {
                 preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
+                preferenceManager.putValue(Constants.TOKEN_KEY, "Bearer " + responseData.getResponse().getToken());
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.putExtra("show_popup", true);
                 startActivity(intent);

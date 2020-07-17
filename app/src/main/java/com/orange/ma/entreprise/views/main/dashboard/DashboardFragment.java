@@ -25,10 +25,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
-import com.orange.ma.entreprise.listeners.OnDashboardItemSelectedListener;
+import com.orange.ma.entreprise.listeners.OnTemplateItemSelectedListener;
 import com.orange.ma.entreprise.models.dashboard.CompoundElement;
 import com.orange.ma.entreprise.models.dashboard.DashboardData;
-import com.orange.ma.entreprise.models.dashboard.Template;
+import com.orange.ma.entreprise.models.dashboard.DashboardResponseData;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.LocaleManager;
@@ -39,14 +39,11 @@ import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.adapters.DashboardAdapter;
 import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.droidsonroids.gif.GifImageView;
 
-public class DashboardFragment extends BaseFragment implements OnDashboardItemSelectedListener {
+public class DashboardFragment extends BaseFragment implements OnTemplateItemSelectedListener {
 
     @BindView(R.id.dashboard_recycler)
     RecyclerView dashboardRecycler;
@@ -141,14 +138,14 @@ public class DashboardFragment extends BaseFragment implements OnDashboardItemSe
             getDashboardList();
             swipeRefresh.setRefreshing(false);
             bundle = new Bundle();
-            bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
+            bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
             OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_dash_updated", bundle);
 
         });
     }
 
     @Override
-    public void onDashboardItemSelected(CompoundElement compoundElement) {
+    public void onTemplateItemSelected(CompoundElement compoundElement) {
 
         if (!compoundElement.getActionType().equalsIgnoreCase("none")) {
             Fragment fragment;
@@ -157,13 +154,14 @@ public class DashboardFragment extends BaseFragment implements OnDashboardItemSe
                     case "home":
                         getDashboardList();
                         break;
-                    case "parametres":
+                    case "setting":
                         ((MainActivity) getActivity()).moveToSettingsFragment();
                         break;
                 }
             } else if (compoundElement.getInApp()) {
                 fragment = WebViewFragment.newInstance(compoundElement.getAction(), compoundElement.getElements().get(1).getValue());
-                handleInApp(fragment);
+                if (fragmentNavigation != null)
+                    fragmentNavigation.pushFragment(fragment);
             } else {
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
@@ -173,17 +171,21 @@ public class DashboardFragment extends BaseFragment implements OnDashboardItemSe
         }
     }
 
-    private void init(ArrayList<Template> arrayList) {
+    private void init(DashboardResponseData dashboardResponseData) {
         if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar")) {
             background1.setScaleX(-1);
             background2.setScaleX(-1);
         }
 
+        userInfoLayout.setVisibility(View.VISIBLE);
+        businessName.setText(dashboardResponseData.getUserInfos().getBusinessName());
+        fidelity.setText(Html.fromHtml(dashboardResponseData.getUserInfos().getStringFidelity()));
+
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                if (arrayList.get(position).getSize().equalsIgnoreCase("small")) {
+                if (dashboardResponseData.getTemplates().get(position).getSize().equalsIgnoreCase("small")) {
                     return 1;
                 } else
                     return 2;
@@ -191,14 +193,14 @@ public class DashboardFragment extends BaseFragment implements OnDashboardItemSe
         });
 
         dashboardRecycler.setLayoutManager(layoutManager);
-        DashboardAdapter dashboardAdapter = new DashboardAdapter(getContext(), arrayList, this::onDashboardItemSelected);
+        DashboardAdapter dashboardAdapter = new DashboardAdapter(getContext(), dashboardResponseData.getTemplates(), this::onTemplateItemSelected);
         dashboardRecycler.setAdapter(dashboardAdapter);
 
     }
 
     private void getDashboardList() {
         if (connectivity.isConnected())
-            dashboardVM.getDashboardList(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
+            dashboardVM.getDashboardList(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), preferenceManager.getValue(Constants.TOKEN_KEY, ""));
         else
             Utilities.showErrorPopup(getContext(), getString(R.string.no_internet));
     }
@@ -211,17 +213,9 @@ public class DashboardFragment extends BaseFragment implements OnDashboardItemSe
             int code = dashboardData.getHeader().getCode();
             if (code == 200) {
                 //if(dashboardData.getResponse().getHashTemplates()) //TODO
-                init(dashboardData.getResponse().getData().getTemplates());
-                userInfoLayout.setVisibility(View.VISIBLE);
-                businessName.setText(dashboardData.getResponse().getData().getUserInfos().getBusinessName());
-                fidelity.setText(Html.fromHtml(dashboardData.getResponse().getData().getUserInfos().getStringFidelity()));
+                init(dashboardData.getResponse().getData());
             } else
                 Utilities.showErrorPopup(getContext(), dashboardData.getHeader().getMessage());
         }
-    }
-
-    void handleInApp(Fragment fragment){
-        if (fragmentNavigation != null)
-            fragmentNavigation.pushFragment(fragment);
     }
 }

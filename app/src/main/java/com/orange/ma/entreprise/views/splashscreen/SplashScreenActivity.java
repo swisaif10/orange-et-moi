@@ -139,7 +139,7 @@ public class SplashScreenActivity extends BaseActivity {
             case "login":
                 startActivity(new Intent(SplashScreenActivity.this, AuthenticationActivity.class));
                 break;
-            case "parametres":
+            case "setting":
                 intent = new Intent(SplashScreenActivity.this, MainActivity.class);
                 intent.putExtra("link", host);
                 startActivity(intent);

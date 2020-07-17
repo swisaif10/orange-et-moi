@@ -56,7 +56,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
         if (holder.separator != null)
             holder.separator.setVisibility(position == arrayList.size() - 1 ? View.INVISIBLE : View.VISIBLE);
 
-        holder.itemView.setOnClickListener(v -> onItemSelectedListener.onItemSelected(arrayList.get(position).getAction()));
+        holder.itemView.setOnClickListener(v -> onItemSelectedListener.onItemSelected(arrayList.get(position)));
     }
 
     @Override

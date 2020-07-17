@@ -8,26 +8,27 @@
     android:layout_marginBottom="@dimen/_5sdp">
 
     <RelativeLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/layout">
+        android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/icon"
             android:layout_width="@dimen/_14sdp"
             android:layout_height="@dimen/_17sdp"
-            android:scaleType="centerInside"
-            android:src="@drawable/icon_roaming"
             android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_roaming" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8sdp"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/icon"
+            android:layout_marginStart="@dimen/_8sdp"
             android:layout_toStartOf="@id/arrow"
+            android:layout_toEndOf="@id/icon"
             android:textColor="@drawable/selector_button_text_color"
             android:textSize="@dimen/_11sdp"
             tools:text="Rooaming" />
@@ -36,10 +37,10 @@
             android:id="@+id/arrow"
             android:layout_width="@dimen/_8sdp"
             android:layout_height="@dimen/_8sdp"
-            android:layout_marginEnd="5dp"
-            android:src="@drawable/flesh"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/flesh" />
     </RelativeLayout>
 
     <View

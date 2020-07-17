@@ -80,7 +80,7 @@ public class LoginFragment extends Fragment {
         authenticationVM.getLoginMutableLiveData().observe(this, this::handleLoginResponse);
 
         //firebaseAnalyticsEvent
-        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(),"page_login", LocaleManager.getLanguagePref(getContext()));
+        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_login", LocaleManager.getLanguagePref(getContext()));
     }
 
     @Override
@@ -104,14 +104,14 @@ public class LoginFragment extends Fragment {
             case R.id.signin_btn:
                 ((AuthenticationActivity) getActivity()).replaceFragment(new SignInFragment());
                 bundle = new Bundle();
-                bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
+                bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
                 OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_creer_compte", bundle);
                 break;
             case R.id.valid_btn:
 
                 bundle = new Bundle();
-                bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
-                bundle.putString("RC_entreprise", preferenceManager.getValue(Constants.LOGIN_KEY, ""));
+                bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
+                bundle.putString(Constants.FIREBASE_RC_KEY, preferenceManager.getValue(Constants.LOGIN_KEY, ""));
                 OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_login", bundle);
 
                 login();
@@ -135,12 +135,12 @@ public class LoginFragment extends Fragment {
 
             case R.id.forgotten_pwd_btn:
                 bundle = new Bundle();
-                bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
+                bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
                 OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("bnt_forgotten_password", bundle);
                 break;
             case R.id.gest_account_btn:
                 bundle = new Bundle();
-                bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
+                bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
                 OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_changement_gestionnaire", bundle);
                 break;
             default:
@@ -199,8 +199,6 @@ public class LoginFragment extends Fragment {
         } else {
             int code = loginData.getHeader().getCode();
             if (code == 200) {
-                startActivity(new Intent(getActivity(), MainActivity.class));
-                getActivity().finish();
                 if (saveBtn.isChecked()) {
                     preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
                     preferenceManager.putValue(Constants.LOGIN_KEY, id.getText().toString());
@@ -211,6 +209,9 @@ public class LoginFragment extends Fragment {
                     preferenceManager.clearValue(Constants.PASS_KEY);
                     preferenceManager.clearValue(Constants.SAVE_CREDENTIALS_KEY);
                 }
+                preferenceManager.putValue(Constants.TOKEN_KEY, "Bearer " + loginData.getResponse().getToken());
+                startActivity(new Intent(getActivity(), MainActivity.class));
+                getActivity().finish();
             } else {
                 errorLayout.setVisibility(View.VISIBLE);
                 errorDescription.setText(loginData.getHeader().getMessage());

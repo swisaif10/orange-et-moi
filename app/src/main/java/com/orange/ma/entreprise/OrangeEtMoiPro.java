@@ -8,7 +8,6 @@ import androidx.multidex.MultiDexApplication;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.orange.ma.entreprise.utilities.LocaleManager;
 
-
 public class OrangeEtMoiPro extends MultiDexApplication {
 
     private static OrangeEtMoiPro orangeApp;
@@ -38,10 +37,8 @@ public class OrangeEtMoiPro extends MultiDexApplication {
         LocaleManager.setLocale(this);
     }
 
-
     public FirebaseAnalytics getFireBaseAnalyticsInstance() {
         return mFirebaseAnalytics;
     }
-
 
 }

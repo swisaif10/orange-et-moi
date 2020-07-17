@@ -11,6 +11,7 @@ public interface Constants {
     String LOGIN_KEY = "LOGIN_KEY";
     String PASS_KEY = "PASS_KEY";
     String SAVE_CREDENTIALS_KEY = "SAVE_CREDENTIALS_KEY";
+    String TOKEN_KEY = "TOKEN_KEY";
 
     String firstPart = "[A-Z0-9a-z]([A-Z0-9a-z._%+-]{0,30}[A-Z0-9a-z])?";
     String serverPart = "([A-Z0-9a-z]([A-Z0-9a-z-]{0,30}[A-Z0-9a-z])?\\.){1,5}";
@@ -23,4 +24,9 @@ public interface Constants {
     String OUT_APP_URL = "out_app_url";
     String APP_VIEW = "app_view";
     String DEFAULT = "default";
+
+    String FIREBASE_LANGUE_KEY = "Langue";
+    String FIREBASE_RC_KEY = "RC_entreprise";
+    String FIREBASE_ELEMENT_NAME_KEY = "Nom_Element_params";
+
 }

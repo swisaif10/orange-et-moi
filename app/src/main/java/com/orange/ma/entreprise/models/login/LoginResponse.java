@@ -2,14 +2,13 @@
 package com.orange.ma.entreprise.models.login;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class LoginResponse {
 
     @Expose
     private LoginResponseData data;
-    @Expose
-    private String hashTabMenu;
-    @Expose
+    @SerializedName("x_auth_token")
     private String token;
 
     public LoginResponseData getData() {
@@ -20,14 +19,6 @@ public class LoginResponse {
         this.data = data;
     }
 
-    public String getHashTabMenu() {
-        return hashTabMenu;
-    }
-
-    public void setHashTabMenu(String hashTabMenu) {
-        this.hashTabMenu = hashTabMenu;
-    }
-
     public String getToken() {
         return token;
     }
@@ -35,5 +26,4 @@ public class LoginResponse {
     public void setToken(String token) {
         this.token = token;
     }
-
 }

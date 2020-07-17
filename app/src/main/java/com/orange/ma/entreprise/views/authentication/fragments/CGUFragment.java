@@ -55,7 +55,7 @@ public class CGUFragment extends Fragment {
         authenticationVM = ViewModelProviders.of(this).get(AuthenticationVM.class);
         connectivity = new Connectivity(getContext(), this);
 
-        authenticationVM.getCguMutableLiveData().observe(this, this::handleCGULoginResponse);
+        authenticationVM.getCguMutableLiveData().observe(this, this::handleCGUResponse);
 
         preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
@@ -89,7 +89,7 @@ public class CGUFragment extends Fragment {
             intent.putExtra("cgu", true);
             //firebaseAnalyticsEvent
             Bundle bundle = new Bundle();
-            bundle.putString("Langue", LocaleManager.getLanguagePref(getContext()));
+            bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
             OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("clic_validation_cgu_inscription", bundle);
         } else if (id == R.id.refuse_btn) {
             intent.putExtra("cgu", false);
@@ -122,7 +122,7 @@ public class CGUFragment extends Fragment {
         }
     }
 
-    private void handleCGULoginResponse(CGUData cguData) {
+    private void handleCGUResponse(CGUData cguData) {
         if (cguData == null) {
             Utilities.showErrorPopup(getContext(), getString(R.string.generic_error));
         } else {
