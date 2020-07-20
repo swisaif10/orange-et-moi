@@ -12,26 +12,23 @@ import com.orange.ma.entreprise.views.splashscreen.SplashScreenActivity;
 
 import java.util.Map;
 
+import static com.orange.ma.entreprise.utilities.Constants.ACTION_TYPE;
+import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT;
+import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT_TITLE;
+import static com.orange.ma.entreprise.utilities.Constants.IMAGE;
+import static com.orange.ma.entreprise.utilities.Constants.MESSAGE;
+import static com.orange.ma.entreprise.utilities.Constants.TITLE;
+
 public class OFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String TITLE = "title";
-    private static final String MESSAGE = "body";
-    private static final String IMAGE = "image";
-    private static final String ENDPOINT = "endpoint";
-    private static final String ENDPOINT_TITLE = "endpoint_title";
-    private static final String ACTION_TYPE = "action";
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
         if (!remoteMessage.getData().isEmpty()) {
-            Log.d("TAGNOTIF", "onMessageReceived: data "+remoteMessage.getData().size());
-            Log.d("TAGNOTIF", "onMessageReceived: data "+remoteMessage.getNotification().getBody());
             handleData(remoteMessage.getData());
         } else if (remoteMessage.getNotification() != null) {
-            Log.d("TAGNOTIF", "onMessageReceived: notif "+remoteMessage.getData().size());
-            Log.d("TAGNOTIF", "onMessageReceived: notif "+remoteMessage.getNotification().getBody());
             handleNotification(remoteMessage.getNotification());
         }
     }
@@ -44,12 +41,12 @@ public class OFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void handleNotification(RemoteMessage.Notification notification) {
-        NotificationObject mNotification = new NotificationObject(
-                notification.getTitle(),
-                notification.getBody()
-        );
-        setUserDataType();
-        makeNotification(mNotification);
+//        NotificationObject mNotification = new NotificationObject(
+//                notification.getTitle(),
+//                notification.getBody()
+//        );
+//        setUserDataType();
+//        makeNotification(mNotification);
     }
 
     private void setUserDataType() {
@@ -57,21 +54,19 @@ public class OFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void handleData(Map<String, String> data) {
-        Log.d("TAGNOTIF", "handleData: ");
-        NotificationObject notification = new NotificationObject();
-        notification.setTitle(data.get(TITLE));
-        notification.setMessage(data.get(MESSAGE));
-        notification.setImageUrl(data.get(IMAGE));
-        notification.setActionType(data.get(ACTION_TYPE));
-        notification.setEndPoint(data.get(ENDPOINT));
-        notification.setEndPointTitle(data.get(ENDPOINT_TITLE));
-
-        makeNotification(notification);
+//        Log.d("TAGNOTIF", "handleData: ");
+//        NotificationObject notification = new NotificationObject();
+//        notification.setTitle(data.get(TITLE));
+//        notification.setMessage(data.get(MESSAGE));
+//        notification.setImageUrl(data.get(IMAGE));
+//        notification.setActionType(data.get(ACTION_TYPE));
+//        notification.setEndPoint(data.get(ENDPOINT));
+//        notification.setEndPointTitle(data.get(ENDPOINT_TITLE));
+//
+//        makeNotification(notification);
     }
 
     private void makeNotification(NotificationObject notification) {
-        Log.d("TAGNOTIF", "makeNotification: "+notification.getActionType());
-        Log.d("TAGNOTIF", "makeNotification: "+notification.getEndPoint());
         Intent resultIntent = new Intent(getApplicationContext(), SplashScreenActivity.class);
         NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
         notificationUtils.showNotification(notification, resultIntent);

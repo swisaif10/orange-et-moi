@@ -292,7 +292,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                     fragment = new DashboardFragment();
                     break;
                 case "setting":
-                    moveToSettingsFragment();
+                    fragment = new SettingsFragment();
                     break;
                 default:
                     fragment = new DashboardFragment();

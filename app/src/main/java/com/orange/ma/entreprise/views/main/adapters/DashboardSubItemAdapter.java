@@ -98,7 +98,7 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
                 holder.value3.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(0).getColor()));
                 holder.name3.setText(arrayList.get(position).getElements().get(1).getValue());
                 holder.name3.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(1).getColor()));
-            } else if (arrayList.get(position).getElements().get(0).getValue().length() > 3) {
+            } else if (templateKey==Template.TEMPLATE_LIST||templateKey == Template.TEMPLATE_LIST_SLIDER){//(arrayList.get(position).getElements().get(0).getValue().length() > 3) {
                 holder.layout1.setVisibility(View.GONE);
                 holder.layout2.setVisibility(View.VISIBLE);
                 holder.value2.setText(arrayList.get(position).getElements().get(0).getValue());
@@ -124,7 +124,7 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
             ImageViewCompat.setImageTintList(holder.icon, ColorStateList.valueOf(Color.parseColor(arrayList.get(position).getElements().get(0).getColor())));
             holder.title.setText(arrayList.get(position).getElements().get(1).getValue());
             holder.title.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(1).getColor()));
-            holder.arrow.setVisibility(arrayList.get(position).getAction().equalsIgnoreCase("none")||arrayList.get(position).getAction().trim().isEmpty()?View.INVISIBLE:View.VISIBLE);
+            holder.arrow.setVisibility(arrayList.get(position).getActionType().equalsIgnoreCase("none")||arrayList.get(position).getActionType().trim().isEmpty()?View.INVISIBLE:View.VISIBLE);
             ColorStateList mStateDrawableBtn1 = new ColorStateList(new int[][]{
                     new int[]{-android.R.attr.state_pressed},
                     new int[]{android.R.attr.state_pressed},
