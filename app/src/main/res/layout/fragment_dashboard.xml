@@ -65,7 +65,8 @@
                     android:fontFamily="@font/helvneueblack"
                     android:paddingTop="@dimen/_3sdp"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_21sdp" />
+                    android:textSize="@dimen/_21sdp"
+                    tools:text="MOBIBLANC" />
 
                 <ImageView
                     android:id="@+id/logo"
