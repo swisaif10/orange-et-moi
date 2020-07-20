@@ -25,9 +25,13 @@ public class OFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        if (remoteMessage.getData().size() > 0) {
+        if (!remoteMessage.getData().isEmpty()) {
+            Log.d("TAGNOTIF", "onMessageReceived: data "+remoteMessage.getData().size());
+            Log.d("TAGNOTIF", "onMessageReceived: data "+remoteMessage.getNotification().getBody());
             handleData(remoteMessage.getData());
         } else if (remoteMessage.getNotification() != null) {
+            Log.d("TAGNOTIF", "onMessageReceived: notif "+remoteMessage.getData().size());
+            Log.d("TAGNOTIF", "onMessageReceived: notif "+remoteMessage.getNotification().getBody());
             handleNotification(remoteMessage.getNotification());
         }
     }
@@ -53,7 +57,7 @@ public class OFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void handleData(Map<String, String> data) {
-
+        Log.d("TAGNOTIF", "handleData: ");
         NotificationObject notification = new NotificationObject();
         notification.setTitle(data.get(TITLE));
         notification.setMessage(data.get(MESSAGE));
@@ -66,6 +70,8 @@ public class OFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void makeNotification(NotificationObject notification) {
+        Log.d("TAGNOTIF", "makeNotification: "+notification.getActionType());
+        Log.d("TAGNOTIF", "makeNotification: "+notification.getEndPoint());
         Intent resultIntent = new Intent(getApplicationContext(), SplashScreenActivity.class);
         NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
         notificationUtils.showNotification(notification, resultIntent);

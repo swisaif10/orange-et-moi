@@ -258,7 +258,7 @@ public class MainActivity extends BaseActivity {
                     moveToSettingsFragment();
                     break;
                 default:
-                    fragment = new BrowserFragment();
+                    fragment = new DashboardFragment();
                     break;
             }
             switchFragment(fragment, "");

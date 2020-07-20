@@ -98,8 +98,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             holder.recycler.setHasFixedSize(true);
             if(holder.viewType == Template.TEMPLATE_LIST){
                 layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-                int h = (int)(context.getResources().getDimension(R.dimen._30sdp)*(template.getElementComplex().size()-1)+context.getResources().getDimension(R.dimen._135sdp));
-                holder.sliderCard.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,h,context.getResources().getDisplayMetrics())));
+                int h = (int)(context.getResources().getDimension(R.dimen._30sdp)*(template.getElementComplex().get(0).getCompoundElements().size()-2)+context.getResources().getDimension(R.dimen._150sdp));
+                holder.sliderCard.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,h));
             }
             else
                 layoutManager = new GridLayoutManager(context, 2, LinearLayoutManager.HORIZONTAL, false);
