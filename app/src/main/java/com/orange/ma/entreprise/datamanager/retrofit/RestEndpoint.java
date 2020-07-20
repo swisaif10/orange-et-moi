@@ -32,7 +32,7 @@ public interface RestEndpoint {
 
     @FormUrlEncoded
     @POST(ApiUrls.LOGIN_URL)
-    Call<LoginData> login(@Field("login") String login, @Field("password") String password, @Path("locale") String lang);
+    Call<LoginData> login(@Field("login") String login, @Field("password") String password, @Field("rememberMe") Boolean rememberMe, @Path("locale") String lang);
 
     @POST(ApiUrls.GET_TAB_MENU_URL)
     Call<TabMenuData> getTabMenu(@Path("locale") String lang, @Header("x-auth-token") String token);

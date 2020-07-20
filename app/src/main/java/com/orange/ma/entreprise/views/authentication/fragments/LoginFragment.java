@@ -88,11 +88,11 @@ public class LoginFragment extends Fragment {
 
     private void handleIntent() {
         intent = getActivity().getIntent();
-        if(intent.getExtras()!=null){
-            if(!Utilities.isNullOrEmpty(intent.getStringExtra(Constants.ERROR_MESSAGE))&&intent.getIntExtra(Constants.ERROR_CODE,-1)!=-1){
-                int code = intent.getIntExtra(Constants.ERROR_CODE,-1);
+        if (intent.getExtras() != null) {
+            if (!Utilities.isNullOrEmpty(intent.getStringExtra(Constants.ERROR_MESSAGE)) && intent.getIntExtra(Constants.ERROR_CODE, -1) != -1) {
+                int code = intent.getIntExtra(Constants.ERROR_CODE, -1);
                 String message = intent.getStringExtra(Constants.ERROR_MESSAGE);
-                switch (code){
+                switch (code) {
                     case 403:
                         errorLayout.setVisibility(View.VISIBLE);
                         errorDescription.setText(message);
@@ -206,7 +206,7 @@ public class LoginFragment extends Fragment {
     private void login() {
 
         if (connectivity.isConnected())
-            authenticationVM.login(String.valueOf(id.getText()).trim(), String.valueOf(password.getText()).trim(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
+            authenticationVM.login(String.valueOf(id.getText()).trim(), String.valueOf(password.getText()).trim(), saveBtn.isChecked(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
         else {
             errorLayout.setVisibility(View.VISIBLE);
             errorDescription.setText(getString(R.string.no_internet));
@@ -234,7 +234,7 @@ public class LoginFragment extends Fragment {
                 preferenceManager.putValue(Constants.IS_AUTHENTICATED, true);
 
                 intent = new Intent(getActivity(), MainActivity.class);
-                intent.putExtra("isCompleted",loginData.getResponse().getData().getUserInfos().isCompleted());
+                intent.putExtra("isCompleted", loginData.getResponse().getData().getUserInfos().isCompleted());
                 startActivity(intent);
                 getActivity().finish();
             } else {

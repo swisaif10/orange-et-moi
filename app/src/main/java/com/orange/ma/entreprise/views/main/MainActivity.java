@@ -21,14 +21,11 @@ import com.orange.ma.entreprise.models.tabmenu.TabMenuData;
 import com.orange.ma.entreprise.models.tabmenu.TabMenuItem;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
-import com.orange.ma.entreprise.utilities.FragNavController;
-import com.orange.ma.entreprise.utilities.FragmentHistory;
 import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.MainVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseActivity;
-import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.main.browser.BrowserFragment;
 import com.orange.ma.entreprise.views.main.dashboard.DashboardFragment;
 import com.orange.ma.entreprise.views.main.settings.SettingsFragment;
@@ -39,7 +36,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements BaseFragment.FragmentNavigation, FragNavController.TransactionListener, FragNavController.RootFragmentListener {
+public class MainActivity extends BaseActivity {
 
     @BindView(R.id.tabLayout)
     public TabLayout tabLayout;
@@ -47,9 +44,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
     private MainVM mainVM;
     private Connectivity connectivity;
     private ArrayList<Fragment> fragments;
-    private FragNavController fragNavController;
-    private FragmentHistory fragmentHistory;
-    private Bundle savedInstanceState;
     private PreferenceManager preferenceManager;
     private Fragment fragment;
 
@@ -58,7 +52,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        this.savedInstanceState = savedInstanceState;
 
         mainVM = ViewModelProviders.of(this).get(MainVM.class);
         connectivity = new Connectivity(this, this);
@@ -77,16 +70,19 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (fragNavController != null) {
-            fragNavController.onSaveInstanceState(outState);
-        }
-    }
-
-    @Override
     public void onBackPressed() {
-        if (!fragNavController.isRootFragment()) {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+            finish();
+        } else {
+            String fragmentTag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 2).getName();
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(fragmentTag);
+            int index = fragments.indexOf(fragment);
+            tabLayout.getTabAt(index).setTag("bp");
+            tabLayout.getTabAt(index).select();
+
+            super.onBackPressed();
+        }
+        /*if (!fragNavController.isRootFragment()) {
             fragNavController.popFragment();
         } else {
             if (fragmentHistory.isEmpty()) {
@@ -101,29 +97,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                     fragmentHistory.emptyStack();
                 }
             }
-        }
-    }
-
-    @Override
-    public Fragment getRootFragment(int index) {
-        return fragments.get(index);
-    }
-
-    @Override
-    public void onTabTransaction(Fragment fragment, int index) {
-
-    }
-
-    @Override
-    public void onFragmentTransaction(Fragment fragment, FragNavController.TransactionType transactionType) {
-
-    }
-
-    @Override
-    public void pushFragment(Fragment fragment) {
-        if (fragNavController != null) {
-            fragNavController.pushFragment(fragment);
-        }
+        }*/
     }
 
     private void init(TabMenuData tabMenuData) {
@@ -164,21 +138,15 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             fragments.add(fragment);
         }
 
-        fragmentHistory = new FragmentHistory();
-        fragNavController = FragNavController.newBuilder(savedInstanceState, getSupportFragmentManager(), R.id.container)
-                .transactionListener(this)
-                .rootFragmentListener(this, fragments.size())
-                .build();
-
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 if (tab.getTag() == null || !tab.getTag().equals("bp"))
-                    fragmentHistory.push(position);
+                    switchFragment(fragments.get(position), String.valueOf(position));
                 else
                     tab.setTag(null);
-                switchTab(position);
+                tabLayout.getTabAt(position).select();
             }
 
             @Override
@@ -188,11 +156,10 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                fragNavController.clearStack();
-                switchTab(tab.getPosition());
             }
         });
 
+        switchFragment(fragments.get(0), "0");
         tabLayout.getTabAt(0).select();
 
     }
@@ -224,10 +191,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             tabLayout.getTabAt(0).select();
     }
 
-    private void switchTab(int position) {
-        fragNavController.switchTab(position);
-    }
-
     private void getTabMenu() {
         if (connectivity.isConnected()) {
             mainVM.getTabMenu(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), preferenceManager.getValue(Constants.TOKEN_KEY, ""));
@@ -241,33 +204,33 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             Utilities.showErrorPopup(this, getString(R.string.generic_error));
         } else {
             int code = tabMenuData.getHeader().getCode();
-            switch(code){
+            switch (code) {
                 case 200:
                     init(tabMenuData);
                     handleIntent();
                     break;
                 case 403:
                     Intent intent = new Intent(this, AuthenticationActivity.class);
-                    intent.putExtra(Constants.ERROR_CODE,tabMenuData.getHeader().getCode());
-                    intent.putExtra(Constants.ERROR_MESSAGE,tabMenuData.getHeader().getMessage());
+                    intent.putExtra(Constants.ERROR_CODE, tabMenuData.getHeader().getCode());
+                    intent.putExtra(Constants.ERROR_MESSAGE, tabMenuData.getHeader().getMessage());
                     startActivity(intent);
                     finish();
                     break;
                 default:
                     Utilities.showErrorPopup(this, tabMenuData.getHeader().getMessage());
-            };
+            }
+            ;
 
         }
     }
 
     private void handleIntent() {
         if (getIntent().getExtras() != null) {
-            if (getIntent().getStringExtra("link") != null){
-                switch (getIntent().getStringExtra("link").toLowerCase()){
-                    case "setting":moveToSettingsFragment();break;
+            if (getIntent().getStringExtra("link") != null) {
+                if ("setting".equals(getIntent().getStringExtra("link").toLowerCase())) {
+                    moveToSettingsFragment();
                 }
-            }
-            else if (getIntent().getStringExtra("endpoint") != null) {
+            } else if (getIntent().getStringExtra("endpoint") != null) {
                 if (getIntent().getStringExtra("endpointdata") != null) {
                     handleInApp(getIntent().getStringExtra("endpoint"), getIntent().getStringExtra("endpointdata"));
                 } else
@@ -282,7 +245,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
 
     private void handleInApp(String endpoint, String endpointdata) {
         fragment = WebViewFragment.newInstance(endpoint, endpointdata);
-        fragNavController.pushFragment(fragment);
+        switchFragment(fragment, "");
     }
 
     private void handleAppView(String endpoint) {
@@ -298,20 +261,20 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                     fragment = new DashboardFragment();
                     break;
             }
-            fragNavController.pushFragment(fragment);
+            switchFragment(fragment, "");
         }
     }
 
     public void moveToSettingsFragment() {
-//        int index = -1;
-//        for (int i = 0; i < fragments.size(); i++) {
-//            if (fragments.get(i) instanceof SettingsFragment) {
-//                index = i;
-//                break;
-//            }
-//        }
-//        if (index != -1)
-        tabLayout.getTabAt(3).select();
+        int index = -1;
+        for (int i = 0; i < fragments.size(); i++) {
+            if (fragments.get(i) instanceof SettingsFragment) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1)
+            tabLayout.getTabAt(index).select();
     }
 
 }

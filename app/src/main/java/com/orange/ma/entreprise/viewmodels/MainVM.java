@@ -1,7 +1,6 @@
 package com.orange.ma.entreprise.viewmodels;
 
 import android.app.Application;
-import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -33,7 +32,7 @@ public class MainVM extends AndroidViewModel {
     }
 
     public void getTabMenu(String lang, String token) {
-        Call<TabMenuData> call = RestService.getInstance().endpoint().getTabMenu(lang,token);
+        Call<TabMenuData> call = RestService.getInstance().endpoint().getTabMenu(lang, token);
         call.enqueue(new Callback<TabMenuData>() {
             @Override
             public void onResponse(Call<TabMenuData> call, Response<TabMenuData> response) {
