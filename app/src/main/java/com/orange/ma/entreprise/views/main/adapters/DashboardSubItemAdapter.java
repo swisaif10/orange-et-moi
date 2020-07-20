@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +80,7 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
             holder.itemView.setLayoutParams(params);
 
         }
-        if (position % 2 == 0 && holder.separator != null && position != arrayList.size() - 1)
+        if ((position % 2 == 0 && holder.separator != null && position != arrayList.size() - 1)||(templateKey==Template.TEMPLATE_LIST&&position != arrayList.size() - 1))
             holder.separator.setVisibility(View.VISIBLE);
         else if (holder.separator != null)
             holder.separator.setVisibility(View.GONE);
@@ -115,7 +116,7 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
 
         } else {
 
-            if (arrayList.size() > 2)
+            if (templateKey == Template.TEMPLATE_LIST_SLIDER)
                 setLayoutParams(holder, position);
 
             int icon = context.getResources().getIdentifier(arrayList.get(position).getElements().get(0).getValue(), "drawable", context.getPackageName());
@@ -123,7 +124,7 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
             ImageViewCompat.setImageTintList(holder.icon, ColorStateList.valueOf(Color.parseColor(arrayList.get(position).getElements().get(0).getColor())));
             holder.title.setText(arrayList.get(position).getElements().get(1).getValue());
             holder.title.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(1).getColor()));
-
+            holder.arrow.setVisibility(arrayList.get(position).getAction().equalsIgnoreCase("none")||arrayList.get(position).getAction().trim().isEmpty()?View.INVISIBLE:View.VISIBLE);
             ColorStateList mStateDrawableBtn1 = new ColorStateList(new int[][]{
                     new int[]{-android.R.attr.state_pressed},
                     new int[]{android.R.attr.state_pressed},
@@ -131,8 +132,8 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
                     new int[]{
                             Color.parseColor(Utilities.isNullOrEmpty(arrayList.get(position).getElements().get(1).getColor())
                                     ? "#000000" : arrayList.get(position).getElements().get(1).getColor()),
-                            Color.parseColor(Utilities.isNullOrEmpty(arrayList.get(position).getElements().get(1).getHoverTxtColor())
-                                    ? "#FE7900" : arrayList.get(position).getElements().get(1).getHoverTxtColor())});
+                            Color.parseColor(Utilities.isNullOrEmpty(arrayList.get(position).getElements().get(1).getHoverValueColor())
+                                    ? "#FE7900" : arrayList.get(position).getElements().get(1).getHoverValueColor())});
             holder.title.setTextColor(mStateDrawableBtn1);
 
             if (LocaleManager.getLanguagePref(context).equalsIgnoreCase("ar"))
@@ -206,7 +207,7 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
     private void setLayoutParams(@NonNull ViewHolder holder, int position) {
         // 1.053 est le pourcentage de différence entre la largeur du slider et la largeur du device
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((MainActivity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        displayMetrics = context.getResources().getDisplayMetrics();
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams((int) ((displayMetrics.widthPixels / 1.053) / 2) - (int) context.getResources().getDimension(R.dimen._10sdp), (int) context.getResources().getDimension(R.dimen._30sdp));
         lang = preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr");
 
@@ -227,6 +228,18 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
                     (int)context.getResources().getDimension(R.dimen._6sdp),
                     (int)context.getResources().getDimension(R.dimen._minus1sdp),
                     (int)context.getResources().getDimension(R.dimen._6sdp),
+                    (int)context.getResources().getDimension(R.dimen._8sdp));
+        if(position>1 && arrayList.size()<=6)
+            params.setMargins(
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._1sdp:R.dimen._16sdp),
+                    (int)context.getResources().getDimension(R.dimen._minus1sdp),
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._16sdp:R.dimen._1sdp),
+                    (int)context.getResources().getDimension(R.dimen._8sdp));
+        if(position<=1 && arrayList.size()<=6)
+            params.setMargins(
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._3sdp:R.dimen._1sdp),
+                    (int)context.getResources().getDimension(R.dimen._minus1sdp),
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._1sdp:R.dimen._3sdp),
                     (int)context.getResources().getDimension(R.dimen._8sdp));
         holder.itemView.setLayoutParams(params);
 

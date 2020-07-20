@@ -1,6 +1,7 @@
 package com.orange.ma.entreprise.views.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.orange.ma.entreprise.utilities.FragmentHistory;
 import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.MainVM;
+import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseActivity;
 import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.main.browser.BrowserFragment;
@@ -193,37 +195,33 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
 
         tabLayout.getTabAt(0).select();
 
-        if (getIntent().getBooleanExtra("show_popup", false)) {
-            OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "Pop-up_completer_mon_profil", LocaleManager.getLanguagePref(this));
+    }
 
-            Utilities.showCompleteProfileDialog(this, new OnDialogButtonsClickListener() {
-                @Override
-                public void firstChoice() {
-                    //firebaseAnalyticsEvent
-                    Bundle bundle = new Bundle();
-                    bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getApplicationContext()));
-                    bundle.putString(Constants.FIREBASE_RC_KEY, preferenceManager.getValue(Constants.LOGIN_KEY, ""));
-                    OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("Clic_completer_mon_profil", bundle);
-                }
+    private void showCompleteProfileDialog() {
+        Utilities.showCompleteProfileDialog(this, new OnDialogButtonsClickListener() {
+            @Override
+            public void firstChoice() {
+                //firebaseAnalyticsEvent
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getApplicationContext()));
+                bundle.putString(Constants.FIREBASE_RC_KEY, preferenceManager.getValue(Constants.LOGIN_KEY, ""));
+                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("Clic_completer_mon_profil", bundle);
+            }
 
-                @Override
-                public void secondChoice() {
+            @Override
+            public void secondChoice() {
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getApplicationContext()));
-                    bundle.putString(Constants.FIREBASE_RC_KEY, preferenceManager.getValue(Constants.LOGIN_KEY, ""));
-                    OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("Clic_ignorer_completer_mon_profil", bundle);
-                }
-            });
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getApplicationContext()));
+                bundle.putString(Constants.FIREBASE_RC_KEY, preferenceManager.getValue(Constants.LOGIN_KEY, ""));
+                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("Clic_ignorer_completer_mon_profil", bundle);
+            }
+        });
 
-            if (getIntent().getStringExtra("link") != null && getIntent().getStringExtra("link").equalsIgnoreCase("parametres"))
-                moveToSettingsFragment();
-            else
-                tabLayout.getTabAt(0).select();
-
-        }
-
-
+        if (getIntent().getStringExtra("link") != null && getIntent().getStringExtra("link").equalsIgnoreCase("setting"))
+            moveToSettingsFragment();
+        else
+            tabLayout.getTabAt(0).select();
     }
 
     private void switchTab(int position) {
@@ -243,20 +241,42 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             Utilities.showErrorPopup(this, getString(R.string.generic_error));
         } else {
             int code = tabMenuData.getHeader().getCode();
-            if (code == 200) {
-                init(tabMenuData);
-                handleIntent();
-            } else
-                Utilities.showErrorPopup(this, tabMenuData.getHeader().getMessage());
+            switch(code){
+                case 200:
+                    init(tabMenuData);
+                    handleIntent();
+                    break;
+                case 403:
+                    Intent intent = new Intent(this, AuthenticationActivity.class);
+                    intent.putExtra(Constants.ERROR_CODE,tabMenuData.getHeader().getCode());
+                    intent.putExtra(Constants.ERROR_MESSAGE,tabMenuData.getHeader().getMessage());
+                    startActivity(intent);
+                    finish();
+                    break;
+                default:
+                    Utilities.showErrorPopup(this, tabMenuData.getHeader().getMessage());
+            };
+
         }
     }
 
     private void handleIntent() {
-        if (getIntent().getExtras() != null && getIntent().getStringExtra("endpoint")!=null) {
-            if (getIntent().getStringExtra("endpointdata") != null) {
-                handleInApp(getIntent().getStringExtra("endpoint"), getIntent().getStringExtra("endpointdata"));
-            } else
-                handleAppView(getIntent().getStringExtra("endpoint"));
+        if (getIntent().getExtras() != null) {
+            if (getIntent().getStringExtra("link") != null){
+                switch (getIntent().getStringExtra("link").toLowerCase()){
+                    case "setting":moveToSettingsFragment();break;
+                }
+            }
+            else if (getIntent().getStringExtra("endpoint") != null) {
+                if (getIntent().getStringExtra("endpointdata") != null) {
+                    handleInApp(getIntent().getStringExtra("endpoint"), getIntent().getStringExtra("endpointdata"));
+                } else
+                    handleAppView(getIntent().getStringExtra("endpoint"));
+            }
+            if (!getIntent().getBooleanExtra("isCompleted", true)) {
+                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "Pop-up_completer_mon_profil", LocaleManager.getLanguagePref(this));
+                showCompleteProfileDialog();
+            }
         }
     }
 
@@ -272,7 +292,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                     fragment = new DashboardFragment();
                     break;
                 case "setting":
-                    fragment = new SettingsFragment();
+                    moveToSettingsFragment();
                     break;
                 default:
                     fragment = new BrowserFragment();
@@ -283,15 +303,15 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
     }
 
     public void moveToSettingsFragment() {
-        int index = -1;
-        for (int i = 0; i < fragments.size(); i++) {
-            if (fragments.get(i) instanceof SettingsFragment) {
-                index = i;
-                break;
-            }
-        }
-        if (index != -1)
-            tabLayout.getTabAt(index).select();
+//        int index = -1;
+//        for (int i = 0; i < fragments.size(); i++) {
+//            if (fragments.get(i) instanceof SettingsFragment) {
+//                index = i;
+//                break;
+//            }
+//        }
+//        if (index != -1)
+        tabLayout.getTabAt(3).select();
     }
 
 

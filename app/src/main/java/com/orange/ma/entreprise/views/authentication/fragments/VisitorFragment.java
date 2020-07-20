@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
@@ -40,6 +42,8 @@ public class VisitorFragment extends Fragment implements OnTemplateItemSelectedL
     RecyclerView recycler;
     @BindView(R.id.loader)
     GifImageView loader;
+    @BindView(R.id.swipeRefresh)
+    SwipeRefreshLayout swipeRefresh;
     private PreferenceManager preferenceManager;
     private Connectivity connectivity;
     private AuthenticationVM authenticationVM;
@@ -71,6 +75,12 @@ public class VisitorFragment extends Fragment implements OnTemplateItemSelectedL
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_guest, container, false);
         ButterKnife.bind(this, view);
+        swipeRefresh.setOnRefreshListener(()->{
+            if(connectivity.isConnected()){
+                swipeRefresh.setRefreshing(true);
+                authenticationVM.guestLogin(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
+            }
+        });
         return view;
     }
 
@@ -116,6 +126,7 @@ public class VisitorFragment extends Fragment implements OnTemplateItemSelectedL
     }
 
     private void handleGuestLoginResponse(GuestLoginData guestLoginData) {
+        swipeRefresh.setRefreshing(false);
         loader.setVisibility(View.GONE);
         if (guestLoginData == null) {
             Utilities.showErrorPopup(getContext(), getString(R.string.generic_error));

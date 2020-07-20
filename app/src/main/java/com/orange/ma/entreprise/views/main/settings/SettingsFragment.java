@@ -154,10 +154,21 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
             Utilities.showErrorPopup(getContext(), getString(R.string.generic_error));
         } else {
             int code = settingsData.getHeader().getCode();
-            if (code == 200) {
-                init(settingsData.getResponse().getData());
-            } else
-                Utilities.showErrorPopup(getContext(), settingsData.getHeader().getMessage());
+            switch(code){
+                case 200:
+                    init(settingsData.getResponse().getData());
+                    break;
+                case 403:
+                    Intent intent = new Intent(getContext(), AuthenticationActivity.class);
+                    intent.putExtra(Constants.ERROR_CODE,settingsData.getHeader().getCode());
+                    intent.putExtra(Constants.ERROR_MESSAGE,settingsData.getHeader().getMessage());
+                    startActivity(intent);
+                    getActivity().finish();
+                    break;
+                default:
+                    Utilities.showErrorPopup(getContext(), settingsData.getHeader().getMessage());
+            };
+
         }
     }
 
@@ -175,12 +186,24 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
             Utilities.showErrorPopup(getContext(), getString(R.string.generic_error));
         } else {
             int code = responseData.getHeader().getCode();
-            if (code == 200) {
-                preferenceManager.putValue(Constants.IS_LOGGED_IN, false);
-                startActivity(new Intent(getActivity(), AuthenticationActivity.class));
-                getActivity().finish();
-            } else
-                Utilities.showErrorPopup(getContext(), responseData.getHeader().getMessage());
+            switch(code){
+                case 200:
+                    preferenceManager.putValue(Constants.IS_LOGGED_IN, false);
+                    preferenceManager.clearValue(Constants.TOKEN_KEY);
+                    preferenceManager.putValue(Constants.IS_AUTHENTICATED, false);
+                    startActivity(new Intent(getActivity(), AuthenticationActivity.class));
+                    getActivity().finish();
+                    break;
+                case 403:
+                    Intent intent = new Intent(getContext(), AuthenticationActivity.class);
+                    intent.putExtra(Constants.ERROR_CODE,responseData.getHeader().getCode());
+                    intent.putExtra(Constants.ERROR_MESSAGE,responseData.getHeader().getMessage());
+                    startActivity(intent);
+                    getActivity().finish();
+                    break;
+                default:
+                    Utilities.showErrorPopup(getContext(), responseData.getHeader().getMessage());
+            };
         }
     }
 }

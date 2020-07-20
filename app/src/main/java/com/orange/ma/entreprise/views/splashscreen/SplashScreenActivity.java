@@ -83,7 +83,7 @@ public class SplashScreenActivity extends BaseActivity {
             if (preferenceManager.getValue(Constants.FIRST_TIME, true)) {
                 intent = new Intent(SplashScreenActivity.this, SelectLanguageActivity.class);
             } else {
-                if (preferenceManager.getValue(Constants.IS_LOGGED_IN, false))
+                if (preferenceManager.getValue(Constants.IS_LOGGED_IN, false) || preferenceManager.getValue(Constants.IS_AUTHENTICATED, false))
                     intent = new Intent(SplashScreenActivity.this, MainActivity.class);
                 else
                     intent = new Intent(SplashScreenActivity.this, AuthenticationActivity.class);
@@ -130,22 +130,39 @@ public class SplashScreenActivity extends BaseActivity {
     private void deepLink() {
         String host = getIntent().getData().getHost();
         Intent intent;
-        switch (host) {
-            case "inscription":
-                intent = new Intent(SplashScreenActivity.this, AuthenticationActivity.class);
-                intent.putExtra("link", host);
-                startActivity(intent);
-                break;
-            case "login":
-                startActivity(new Intent(SplashScreenActivity.this, AuthenticationActivity.class));
-                break;
-            case "setting":
-                intent = new Intent(SplashScreenActivity.this, MainActivity.class);
-                intent.putExtra("link", host);
-                startActivity(intent);
-                break;
-            default:
-                startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+        if(Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, ""))){
+            switch (host) {
+                case "inscription":
+                    intent = new Intent(SplashScreenActivity.this, AuthenticationActivity.class);
+                    intent.putExtra("link", host);
+                    startActivity(intent);
+                    break;
+                default:
+                    startActivity(new Intent(SplashScreenActivity.this, AuthenticationActivity.class));
+            }
+        }else{
+            switch (host) {
+                case "inscription":
+                    intent = new Intent(SplashScreenActivity.this, AuthenticationActivity.class);
+                    intent.putExtra("link", host);
+                    startActivity(intent);
+                    break;
+                case "login":
+                    startActivity(new Intent(SplashScreenActivity.this, AuthenticationActivity.class));
+                    break;
+                case "setting":
+                    intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                    intent.putExtra("link", host);
+                    startActivity(intent);
+                    break;
+                case "bonjour":
+                    intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    break;
+                default:
+                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+            }
         }
+
     }
 }

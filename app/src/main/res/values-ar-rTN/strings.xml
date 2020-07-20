@@ -29,10 +29,10 @@
     <string name="security_level_description">يجب أن تحتوي كلمة مرورك على 8 أحرف على الأقل</string>
     <string name="cancel_update_btn">Plus tard</string>
     <string name="email_error">"من فضلك أدخل بريد إلكتروني صحيح"</string>
-    <string name="complete_profile_later_btn">Me le rappeler plus tard</string>
-    <string name="Complete_profile">Compléter mon profil</string>
-    <string name="complete_profile_description">Renseignez dès à présent vos infos personnelles pour profiter pleinement des avantages Orange et moi pro.</string>
-    <string name="complete_profile_title">Bienvenue sur Orange et moi pro</string>
+    <string name="complete_profile_later_btn">ذكرني لاحقا</string>
+    <string name="Complete_profile">أكمل الحساب</string>
+    <string name="complete_profile_description">أدخل معلوماتك الشخصية الآن للاستفادة\n الكاملة من مزايا Orange et moi pro.</string>
+    <string name="complete_profile_title">مرحبًا بك في Orange et moi pro</string>
     <string name="yes">Oui</string>
     <string name="no">لا</string>
     <string name="account_manger_btn">Changer votre gestionnaire de compte</string>

@@ -62,6 +62,7 @@ public class LoginFragment extends Fragment {
     private Connectivity connectivity;
     private PreferenceManager preferenceManager;
     private Bundle bundle;
+    private Intent intent;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -81,6 +82,24 @@ public class LoginFragment extends Fragment {
 
         //firebaseAnalyticsEvent
         OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_login", LocaleManager.getLanguagePref(getContext()));
+
+
+    }
+
+    private void handleIntent() {
+        intent = getActivity().getIntent();
+        if(intent.getExtras()!=null){
+            if(!Utilities.isNullOrEmpty(intent.getStringExtra(Constants.ERROR_MESSAGE))&&intent.getIntExtra(Constants.ERROR_CODE,-1)!=-1){
+                int code = intent.getIntExtra(Constants.ERROR_CODE,-1);
+                String message = intent.getStringExtra(Constants.ERROR_MESSAGE);
+                switch (code){
+                    case 403:
+                        errorLayout.setVisibility(View.VISIBLE);
+                        errorDescription.setText(message);
+                        break;
+                }
+            }
+        }
     }
 
     @Override
@@ -88,6 +107,7 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
+        handleIntent();
         return view;
     }
 
@@ -210,7 +230,11 @@ public class LoginFragment extends Fragment {
                     preferenceManager.clearValue(Constants.SAVE_CREDENTIALS_KEY);
                 }
                 preferenceManager.putValue(Constants.TOKEN_KEY, "Bearer " + loginData.getResponse().getToken());
-                startActivity(new Intent(getActivity(), MainActivity.class));
+                preferenceManager.putValue(Constants.IS_AUTHENTICATED, true);
+
+                intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra("isCompleted",loginData.getResponse().getData().getUserInfos().isCompleted());
+                startActivity(intent);
                 getActivity().finish();
             } else {
                 errorLayout.setVisibility(View.VISIBLE);

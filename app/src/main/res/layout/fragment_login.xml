@@ -42,7 +42,7 @@
             <RelativeLayout
                 android:id="@+id/error_layout"
                 android:layout_width="match_parent"
-                android:layout_height="28dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:background="@color/red"
                 android:paddingStart="10dp"
@@ -53,7 +53,6 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginVertical="5dp"
                     android:src="@drawable/error" />
 
                 <TextView
@@ -61,24 +60,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_toEndOf="@+id/error_icon"
+                    android:layout_toStartOf="@id/close_btn"
                     android:fontFamily="@font/helveticamedium"
                     android:textColor="@color/white"
                     android:textSize="13sp"
+                    android:paddingVertical="@dimen/_10sdp"
                     tools:text="RC / Patente ou mot de passe incorrect" />
 
                 <RelativeLayout
                     android:id="@+id/close_btn"
                     android:layout_width="30dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="30dp"
                     android:layout_alignParentEnd="true"
-                    android:paddingEnd="10dp">
+                    android:layout_alignParentTop="true">
 
                     <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
+                        android:scaleType="centerInside"
                         android:src="@drawable/delete" />
                 </RelativeLayout>
 
