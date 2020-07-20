@@ -51,8 +51,8 @@ public class AuthenticationVM extends AndroidViewModel {
         guestLoginMutableLiveData = new MutableLiveData<>();
     }
 
-    public void login(String login, String password, String lang) {
-        Call<LoginData> call = RestService.getInstance().endpoint().login(login, password, lang);
+    public void login(String login, String password, Boolean rememberMe, String lang) {
+        Call<LoginData> call = RestService.getInstance().endpoint().login(login, password, rememberMe, lang);
         call.enqueue(new Callback<LoginData>() {
             @Override
             public void onResponse(Call<LoginData> call, Response<LoginData> response) {
