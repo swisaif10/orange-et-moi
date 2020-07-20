@@ -18,6 +18,10 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
+import com.orange.ma.entreprise.utilities.Constants;
+import com.orange.ma.entreprise.utilities.Utilities;
+import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.splashscreen.SplashScreenActivity;
 
@@ -32,6 +36,7 @@ import java.util.Map;
 import static com.orange.ma.entreprise.utilities.Constants.APP_VIEW;
 import static com.orange.ma.entreprise.utilities.Constants.DEEP_LINK;
 import static com.orange.ma.entreprise.utilities.Constants.DEFAULT;
+import static com.orange.ma.entreprise.utilities.Constants.INSCRIPTION;
 import static com.orange.ma.entreprise.utilities.Constants.IN_APP_URL;
 import static com.orange.ma.entreprise.utilities.Constants.OUT_APP_URL;
 
@@ -44,11 +49,15 @@ public class NotificationUtils {
     private Context mContext;
     private Intent intent;
     private PendingIntent resultPendingIntent;
+    private PreferenceManager preferenceManager;
 
     public NotificationUtils(Context context) {
         this.mContext = context;
         // activites to open via notifications
         activities.put("splash", SplashScreenActivity.class);
+        preferenceManager = new PreferenceManager.Builder(context, Context.MODE_PRIVATE)
+                .name(Constants.SHARED_PREFS_NAME)
+                .build();
     }
 
     public void showNotification(NotificationObject notification, Intent resultIntent) {
@@ -65,31 +74,46 @@ public class NotificationUtils {
             image = getBitmapFromURL(notification.getImageUrl());
         }
 
-        switch (notification.getActionType()) {
-            case DEEP_LINK:
-                handleDeepLink(notification.getEndPoint());
-                break;
-            case IN_APP_URL:
-                intent = new Intent(mContext, SplashScreenActivity.class);
-                intent.putExtra("endpoint", notification.getEndPoint());
-                intent.putExtra("endpointdata", notification.getEndPointTitle());
-                resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-                break;
-            case OUT_APP_URL:
-                intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(notification.getEndPoint()));
-                resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-                break;
-            case APP_VIEW:
-                intent = new Intent(mContext, MainActivity.class);
-                intent.putExtra("endpoint", notification.getEndPoint());
-                resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-                break;
-            case DEFAULT:
-            default:
-                resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                resultPendingIntent = PendingIntent.getActivity(mContext, 0, resultIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        if(Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, ""))){
+            switch (notification.getActionType()) {
+                case INSCRIPTION:
+                    intent = new Intent(mContext, AuthenticationActivity.class);
+                    intent.putExtra("link", notification.getActionType());
+                    resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                    break;
+                default:
+                    intent = new Intent(mContext, AuthenticationActivity.class);
+                    resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+            }
+        }else{
+            switch (notification.getActionType()) {
+                case DEEP_LINK:
+                    handleDeepLink(notification.getEndPoint());
+                    break;
+                case IN_APP_URL:
+                    intent = new Intent(mContext, SplashScreenActivity.class);
+                    intent.putExtra("endpoint", notification.getEndPoint());
+                    intent.putExtra("endpointdata", notification.getEndPointTitle());
+                    resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                    break;
+                case OUT_APP_URL:
+                    intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(notification.getEndPoint()));
+                    resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                    break;
+                case APP_VIEW:
+                    intent = new Intent(mContext, MainActivity.class);
+                    intent.putExtra("endpoint", notification.getEndPoint());
+                    resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                    break;
+                case DEFAULT:
+                default:
+                    resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    resultPendingIntent = PendingIntent.getActivity(mContext, 0, resultIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            }
         }
+
+
 
         final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
                 mContext, CHANNEL_ID);

@@ -10,6 +10,8 @@ public class UserInfos {
     private String businessName;
     @Expose
     private String stringFidelity;
+    @Expose
+    private boolean isCompleted;
 
     public String getBusinessName() {
         return businessName;
@@ -25,5 +27,13 @@ public class UserInfos {
 
     public void setStringFidelity(String stringFidelity) {
         this.stringFidelity = stringFidelity;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 }

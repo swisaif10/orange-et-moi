@@ -1,6 +1,7 @@
 package com.orange.ma.entreprise.views.main.dashboard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -34,6 +35,7 @@ import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.DashboardVM;
+import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.adapters.DashboardAdapter;
@@ -176,6 +178,7 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
             background1.setScaleX(-1);
             background2.setScaleX(-1);
         }
+
         businessName.setText(dashboardResponseData.getUserInfos().getBusinessName());
         fidelity.setText(Html.fromHtml(dashboardResponseData.getUserInfos().getStringFidelity()));
 
@@ -210,11 +213,20 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
             Utilities.showErrorPopup(getContext(), getString(R.string.generic_error));
         } else {
             int code = dashboardData.getHeader().getCode();
-            if (code == 200) {
-                //if(dashboardData.getResponse().getHashTemplates()) //TODO
-                init(dashboardData.getResponse().getData());
-            } else
-                Utilities.showErrorPopup(getContext(), dashboardData.getHeader().getMessage());
+            switch(code){
+                case 200:
+                    init(dashboardData.getResponse().getData());
+                    break;
+                case 403:
+                    Intent intent = new Intent(getActivity(), AuthenticationActivity.class);
+                    intent.putExtra(Constants.ERROR_CODE,dashboardData.getHeader().getCode());
+                    intent.putExtra(Constants.ERROR_MESSAGE,dashboardData.getHeader().getMessage());
+                    startActivity(intent);
+                    getActivity().finish();
+                    break;
+                default:
+                    Utilities.showErrorPopup(getContext(), dashboardData.getHeader().getMessage());
+            };
         }
     }
 }

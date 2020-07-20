@@ -43,6 +43,7 @@
             android:fontFamily="@font/helveticabold"
             android:text="@string/logout_dialog_title"
             android:textColor="@color/black"
+            android:textStyle="bold"
             android:textSize="25sp" />
 
         <TextView

@@ -1,5 +1,6 @@
 package com.orange.ma.entreprise.views.main.webview;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,10 +14,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
+import com.orange.ma.entreprise.utilities.Connectivity;
+import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.LocaleManager;
+import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.dashboard.DashboardFragment;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +41,9 @@ public class WebViewFragment extends BaseFragment {
     TextView title;
     private String url;
     private String titleTxt;
+    private Map<String,String> headers;
+    private Connectivity connectivity;
+    private PreferenceManager preferenceManager;
 
     public static WebViewFragment newInstance(String url, String title) {
         WebViewFragment fragment = new WebViewFragment();
@@ -72,12 +83,19 @@ public class WebViewFragment extends BaseFragment {
 
     @OnClick(R.id.back_btn)
     public void onViewClicked() {
-        ((MainActivity) getActivity()).tabLayout.getTabAt(0).select();
-        if (fragmentNavigation != null)
-            fragmentNavigation.pushFragment(new DashboardFragment());
+//        ((MainActivity) getActivity()).tabLayout.getTabAt(0).select();
+//        if (fragmentNavigation != null)
+//            fragmentNavigation.pushFragment(new DashboardFragment());
+        ((MainActivity) getActivity()).onBackPressed();
     }
 
     private void init() {
+
+        connectivity = new Connectivity(getContext(), this);
+        preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
+                .name(Constants.SHARED_PREFS_NAME)
+                .build();
+
         title.setText(titleTxt);
         loader.setVisibility(View.VISIBLE);
         webview.setOnLongClickListener(v -> true);
@@ -93,7 +111,15 @@ public class WebViewFragment extends BaseFragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             LocaleManager.setLocale(getContext());
         }
-        webview.loadUrl(url);
+        if(connectivity.isConnected()){
+            if(!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))){
+                headers = new HashMap<>();
+                headers.put(Constants.X_AUTHORIZATION,preferenceManager.getValue(Constants.TOKEN_KEY, ""));
+                webview.loadUrl(url,headers);
+            }else
+                webview.loadUrl(url);
+
+        }
     }
 
 }

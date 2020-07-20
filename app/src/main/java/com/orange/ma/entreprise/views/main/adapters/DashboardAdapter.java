@@ -3,13 +3,18 @@ package com.orange.ma.entreprise.views.main.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +26,7 @@ import com.orange.ma.entreprise.models.dashboard.Template;
 import com.orange.ma.entreprise.utilities.LinePagerIndicatorDecoration;
 
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,12 +49,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         switch (viewType) {
             case Template.TEMPLATE_BILLING:
             case Template.TEMPLATE_PARCK:
-                return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_small_simple_item_layout, parent, false));
+                return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_small_simple_item_layout, parent, false),viewType);
             case Template.TEMPLATE_SMALL_LIST:
-                return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_small_compound_item_layout, parent, false));
+                return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_small_compound_item_layout, parent, false),viewType);
             case Template.TEMPLATE_LIST_SLIDER:
             case Template.TEMPLATE_LIST:
-                return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_large_item_layout, parent, false));
+                return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_large_item_layout, parent, false),viewType);
             default:
                 return null;
         }
@@ -90,11 +96,17 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements(), onTemplateItemSelectedListener, holder.getItemViewType()));
         } else {
             holder.recycler.setHasFixedSize(true);
-            layoutManager = new GridLayoutManager(context, 2, LinearLayoutManager.HORIZONTAL, false);
+            if(holder.viewType == Template.TEMPLATE_LIST){
+                layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+                int h = (int)(context.getResources().getDimension(R.dimen._30sdp)*(template.getElementComplex().size()-1)+context.getResources().getDimension(R.dimen._135sdp));
+                holder.sliderCard.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,h,context.getResources().getDisplayMetrics())));
+            }
+            else
+                layoutManager = new GridLayoutManager(context, 2, LinearLayoutManager.HORIZONTAL, false);
             holder.recycler.setLayoutManager(layoutManager);
             holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements(), onTemplateItemSelectedListener, holder.getItemViewType()));
 
-            if (template.getElementComplex().get(0).getCompoundElements().size() > 2) {
+            if (holder.viewType== Template.TEMPLATE_LIST_SLIDER && template.getElementComplex().get(0).getCompoundElements().size() > 2) {
                 GridPagerSnapHelper gridPagerSnapHelper = new GridPagerSnapHelper();
                 gridPagerSnapHelper.setRow(2).setColumn(2);
                 gridPagerSnapHelper.attachToRecyclerView(holder.recycler);
@@ -117,10 +129,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         TextView title;
         @BindView(R.id.recycler)
         RecyclerView recycler;
+        @Nullable
+        @BindView(R.id.large_item_card)
+        CardView sliderCard;
 
-        ViewHolder(View itemView) {
+        int viewType;
+
+        ViewHolder(View itemView,int viewType) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            this.viewType = viewType;
         }
     }
 }

@@ -79,5 +79,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-dynamic-links:19.1.0'
     implementation 'com.google.firebase:firebase-inappmessaging-display:19.1.0'
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    implementation 'com.google.firebase:firebase-crashlytics:17.1.1'
 
 }
+
+apply plugin: 'com.google.firebase.crashlytics'

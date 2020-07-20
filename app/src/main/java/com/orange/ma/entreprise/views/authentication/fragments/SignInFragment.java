@@ -105,6 +105,7 @@ public class SignInFragment extends Fragment {
 
         OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "btn_valider_formulaire_inscription", LocaleManager.getLanguagePref(getContext()));
 
+        LocaleManager.setNewLocale(getContext(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
 
     }
 
@@ -339,7 +340,7 @@ public class SignInFragment extends Fragment {
                 preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
                 preferenceManager.putValue(Constants.TOKEN_KEY, "Bearer " + responseData.getResponse().getToken());
                 Intent intent = new Intent(getActivity(), MainActivity.class);
-                intent.putExtra("show_popup", true);
+                intent.putExtra("isCompleted", responseData.getResponse().getData().getUserInfos().isCompleted());
                 startActivity(intent);
                 getActivity().finish();
             } else {
