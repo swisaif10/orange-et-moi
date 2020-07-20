@@ -58,7 +58,7 @@ public class SplashScreenActivity extends BaseActivity {
                     }
                 });
 
-        handleInAppAction();
+        //handleInAppAction();
 
         Log.d("TAG", "onCreate: Firebase token "+ FirebaseInstanceId.getInstance().getToken());
 
@@ -76,10 +76,12 @@ public class SplashScreenActivity extends BaseActivity {
     }
 
     private void goToNextActivity() {
-        if (getIntent().getData() != null)
+        Intent intent = getIntent();
+        Log.d("TAGNOTIF", "goToNextActivity: "+getIntent().getExtras()==null?"null extras ": " not null extras ");
+        Log.d("TAGNOTIF", "goToNextActivity: "+getIntent().getData()==null?"null data ": " not null data ");
+        if (intent.getExtras() != null)
             deepLink();
         else {
-            Intent intent;
             if (preferenceManager.getValue(Constants.FIRST_TIME, true)) {
                 intent = new Intent(SplashScreenActivity.this, SelectLanguageActivity.class);
             } else {
@@ -129,6 +131,7 @@ public class SplashScreenActivity extends BaseActivity {
 
     private void deepLink() {
         String host = getIntent().getData().getHost();
+        Log.d("TAGNOTIF", "deepLink: "+host);
         Intent intent;
         if(Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, ""))){
             switch (host) {

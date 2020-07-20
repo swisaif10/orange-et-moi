@@ -165,6 +165,7 @@ public class NotificationUtils {
     }
 
     private void handleDeepLink(String endPoint) {
+        Log.d("TAGNOTIF", "handleDeepLink: "+endPoint);
         intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(endPoint));
         resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);

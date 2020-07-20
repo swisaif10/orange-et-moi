@@ -295,7 +295,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                     moveToSettingsFragment();
                     break;
                 default:
-                    fragment = new BrowserFragment();
+                    fragment = new DashboardFragment();
                     break;
             }
             fragNavController.pushFragment(fragment);

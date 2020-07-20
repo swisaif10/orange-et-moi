@@ -204,6 +204,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void login() {
+
         if (connectivity.isConnected())
             authenticationVM.login(String.valueOf(id.getText()).trim(), String.valueOf(password.getText()).trim(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
         else {
