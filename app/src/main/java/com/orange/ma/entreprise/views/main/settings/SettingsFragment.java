@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Browser;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,11 +34,13 @@ import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.SettingsVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseFragment;
+import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.adapters.SettingsAdapter;
 import com.orange.ma.entreprise.views.main.dialogs.ChangeLanguageDialog;
 import com.orange.ma.entreprise.views.main.dialogs.LogoutDialog;
 import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -108,17 +112,24 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                         bundle.putString(Constants.FIREBASE_ELEMENT_NAME_KEY, settingsItem.getAction());
                         OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_parametres", bundle);
                         break;
+                    case "home":
+                        ((MainActivity)getActivity()).moveToDashboardFragment();break;
                     default:
                         break;
                 }
             } else if (settingsItem.isInApp()) {
                 fragment = WebViewFragment.newInstance(settingsItem.getAction(), settingsItem.getTitle());
-                if (fragmentNavigation != null)
-                    fragmentNavigation.pushFragment(fragment);
+                ((MainActivity)getActivity()).switchFragment(fragment,"");
             } else {
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
                 CustomTabsIntent customTabsIntent = builder.build();
+                if(!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))){
+                    Toast.makeText(getContext(), preferenceManager.getValue(Constants.TOKEN_KEY, ""), Toast.LENGTH_SHORT).show();
+                    Bundle headers = new Bundle();
+                    headers.putString(Constants.X_AUTHORIZATION,preferenceManager.getValue(Constants.TOKEN_KEY, ""));
+                    customTabsIntent.intent.putExtra(Browser.EXTRA_HEADERS, headers);
+                }
                 customTabsIntent.launchUrl(getContext(), Uri.parse(settingsItem.getAction()));
             }
         }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Browser;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
@@ -54,7 +56,7 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
     @BindView(R.id.background2)
     ImageView background2;
     @BindView(R.id.swipeRefresh)
-    SwipeRefreshLayout swipeRefresh;
+    PullRefreshLayout swipeRefresh;
     @BindView(R.id.loader)
     GifImageView loader;
     @BindView(R.id.name)
@@ -168,6 +170,11 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
                 CustomTabsIntent customTabsIntent = builder.build();
+                if(!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))){
+                    Bundle headers = new Bundle();
+                    headers.putString(Constants.X_AUTHORIZATION,preferenceManager.getValue(Constants.TOKEN_KEY, ""));
+                    customTabsIntent.intent.putExtra(Browser.EXTRA_HEADERS, headers);
+                }
                 customTabsIntent.launchUrl(getContext(), Uri.parse(compoundElement.getAction()));
             }
         }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Browser;
 import android.util.Log;
 
 import androidx.browser.customtabs.CustomTabsIntent;
@@ -139,6 +140,11 @@ public class SplashScreenActivity extends BaseActivity {
                     CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                     builder.setToolbarColor(ContextCompat.getColor(this, R.color.black));
                     CustomTabsIntent customTabsIntent = builder.build();
+                    if(!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))){
+                        Bundle headers = new Bundle();
+                        headers.putString(Constants.X_AUTHORIZATION,preferenceManager.getValue(Constants.TOKEN_KEY, ""));
+                        customTabsIntent.intent.putExtra(Browser.EXTRA_HEADERS, headers);
+                    }
                     customTabsIntent.launchUrl(this, Uri.parse(notification.getEndPoint()));
                     break;
                 case APP_VIEW:
