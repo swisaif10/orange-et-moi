@@ -49,7 +49,7 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         this.arrayList = arrayList;
         this.onTemplateItemSelectedListener = onTemplateItemSelectedListener;
         this.templateKey = templateKey;
-        //findMaxLength();
+        findMaxLength();
         preferenceManager = new PreferenceManager.Builder(context, Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
@@ -271,7 +271,8 @@ int size = arrayList.get(position).getElements().size();
 
     private void findMaxLength() {
         for (CompoundElement e : arrayList)
-            if (max < e.getElements().get(0).getValue().length())
-                max = e.getElements().get(0).getValue().length();
+            if(e.getElements().size()>0)
+                if (max < e.getElements().get(0).getValue().length())
+                    max = e.getElements().get(0).getValue().length();
     }
 }
