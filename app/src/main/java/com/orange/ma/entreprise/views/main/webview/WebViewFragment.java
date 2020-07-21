@@ -21,7 +21,6 @@ import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.main.MainActivity;
-import com.orange.ma.entreprise.views.main.dashboard.DashboardFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +40,6 @@ public class WebViewFragment extends BaseFragment {
     TextView title;
     private String url;
     private String titleTxt;
-    private Map<String,String> headers;
     private Connectivity connectivity;
     private PreferenceManager preferenceManager;
 
@@ -60,6 +58,11 @@ public class WebViewFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        connectivity = new Connectivity(getContext(), this);
+        preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
+                .name(Constants.SHARED_PREFS_NAME)
+                .build();
 
         if (getArguments() != null) {
             url = getArguments().getString("url");
@@ -81,6 +84,13 @@ public class WebViewFragment extends BaseFragment {
         init();
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden)
+            init();
+    }
+
     @OnClick(R.id.back_btn)
     public void onViewClicked() {
 //        ((MainActivity) getActivity()).tabLayout.getTabAt(0).select();
@@ -90,11 +100,6 @@ public class WebViewFragment extends BaseFragment {
     }
 
     private void init() {
-
-        connectivity = new Connectivity(getContext(), this);
-        preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
-                .name(Constants.SHARED_PREFS_NAME)
-                .build();
 
         title.setText(titleTxt);
         loader.setVisibility(View.VISIBLE);
@@ -111,12 +116,12 @@ public class WebViewFragment extends BaseFragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             LocaleManager.setLocale(getContext());
         }
-        if(connectivity.isConnected()){
-            if(!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))){
-                headers = new HashMap<>();
-                headers.put(Constants.X_AUTHORIZATION,preferenceManager.getValue(Constants.TOKEN_KEY, ""));
-                webview.loadUrl(url,headers);
-            }else
+        if (connectivity.isConnected()) {
+            if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))) {
+                Map<String, String> headers = new HashMap<>();
+                headers.put(Constants.X_AUTHORIZATION, preferenceManager.getValue(Constants.TOKEN_KEY, ""));
+                webview.loadUrl(url, headers);
+            } else
                 webview.loadUrl(url);
 
         }

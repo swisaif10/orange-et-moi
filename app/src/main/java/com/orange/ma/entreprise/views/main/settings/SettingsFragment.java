@@ -92,6 +92,15 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            loader.setVisibility(View.VISIBLE);
+            getSettings();
+        }
+    }
+
+    @Override
     public void onItemSelected(SettingsItem settingsItem) {
         if (!settingsItem.getActionType().equalsIgnoreCase("none")) {
             Fragment fragment;
