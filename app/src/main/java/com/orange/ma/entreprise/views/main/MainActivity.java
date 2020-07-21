@@ -292,6 +292,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             if (!getIntent().getBooleanExtra("isCompleted", true)) {
                 OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "Pop-up_completer_mon_profil", LocaleManager.getLanguagePref(this));
                 showCompleteProfileDialog();
+                getIntent().removeExtra("isCompleted");
             }
         }
     }
@@ -323,6 +324,18 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         int index = -1;
         for (int i = 0; i < fragments.size(); i++) {
             if (fragments.get(i) instanceof SettingsFragment) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1)
+            tabLayout.getTabAt(index).select();
+    }
+
+    public void moveToDashboardFragment() {
+        int index = -1;
+        for (int i = 0; i < fragments.size(); i++) {
+            if (fragments.get(i) instanceof DashboardFragment) {
                 index = i;
                 break;
             }

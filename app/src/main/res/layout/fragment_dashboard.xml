@@ -106,26 +106,11 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/header"
-        android:layout_marginTop="@dimen/_minus40sdp">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/dashboard_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-<!--    <com.baoyz.widget.PullRefreshLayout-->
+<!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
 <!--        android:id="@+id/swipeRefresh"-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="match_parent"-->
 <!--        android:layout_below="@id/header"-->
-<!--        app:refreshColor="@color/orange"-->
 <!--        android:layout_marginTop="@dimen/_minus40sdp">-->
 
 <!--        <androidx.recyclerview.widget.RecyclerView-->
@@ -133,7 +118,22 @@
 <!--            android:layout_width="match_parent"-->
 <!--            android:layout_height="match_parent" />-->
 
-<!--    </com.baoyz.widget.PullRefreshLayout>-->
+<!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+
+    <com.baoyz.widget.PullRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header"
+        app:refreshColor="@color/orange"
+        android:layout_marginTop="@dimen/_minus40sdp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dashboard_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.baoyz.widget.PullRefreshLayout>
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/loader"

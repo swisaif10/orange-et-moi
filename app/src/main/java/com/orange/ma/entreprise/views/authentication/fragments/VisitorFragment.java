@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
@@ -43,7 +44,7 @@ public class VisitorFragment extends Fragment implements OnTemplateItemSelectedL
     @BindView(R.id.loader)
     GifImageView loader;
     @BindView(R.id.swipeRefresh)
-    SwipeRefreshLayout swipeRefresh;
+    PullRefreshLayout swipeRefresh;
     private PreferenceManager preferenceManager;
     private Connectivity connectivity;
     private AuthenticationVM authenticationVM;
