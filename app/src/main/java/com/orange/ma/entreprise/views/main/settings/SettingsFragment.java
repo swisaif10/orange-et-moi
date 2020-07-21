@@ -125,7 +125,6 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                 builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
                 CustomTabsIntent customTabsIntent = builder.build();
                 if(!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))){
-                    Toast.makeText(getContext(), preferenceManager.getValue(Constants.TOKEN_KEY, ""), Toast.LENGTH_SHORT).show();
                     Bundle headers = new Bundle();
                     headers.putString(Constants.X_AUTHORIZATION,preferenceManager.getValue(Constants.TOKEN_KEY, ""));
                     customTabsIntent.intent.putExtra(Browser.EXTRA_HEADERS, headers);
