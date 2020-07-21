@@ -147,6 +147,15 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            loader.setVisibility(View.VISIBLE);
+            getDashboardList();
+        }
+    }
+
+    @Override
     public void onTemplateItemSelected(CompoundElement compoundElement) {
 
         if (!compoundElement.getActionType().equalsIgnoreCase("none")) {
@@ -213,20 +222,21 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
             Utilities.showErrorPopup(getContext(), getString(R.string.generic_error));
         } else {
             int code = dashboardData.getHeader().getCode();
-            switch(code){
+            switch (code) {
                 case 200:
                     init(dashboardData.getResponse().getData());
                     break;
                 case 403:
                     Intent intent = new Intent(getActivity(), AuthenticationActivity.class);
-                    intent.putExtra(Constants.ERROR_CODE,dashboardData.getHeader().getCode());
-                    intent.putExtra(Constants.ERROR_MESSAGE,dashboardData.getHeader().getMessage());
+                    intent.putExtra(Constants.ERROR_CODE, dashboardData.getHeader().getCode());
+                    intent.putExtra(Constants.ERROR_MESSAGE, dashboardData.getHeader().getMessage());
                     startActivity(intent);
                     getActivity().finish();
                     break;
                 default:
                     Utilities.showErrorPopup(getContext(), dashboardData.getHeader().getMessage());
-            };
+            }
+            ;
         }
     }
 }
