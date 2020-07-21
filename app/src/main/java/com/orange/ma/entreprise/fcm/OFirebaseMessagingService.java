@@ -41,12 +41,12 @@ public class OFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void handleNotification(RemoteMessage.Notification notification) {
-//        NotificationObject mNotification = new NotificationObject(
-//                notification.getTitle(),
-//                notification.getBody()
-//        );
-//        setUserDataType();
-//        makeNotification(mNotification);
+        NotificationObject mNotification = new NotificationObject(
+                notification.getTitle(),
+                notification.getBody()
+        );
+        setUserDataType();
+        makeNotification(mNotification);
     }
 
     private void setUserDataType() {
@@ -54,16 +54,16 @@ public class OFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void handleData(Map<String, String> data) {
-//        Log.d("TAGNOTIF", "handleData: ");
-//        NotificationObject notification = new NotificationObject();
-//        notification.setTitle(data.get(TITLE));
-//        notification.setMessage(data.get(MESSAGE));
-//        notification.setImageUrl(data.get(IMAGE));
-//        notification.setActionType(data.get(ACTION_TYPE));
-//        notification.setEndPoint(data.get(ENDPOINT));
-//        notification.setEndPointTitle(data.get(ENDPOINT_TITLE));
-//
-//        makeNotification(notification);
+        Log.d("TAGNOTIF", "handleData: ");
+        NotificationObject notification = new NotificationObject();
+        notification.setTitle(data.get(TITLE));
+        notification.setMessage(data.get(MESSAGE));
+        notification.setImageUrl(data.get(IMAGE));
+        notification.setActionType(data.get(ACTION_TYPE));
+        notification.setEndPoint(data.get(ENDPOINT));
+        notification.setEndPointTitle(data.get(ENDPOINT_TITLE));
+
+        makeNotification(notification);
     }
 
     private void makeNotification(NotificationObject notification) {

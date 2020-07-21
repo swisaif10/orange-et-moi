@@ -49,7 +49,7 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         this.arrayList = arrayList;
         this.onTemplateItemSelectedListener = onTemplateItemSelectedListener;
         this.templateKey = templateKey;
-        findMaxLength();
+        //findMaxLength();
         preferenceManager = new PreferenceManager.Builder(context, Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
@@ -85,36 +85,55 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         else if (holder.separator != null)
             holder.separator.setVisibility(View.GONE);
 
-
-        if (arrayList.get(position).getElements().get(0).getType().equalsIgnoreCase("txt")) {
+int size = arrayList.get(position).getElements().size();
+        if (size>0 && arrayList.get(position).getElements().get(0).getType().equalsIgnoreCase("txt")) {
 
             if (templateKey == Template.TEMPLATE_PARCK) {
                 holder.layout1.setVisibility(View.GONE);
                 holder.layout2.setVisibility(View.GONE);
                 holder.layout3.setVisibility(View.VISIBLE);
-                String text = arrayList.get(position).getElements().get(0).getValue();
-                holder.value3pad.setText(Utilities.padLeft("0", max - text.length()));
-                holder.value3.setText(text);
-                holder.value3.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(0).getColor()));
-                holder.name3.setText(arrayList.get(position).getElements().get(1).getValue());
-                holder.name3.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(1).getColor()));
+                if(size>0){
+                    String text = arrayList.get(position).getElements().get(0).getValue();
+                    holder.value3pad.setText(Utilities.padLeft("0", max - text.length()));
+
+                    setTextsValues(holder.value3,text,arrayList.get(position).getElements().get(0).getColor(),"#FE7900");
+                    if(size>1)
+                        setTextsValues(holder.name3,arrayList.get(position).getElements().get(1).getValue(),arrayList.get(position).getElements().get(1).getColor(),"#000000");
+                    else
+                        setTextsValues(holder.name3,"-","#000000","#000000");
+                }else{
+                    setTextsValues(holder.value3,"-","#FE7900","#FE7900");
+                    setTextsValues(holder.name3,"-","#000000","#000000");
+                }
             } else if (templateKey==Template.TEMPLATE_LIST||templateKey == Template.TEMPLATE_LIST_SLIDER){//(arrayList.get(position).getElements().get(0).getValue().length() > 3) {
                 holder.layout1.setVisibility(View.GONE);
                 holder.layout2.setVisibility(View.VISIBLE);
-                holder.value2.setText(arrayList.get(position).getElements().get(0).getValue());
-                holder.value2.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(0).getColor()));
-                holder.name2.setText(arrayList.get(position).getElements().get(1).getValue());
-                holder.name2.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(1).getColor()));
+                if(size>0){
+                    setTextsValues(holder.value2,arrayList.get(position).getElements().get(0).getValue(),arrayList.get(position).getElements().get(0).getColor(),"#FE7900");
+                    if(size>1)
+                        setTextsValues(holder.name2,arrayList.get(position).getElements().get(1).getValue(),arrayList.get(position).getElements().get(1).getColor(),"#000000");
+                    else
+                        setTextsValues(holder.name2,"-","#000000","#000000");
+                }else{
+                    setTextsValues(holder.value2,"-","#FE7900","#FE7900");
+                    setTextsValues(holder.name2,"-","#000000","#000000");
+                }
             } else {
                 holder.layout1.setVisibility(View.VISIBLE);
                 holder.layout2.setVisibility(View.GONE);
-                holder.value1.setText(arrayList.get(position).getElements().get(0).getValue());
-                holder.value1.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(0).getColor()));
-                holder.name1.setText(arrayList.get(position).getElements().get(1).getValue());
-                holder.name1.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(1).getColor()));
+                if(size>0){
+                    setTextsValues(holder.value1,arrayList.get(position).getElements().get(0).getValue(),arrayList.get(position).getElements().get(0).getColor(),"#FE7900");
+                    if(size>1)
+                        setTextsValues(holder.name1,arrayList.get(position).getElements().get(1).getValue(),arrayList.get(position).getElements().get(1).getColor(),"#000000");
+                    else
+                        setTextsValues(holder.name1,"-","#000000","#000000");
+                }else{
+                    setTextsValues(holder.value1,"-","#FE7900","#FE7900");
+                    setTextsValues(holder.name1,"-","#000000","#000000");
+                }
             }
 
-        } else {
+        } else if(size >0) {
 
             if (templateKey == Template.TEMPLATE_LIST_SLIDER)
                 setLayoutParams(holder, position);
@@ -141,6 +160,11 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         }
 
         holder.itemView.setOnClickListener(v -> onTemplateItemSelectedListener.onTemplateItemSelected(arrayList.get(position)));
+    }
+
+    private void setTextsValues(TextView view, String value, String color,String defaultColor) {
+        view.setText(Utilities.isNullOrEmpty(value)?"-":value);
+        view.setTextColor(Color.parseColor(Utilities.isNullOrEmpty(color)?defaultColor:color));
     }
 
     @Override

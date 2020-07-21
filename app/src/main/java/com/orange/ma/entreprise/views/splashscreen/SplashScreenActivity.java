@@ -78,6 +78,7 @@ public class SplashScreenActivity extends BaseActivity {
                 });
         //firebaseAnalyticsEvent
         OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "page_splash", null);
+        Log.d("TAG", "onCreate: firebase "+FirebaseInstanceId.getInstance().getToken());
     }
 
     private void goToNextActivity() {
@@ -128,8 +129,8 @@ public class SplashScreenActivity extends BaseActivity {
                     intent = new Intent(this, MainActivity.class);
                     if(!notification.getEndPoint().startsWith("http"))
                         notification.setEndPoint("https://"+notification.getEndPoint());
-                    intent.putExtra("endpoint", notification.getEndPoint());
-                    intent.putExtra("endpointdata", notification.getEndPointTitle());
+                    intent.putExtra(ENDPOINT, notification.getEndPoint());
+                    intent.putExtra(ENDPOINT_TITLE, notification.getEndPointTitle());
                     startActivity(intent);
                     break;
                 case OUT_APP_URL:
@@ -142,7 +143,7 @@ public class SplashScreenActivity extends BaseActivity {
                     break;
                 case APP_VIEW:
                     intent = new Intent(this, MainActivity.class);
-                    intent.putExtra("endpoint", notification.getEndPoint());
+                    intent.putExtra(ENDPOINT, notification.getEndPoint());
                     startActivity(intent);
                     break;
                 case DEFAULT:

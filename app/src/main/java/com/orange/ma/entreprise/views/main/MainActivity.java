@@ -36,6 +36,9 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT;
+import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT_TITLE;
+
 public class MainActivity extends BaseActivity {
 
     @BindView(R.id.tabLayout)
@@ -230,11 +233,11 @@ public class MainActivity extends BaseActivity {
                 if ("setting".equals(getIntent().getStringExtra("link").toLowerCase())) {
                     moveToSettingsFragment();
                 }
-            } else if (getIntent().getStringExtra("endpoint") != null) {
-                if (getIntent().getStringExtra("endpointdata") != null) {
-                    handleInApp(getIntent().getStringExtra("endpoint"), getIntent().getStringExtra("endpointdata"));
+            } else if (getIntent().getStringExtra(ENDPOINT) != null) {
+                if (getIntent().getStringExtra(ENDPOINT_TITLE) != null) {
+                    handleInApp(getIntent().getStringExtra(ENDPOINT), getIntent().getStringExtra(ENDPOINT_TITLE));
                 } else
-                    handleAppView(getIntent().getStringExtra("endpoint"));
+                    handleAppView(getIntent().getStringExtra(ENDPOINT));
             }
             if (!getIntent().getBooleanExtra("isCompleted", true)) {
                 OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "Pop-up_completer_mon_profil", LocaleManager.getLanguagePref(this));
@@ -256,6 +259,7 @@ public class MainActivity extends BaseActivity {
                     break;
                 case "setting":
                     fragment = new SettingsFragment();
+                    moveToSettingsFragment();
                     break;
                 default:
                     fragment = new DashboardFragment();
