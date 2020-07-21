@@ -1,5 +1,6 @@
 package com.orange.ma.entreprise.views.splashscreen;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -7,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,6 +20,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
+import com.orange.ma.entreprise.fcm.NotificationObject;
 import com.orange.ma.entreprise.listeners.OnDialogButtonsClickListener;
 import com.orange.ma.entreprise.models.controlversion.ControlVersionData;
 import com.orange.ma.entreprise.utilities.Connectivity;
@@ -27,6 +31,19 @@ import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseActivity;
 import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.selectlanguage.SelectLanguageActivity;
+
+import static com.orange.ma.entreprise.utilities.Constants.ACTION_TYPE;
+import static com.orange.ma.entreprise.utilities.Constants.APP_VIEW;
+import static com.orange.ma.entreprise.utilities.Constants.DEEP_LINK;
+import static com.orange.ma.entreprise.utilities.Constants.DEFAULT;
+import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT;
+import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT_TITLE;
+import static com.orange.ma.entreprise.utilities.Constants.IMAGE;
+import static com.orange.ma.entreprise.utilities.Constants.INSCRIPTION;
+import static com.orange.ma.entreprise.utilities.Constants.IN_APP_URL;
+import static com.orange.ma.entreprise.utilities.Constants.MESSAGE;
+import static com.orange.ma.entreprise.utilities.Constants.OUT_APP_URL;
+import static com.orange.ma.entreprise.utilities.Constants.TITLE;
 
 public class SplashScreenActivity extends BaseActivity {
 
@@ -46,6 +63,8 @@ public class SplashScreenActivity extends BaseActivity {
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
 
+        if (getIntent().getExtras() != null)
+            handleIntent(getIntent());
         spalshVM.getversionMutableLiveData().observe(this, this::handleVersionCheckResponse);
         new Handler().postDelayed(this::getVersionCheck, 3000);
 
@@ -57,29 +76,14 @@ public class SplashScreenActivity extends BaseActivity {
                         //Log.d("TAG", "onCreate: Dynamic link host "+ pendingDynamicLinkData.getLink());
                     }
                 });
-
-        //handleInAppAction();
-
-        Log.d("TAG", "onCreate: Firebase token "+ FirebaseInstanceId.getInstance().getToken());
-
         //firebaseAnalyticsEvent
         OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "page_splash", null);
-    }
-
-    private void handleInAppAction() {
-        Intent i = getIntent();
-        if(getIntent().getExtras() !=null){
-            Intent intent = new Intent(this,MainActivity.class);
-            intent.putExtras(getIntent());
-            startActivity(intent);
-        }
+        Log.d("TAG", "onCreate: firebase "+FirebaseInstanceId.getInstance().getToken());
     }
 
     private void goToNextActivity() {
         Intent intent = getIntent();
-        Log.d("TAGNOTIF", "goToNextActivity: "+getIntent().getExtras()==null?"null extras ": " not null extras ");
-        Log.d("TAGNOTIF", "goToNextActivity: "+getIntent().getData()==null?"null data ": " not null data ");
-        if (intent.getExtras() != null)
+        if(intent.getData()!=null)
             deepLink();
         else {
             if (preferenceManager.getValue(Constants.FIRST_TIME, true)) {
@@ -93,6 +97,62 @@ public class SplashScreenActivity extends BaseActivity {
             startActivity(intent);
         }
         finish();
+    }
+
+    private void handleIntent(Intent intent) {
+        NotificationObject notification = new NotificationObject();
+        notification.setTitle(intent.getStringExtra(TITLE));
+        notification.setMessage(intent.getStringExtra(MESSAGE));
+        notification.setImageUrl(intent.getStringExtra(IMAGE));
+        notification.setActionType(intent.getStringExtra(ACTION_TYPE));
+        notification.setEndPoint(intent.getStringExtra(ENDPOINT));
+        notification.setEndPointTitle(intent.getStringExtra(ENDPOINT_TITLE));
+        if(Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, ""))){
+            switch (notification.getActionType()) {
+                case INSCRIPTION:
+                    intent = new Intent(this, AuthenticationActivity.class);
+                    intent.putExtra("link", notification.getActionType());
+                    startActivity(intent);
+                    break;
+                default:
+                    intent = new Intent(this, AuthenticationActivity.class);
+                    startActivity(intent);
+            }
+        }else{
+            switch (notification.getActionType()) {
+                case DEEP_LINK:
+                    intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(notification.getEndPoint()));
+                    startActivity(intent);
+                    break;
+                case IN_APP_URL:
+                    intent = new Intent(this, MainActivity.class);
+                    if(!notification.getEndPoint().startsWith("http"))
+                        notification.setEndPoint("https://"+notification.getEndPoint());
+                    intent.putExtra(ENDPOINT, notification.getEndPoint());
+                    intent.putExtra(ENDPOINT_TITLE, notification.getEndPointTitle());
+                    startActivity(intent);
+                    break;
+                case OUT_APP_URL:
+                    if(!notification.getEndPoint().startsWith("http"))
+                        notification.setEndPoint("https://"+notification.getEndPoint());
+                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                    builder.setToolbarColor(ContextCompat.getColor(this, R.color.black));
+                    CustomTabsIntent customTabsIntent = builder.build();
+                    customTabsIntent.launchUrl(this, Uri.parse(notification.getEndPoint()));
+                    break;
+                case APP_VIEW:
+                    intent = new Intent(this, MainActivity.class);
+                    intent.putExtra(ENDPOINT, notification.getEndPoint());
+                    startActivity(intent);
+                    break;
+                case DEFAULT:
+                default:
+                    intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+            }
+        }
+
     }
 
     private void getVersionCheck() {
@@ -131,7 +191,6 @@ public class SplashScreenActivity extends BaseActivity {
 
     private void deepLink() {
         String host = getIntent().getData().getHost();
-        Log.d("TAGNOTIF", "deepLink: "+host);
         Intent intent;
         if(Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, ""))){
             switch (host) {

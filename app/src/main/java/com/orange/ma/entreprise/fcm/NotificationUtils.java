@@ -33,9 +33,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.orange.ma.entreprise.utilities.Constants.ACTION_TYPE;
 import static com.orange.ma.entreprise.utilities.Constants.APP_VIEW;
 import static com.orange.ma.entreprise.utilities.Constants.DEEP_LINK;
 import static com.orange.ma.entreprise.utilities.Constants.DEFAULT;
+import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT;
+import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT_TITLE;
 import static com.orange.ma.entreprise.utilities.Constants.INSCRIPTION;
 import static com.orange.ma.entreprise.utilities.Constants.IN_APP_URL;
 import static com.orange.ma.entreprise.utilities.Constants.OUT_APP_URL;
@@ -92,18 +95,21 @@ public class NotificationUtils {
                     break;
                 case IN_APP_URL:
                     intent = new Intent(mContext, SplashScreenActivity.class);
-                    intent.putExtra("endpoint", notification.getEndPoint());
-                    intent.putExtra("endpointdata", notification.getEndPointTitle());
+                    intent.putExtra(ACTION_TYPE, notification.getActionType());
+                    intent.putExtra(ENDPOINT, notification.getEndPoint());
+                    intent.putExtra(ENDPOINT_TITLE, notification.getEndPointTitle());
                     resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
                     break;
                 case OUT_APP_URL:
                     intent = new Intent(Intent.ACTION_VIEW);
+                    intent.putExtra(ACTION_TYPE, notification.getActionType());
                     intent.setData(Uri.parse(notification.getEndPoint()));
                     resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
                     break;
                 case APP_VIEW:
                     intent = new Intent(mContext, MainActivity.class);
-                    intent.putExtra("endpoint", notification.getEndPoint());
+                    intent.putExtra(ACTION_TYPE, notification.getActionType());
+                    intent.putExtra(ENDPOINT, notification.getEndPoint());
                     resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
                     break;
                 case DEFAULT:
@@ -167,6 +173,8 @@ public class NotificationUtils {
     private void handleDeepLink(String endPoint) {
         Log.d("TAGNOTIF", "handleDeepLink: "+endPoint);
         intent = new Intent(Intent.ACTION_VIEW);
+        intent.putExtra(ACTION_TYPE, DEEP_LINK);
+        intent.putExtra(ENDPOINT, endPoint);
         intent.setData(Uri.parse(endPoint));
         resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
     }

@@ -34,4 +34,11 @@ public interface Constants {
 
     String ERROR_MESSAGE = "error_message";
     String ERROR_CODE = "error_code";
+
+    String TITLE = "title";
+    String MESSAGE = "body";
+    String IMAGE = "image";
+    String ENDPOINT = "endpoint";
+    String ENDPOINT_TITLE = "endpoint_title";
+    String ACTION_TYPE = "action";
 }
