@@ -56,7 +56,8 @@ public class BrowserFragment extends BaseFragment {
         preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
-        init();
+        //init();
+        flag=0;
         return inflater.inflate(R.layout.fragment_browser, container, false);
     }
 
@@ -65,14 +66,15 @@ public class BrowserFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(flag==1)
+        if(flag==0)
+            init();
+        else if(flag==1)
             ((MainActivity)getActivity()).moveToDashboardFragment();
         flag++;
     }
 
     private void init() {
         if (url != null) {
-            flag = 0;
             CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
             builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
             CustomTabsIntent customTabsIntent = builder.build();
