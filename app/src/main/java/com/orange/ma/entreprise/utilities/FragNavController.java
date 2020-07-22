@@ -618,7 +618,7 @@ public class FragNavController {
     private void executePendingTransactions() {
         if (!mExecutingTransaction) {
             mExecutingTransaction = true;
-            mFragmentManager.beginTransaction().commit();
+            mFragmentManager.executePendingTransactions();
             mExecutingTransaction = false;
         }
     }

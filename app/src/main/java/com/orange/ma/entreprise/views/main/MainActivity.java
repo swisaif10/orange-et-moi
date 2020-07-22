@@ -2,7 +2,6 @@ package com.orange.ma.entreprise.views.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +21,14 @@ import com.orange.ma.entreprise.models.tabmenu.TabMenuData;
 import com.orange.ma.entreprise.models.tabmenu.TabMenuItem;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
+import com.orange.ma.entreprise.utilities.FragNavController;
+import com.orange.ma.entreprise.utilities.FragmentHistory;
 import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.MainVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseActivity;
+import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.main.browser.BrowserFragment;
 import com.orange.ma.entreprise.views.main.dashboard.DashboardFragment;
 import com.orange.ma.entreprise.views.main.settings.SettingsFragment;
@@ -40,7 +42,7 @@ import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT;
 import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT_TITLE;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements BaseFragment.FragmentNavigation, FragNavController.TransactionListener, FragNavController.RootFragmentListener {
 
     @BindView(R.id.tabLayout)
     public TabLayout tabLayout;
@@ -50,7 +52,9 @@ public class MainActivity extends BaseActivity {
     private ArrayList<Fragment> fragments;
     private PreferenceManager preferenceManager;
     private Fragment fragment;
-
+    private FragNavController fragNavController;
+    private FragmentHistory fragmentHistory;
+    private Bundle savedInstanceState;
 
 
     @Override
@@ -58,6 +62,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        this.savedInstanceState = savedInstanceState;
 
         mainVM = ViewModelProviders.of(this).get(MainVM.class);
         connectivity = new Connectivity(this, this);
@@ -70,6 +75,13 @@ public class MainActivity extends BaseActivity {
         getTabMenu();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (fragNavController != null) {
+            fragNavController.onSaveInstanceState(outState);
+        }
+    }
 
     @Override
     protected void onResume() {
@@ -77,8 +89,30 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    public void pushFragment(Fragment fragment) {
+        if (fragNavController != null) {
+            fragNavController.pushFragment(fragment);
+        }
+    }
+
+    @Override
+    public Fragment getRootFragment(int index) {
+        return fragments.get(index);
+    }
+
+    @Override
+    public void onTabTransaction(Fragment fragment, int index) {
+
+    }
+
+    @Override
+    public void onFragmentTransaction(Fragment fragment, FragNavController.TransactionType transactionType) {
+
+    }
+
+    @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+        /*if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finish();
         } else {
             String fragmentTag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 2).getName();
@@ -88,8 +122,8 @@ public class MainActivity extends BaseActivity {
             tabLayout.getTabAt(index).select();
 
             super.onBackPressed();
-        }
-        /*if (!fragNavController.isRootFragment()) {
+        }*/
+        if (!fragNavController.isRootFragment()) {
             fragNavController.popFragment();
         } else {
             if (fragmentHistory.isEmpty()) {
@@ -104,7 +138,7 @@ public class MainActivity extends BaseActivity {
                     fragmentHistory.emptyStack();
                 }
             }
-        }*/
+        }
     }
 
     private void init(TabMenuData tabMenuData) {
@@ -145,6 +179,11 @@ public class MainActivity extends BaseActivity {
             fragments.add(fragment);
         }
 
+        fragmentHistory = new FragmentHistory();
+        fragNavController = FragNavController.newBuilder(savedInstanceState, getSupportFragmentManager(), R.id.container)
+                .transactionListener(this)
+                .rootFragmentListener(this, fragments.size())
+                .build();
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -152,7 +191,8 @@ public class MainActivity extends BaseActivity {
                 int position = tab.getPosition();
 
                 if (tab.getTag() == null || !tab.getTag().equals("bp")) {
-                    switchFragment(fragments.get(position),String.valueOf(position));
+                    fragmentHistory.push(position);
+                    switchTab(position);
                 } else
                     tab.setTag(null);
                 tabLayout.getTabAt(position).select();
@@ -168,7 +208,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        switchFragment(fragments.get(0),"0");
+        switchTab(0);
         tabLayout.getTabAt(0).select();
 
     }
@@ -233,6 +273,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    private void switchTab(int position) {
+        fragNavController.switchTab(position);
+    }
 
     private void handleIntent() {
         if (getIntent().getExtras() != null) {
