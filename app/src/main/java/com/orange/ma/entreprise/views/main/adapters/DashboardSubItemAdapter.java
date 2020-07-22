@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,6 @@ import com.orange.ma.entreprise.models.dashboard.Template;
 import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
-import com.orange.ma.entreprise.views.main.MainActivity;
 
 import java.util.List;
 
@@ -80,60 +78,60 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
             holder.itemView.setLayoutParams(params);
 
         }
-        if ((position % 2 == 0 && holder.separator != null && position != arrayList.size() - 1)||(templateKey==Template.TEMPLATE_LIST&&position != arrayList.size() - 1))
+        if ((position % 2 == 0 && holder.separator != null && position != arrayList.size() - 1) || (templateKey == Template.TEMPLATE_LIST && position != arrayList.size() - 1))
             holder.separator.setVisibility(View.VISIBLE);
         else if (holder.separator != null)
             holder.separator.setVisibility(View.GONE);
 
-int size = arrayList.get(position).getElements().size();
-        if (size>0 && arrayList.get(position).getElements().get(0).getType().equalsIgnoreCase("txt")) {
+        int size = arrayList.get(position).getElements().size();
+        if (size > 0 && arrayList.get(position).getElements().get(0).getType().equalsIgnoreCase("txt")) {
 
             if (templateKey == Template.TEMPLATE_PARCK) {
                 holder.layout1.setVisibility(View.GONE);
                 holder.layout2.setVisibility(View.GONE);
                 holder.layout3.setVisibility(View.VISIBLE);
-                if(size>0){
+                if (size > 0) {
                     String text = arrayList.get(position).getElements().get(0).getValue();
                     holder.value3pad.setText(Utilities.padLeft("0", max - text.length()));
 
-                    setTextsValues(holder.value3,text,arrayList.get(position).getElements().get(0).getColor(),"#FE7900");
-                    if(size>1)
-                        setTextsValues(holder.name3,arrayList.get(position).getElements().get(1).getValue(),arrayList.get(position).getElements().get(1).getColor(),"#000000");
+                    setTextsValues(holder.value3, text, arrayList.get(position).getElements().get(0).getColor(), "#FE7900");
+                    if (size > 1)
+                        setTextsValues(holder.name3, arrayList.get(position).getElements().get(1).getValue(), arrayList.get(position).getElements().get(1).getColor(), "#000000");
                     else
-                        setTextsValues(holder.name3,"-","#000000","#000000");
-                }else{
-                    setTextsValues(holder.value3,"-","#FE7900","#FE7900");
-                    setTextsValues(holder.name3,"-","#000000","#000000");
+                        setTextsValues(holder.name3, "-", "#000000", "#000000");
+                } else {
+                    setTextsValues(holder.value3, "-", "#FE7900", "#FE7900");
+                    setTextsValues(holder.name3, "-", "#000000", "#000000");
                 }
-            } else if (templateKey==Template.TEMPLATE_LIST||templateKey == Template.TEMPLATE_LIST_SLIDER){//(arrayList.get(position).getElements().get(0).getValue().length() > 3) {
+            } else if (templateKey == Template.TEMPLATE_LIST || templateKey == Template.TEMPLATE_LIST_SLIDER) {//(arrayList.get(position).getElements().get(0).getValue().length() > 3) {
                 holder.layout1.setVisibility(View.GONE);
                 holder.layout2.setVisibility(View.VISIBLE);
-                if(size>0){
-                    setTextsValues(holder.value2,arrayList.get(position).getElements().get(0).getValue(),arrayList.get(position).getElements().get(0).getColor(),"#FE7900");
-                    if(size>1)
-                        setTextsValues(holder.name2,arrayList.get(position).getElements().get(1).getValue(),arrayList.get(position).getElements().get(1).getColor(),"#000000");
+                if (size > 0) {
+                    setTextsValues(holder.value2, arrayList.get(position).getElements().get(0).getValue(), arrayList.get(position).getElements().get(0).getColor(), "#FE7900");
+                    if (size > 1)
+                        setTextsValues(holder.name2, arrayList.get(position).getElements().get(1).getValue(), arrayList.get(position).getElements().get(1).getColor(), "#000000");
                     else
-                        setTextsValues(holder.name2,"-","#000000","#000000");
-                }else{
-                    setTextsValues(holder.value2,"-","#FE7900","#FE7900");
-                    setTextsValues(holder.name2,"-","#000000","#000000");
+                        setTextsValues(holder.name2, "-", "#000000", "#000000");
+                } else {
+                    setTextsValues(holder.value2, "-", "#FE7900", "#FE7900");
+                    setTextsValues(holder.name2, "-", "#000000", "#000000");
                 }
-            } else {
+            } else if (templateKey == Template.TEMPLATE_BILLING || templateKey == Template.TEMPLATE_SMALL_LIST) {
                 holder.layout1.setVisibility(View.VISIBLE);
                 holder.layout2.setVisibility(View.GONE);
-                if(size>0){
-                    setTextsValues(holder.value1,arrayList.get(position).getElements().get(0).getValue(),arrayList.get(position).getElements().get(0).getColor(),"#FE7900");
-                    if(size>1)
-                        setTextsValues(holder.name1,arrayList.get(position).getElements().get(1).getValue(),arrayList.get(position).getElements().get(1).getColor(),"#000000");
+                if (size > 0) {
+                    setTextsValues(holder.value1, arrayList.get(position).getElements().get(0).getValue(), arrayList.get(position).getElements().get(0).getColor(), "#FE7900");
+                    if (size > 1)
+                        setTextsValues(holder.name1, arrayList.get(position).getElements().get(1).getValue(), arrayList.get(position).getElements().get(1).getColor(), "#000000");
                     else
-                        setTextsValues(holder.name1,"-","#000000","#000000");
-                }else{
-                    setTextsValues(holder.value1,"-","#FE7900","#FE7900");
-                    setTextsValues(holder.name1,"-","#000000","#000000");
+                        setTextsValues(holder.name1, "-", "#000000", "#000000");
+                } else {
+                    setTextsValues(holder.value1, "-", "#FE7900", "#FE7900");
+                    setTextsValues(holder.name1, "-", "#000000", "#000000");
                 }
             }
 
-        } else if(size >0) {
+        } else if (size > 0) {
 
             if (templateKey == Template.TEMPLATE_LIST_SLIDER)
                 setLayoutParams(holder, position);
@@ -143,7 +141,7 @@ int size = arrayList.get(position).getElements().size();
             ImageViewCompat.setImageTintList(holder.icon, ColorStateList.valueOf(Color.parseColor(arrayList.get(position).getElements().get(0).getColor())));
             holder.title.setText(arrayList.get(position).getElements().get(1).getValue());
             holder.title.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(1).getColor()));
-            holder.arrow.setVisibility(arrayList.get(position).getActionType().equalsIgnoreCase("none")||arrayList.get(position).getActionType().trim().isEmpty()?View.INVISIBLE:View.VISIBLE);
+            holder.arrow.setVisibility(arrayList.get(position).getActionType().equalsIgnoreCase("none") || arrayList.get(position).getActionType().trim().isEmpty() ? View.INVISIBLE : View.VISIBLE);
             ColorStateList mStateDrawableBtn1 = new ColorStateList(new int[][]{
                     new int[]{-android.R.attr.state_pressed},
                     new int[]{android.R.attr.state_pressed},
@@ -160,11 +158,6 @@ int size = arrayList.get(position).getElements().size();
         }
 
         holder.itemView.setOnClickListener(v -> onTemplateItemSelectedListener.onTemplateItemSelected(arrayList.get(position)));
-    }
-
-    private void setTextsValues(TextView view, String value, String color,String defaultColor) {
-        view.setText(Utilities.isNullOrEmpty(value)?"-":value);
-        view.setTextColor(Color.parseColor(Utilities.isNullOrEmpty(color)?defaultColor:color));
     }
 
     @Override
@@ -235,44 +228,50 @@ int size = arrayList.get(position).getElements().size();
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams((int) ((displayMetrics.widthPixels / 1.053) / 2) - (int) context.getResources().getDimension(R.dimen._10sdp), (int) context.getResources().getDimension(R.dimen._30sdp));
         lang = preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr");
 
-        if(position%4==0 || (position-1)%4==0)
+        if (position % 4 == 0 || (position - 1) % 4 == 0)
             params.setMargins(
-                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._7sdp:R.dimen._4sdp),
-                    (int)context.getResources().getDimension(R.dimen._minus1sdp),
-                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._4sdp:R.dimen._7sdp),
-                    (int)context.getResources().getDimension(R.dimen._8sdp));
-        else if(((position-3)%4==0 || (position-2)%4==0) && arrayList.size()>6)
+                    (int) context.getResources().getDimension(lang.equalsIgnoreCase("ar") ? R.dimen._7sdp : R.dimen._4sdp),
+                    (int) context.getResources().getDimension(R.dimen._minus1sdp),
+                    (int) context.getResources().getDimension(lang.equalsIgnoreCase("ar") ? R.dimen._4sdp : R.dimen._7sdp),
+                    (int) context.getResources().getDimension(R.dimen._8sdp));
+        else if (((position - 3) % 4 == 0 || (position - 2) % 4 == 0) && arrayList.size() > 6)
             params.setMargins(
-                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._2sdp:R.dimen._10sdp),
-                    (int)context.getResources().getDimension(R.dimen._minus1sdp),
-                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._10sdp:R.dimen._2sdp),
-                    (int)context.getResources().getDimension(R.dimen._8sdp));
-        else if (position>=2)
+                    (int) context.getResources().getDimension(lang.equalsIgnoreCase("ar") ? R.dimen._2sdp : R.dimen._10sdp),
+                    (int) context.getResources().getDimension(R.dimen._minus1sdp),
+                    (int) context.getResources().getDimension(lang.equalsIgnoreCase("ar") ? R.dimen._10sdp : R.dimen._2sdp),
+                    (int) context.getResources().getDimension(R.dimen._8sdp));
+        else if (position >= 2)
             params.setMargins(
-                    (int)context.getResources().getDimension(R.dimen._6sdp),
-                    (int)context.getResources().getDimension(R.dimen._minus1sdp),
-                    (int)context.getResources().getDimension(R.dimen._6sdp),
-                    (int)context.getResources().getDimension(R.dimen._8sdp));
-        if(position>1 && arrayList.size()<=6)
+                    (int) context.getResources().getDimension(R.dimen._6sdp),
+                    (int) context.getResources().getDimension(R.dimen._minus1sdp),
+                    (int) context.getResources().getDimension(R.dimen._6sdp),
+                    (int) context.getResources().getDimension(R.dimen._8sdp));
+        if (position > 1 && arrayList.size() <= 6)
             params.setMargins(
-                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._1sdp:R.dimen._16sdp),
-                    (int)context.getResources().getDimension(R.dimen._minus1sdp),
-                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._16sdp:R.dimen._1sdp),
-                    (int)context.getResources().getDimension(R.dimen._8sdp));
-        if(position<=1 && arrayList.size()<=6)
+                    (int) context.getResources().getDimension(lang.equalsIgnoreCase("ar") ? R.dimen._1sdp : R.dimen._16sdp),
+                    (int) context.getResources().getDimension(R.dimen._minus1sdp),
+                    (int) context.getResources().getDimension(lang.equalsIgnoreCase("ar") ? R.dimen._16sdp : R.dimen._1sdp),
+                    (int) context.getResources().getDimension(R.dimen._8sdp));
+        if (position <= 1 && arrayList.size() <= 6)
             params.setMargins(
-                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._3sdp:R.dimen._1sdp),
-                    (int)context.getResources().getDimension(R.dimen._minus1sdp),
-                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._1sdp:R.dimen._3sdp),
-                    (int)context.getResources().getDimension(R.dimen._8sdp));
+                    (int) context.getResources().getDimension(lang.equalsIgnoreCase("ar") ? R.dimen._3sdp : R.dimen._1sdp),
+                    (int) context.getResources().getDimension(R.dimen._minus1sdp),
+                    (int) context.getResources().getDimension(lang.equalsIgnoreCase("ar") ? R.dimen._1sdp : R.dimen._3sdp),
+                    (int) context.getResources().getDimension(R.dimen._8sdp));
         holder.itemView.setLayoutParams(params);
 
     }
 
     private void findMaxLength() {
         for (CompoundElement e : arrayList)
-            if(e.getElements().size()>0)
+            if (e.getElements().size() > 0)
                 if (max < e.getElements().get(0).getValue().length())
                     max = e.getElements().get(0).getValue().length();
     }
+
+    private void setTextsValues(TextView view, String value, String color, String defaultColor) {
+        view.setText(Utilities.isNullOrEmpty(value) ? "-" : value);
+        view.setTextColor(Color.parseColor(Utilities.isNullOrEmpty(color) ? defaultColor : color));
+    }
+
 }

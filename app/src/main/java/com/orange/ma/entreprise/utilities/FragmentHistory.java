@@ -8,8 +8,6 @@ public class FragmentHistory {
 
     public FragmentHistory() {
         stackArr = new ArrayList<>();
-
-
     }
 
     public void push(int entry) {
@@ -18,7 +16,6 @@ public class FragmentHistory {
             stackArr.remove(stackArr.indexOf(entry));
         }
         stackArr.add(entry);
-
     }
 
     private boolean isAlreadyExists(int entry) {
@@ -42,7 +39,7 @@ public class FragmentHistory {
         int entry = 0;
 
         if (!isEmpty()) {
-            entry = stackArr.get(stackArr.size() - 1);
+            entry = stackArr.get(stackArr.size() - 2);
             stackArr.remove(stackArr.size() - 1);
         }
         return entry;

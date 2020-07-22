@@ -22,7 +22,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.orange.ma.entreprise.OrangeEtMoiPro;
@@ -179,9 +178,9 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
                 CustomTabsIntent customTabsIntent = builder.build();
-                if(!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))){
+                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))) {
                     Bundle headers = new Bundle();
-                    headers.putString(Constants.X_AUTHORIZATION,preferenceManager.getValue(Constants.TOKEN_KEY, ""));
+                    headers.putString(Constants.X_AUTHORIZATION, preferenceManager.getValue(Constants.TOKEN_KEY, ""));
                     customTabsIntent.intent.putExtra(Browser.EXTRA_HEADERS, headers);
                 }
                 customTabsIntent.launchUrl(getContext(), Uri.parse(compoundElement.getAction()));
@@ -190,6 +189,7 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
     }
 
     private void init(DashboardResponseData dashboardResponseData) {
+        ((MainActivity) getActivity()).fragmentHistory.emptyStack();
         if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar")) {
             background1.setScaleX(-1);
             background2.setScaleX(-1);
