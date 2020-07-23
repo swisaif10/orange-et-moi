@@ -108,6 +108,7 @@ public class SplashScreenActivity extends BaseActivity {
         notification.setActionType(intent.getStringExtra(ACTION_TYPE));
         notification.setEndPoint(intent.getStringExtra(ENDPOINT));
         notification.setEndPointTitle(intent.getStringExtra(ENDPOINT_TITLE));
+        if(Utilities.isNullOrEmpty(notification.getActionType()))return;
         if(Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, ""))){
             switch (notification.getActionType()) {
                 case INSCRIPTION:

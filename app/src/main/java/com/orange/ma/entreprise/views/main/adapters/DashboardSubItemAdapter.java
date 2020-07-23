@@ -163,8 +163,9 @@ int size = arrayList.get(position).getElements().size();
     }
 
     private void setTextsValues(TextView view, String value, String color,String defaultColor) {
+
         view.setText(Utilities.isNullOrEmpty(value)?"-":value);
-        view.setTextColor(Color.parseColor(Utilities.isNullOrEmpty(color)?defaultColor:color));
+        view.setTextColor(Color.parseColor(Utilities.isNullOrEmpty(color)?defaultColor:color.startsWith("#")?color:defaultColor));
     }
 
     @Override
@@ -255,9 +256,9 @@ int size = arrayList.get(position).getElements().size();
                     (int)context.getResources().getDimension(R.dimen._8sdp));
         if(position>1 && arrayList.size()<=6)
             params.setMargins(
-                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._1sdp:R.dimen._16sdp),
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._2sdp:R.dimen._16sdp),
                     (int)context.getResources().getDimension(R.dimen._minus1sdp),
-                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._16sdp:R.dimen._1sdp),
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._16sdp:R.dimen._2sdp),
                     (int)context.getResources().getDimension(R.dimen._8sdp));
         if(position<=1 && arrayList.size()<=6)
             params.setMargins(

@@ -149,7 +149,8 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                 }
             } else if (settingsItem.isInApp()) {
                 fragment = WebViewFragment.newInstance(settingsItem.getAction(), settingsItem.getTitle());
-                ((MainActivity)getActivity()).switchFragment(fragment,"");
+                    if (fragmentNavigation != null)
+                            fragmentNavigation.pushFragment(fragment);
             } else {
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
