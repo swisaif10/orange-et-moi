@@ -18,6 +18,8 @@ public class SettingsItem {
     private String title;
     @Expose
     private boolean inApp;
+    @Expose
+    private String urlVebView;
 
     public String getAction() {
         return action;
@@ -65,5 +67,13 @@ public class SettingsItem {
 
     public void setInApp(boolean inApp) {
         this.inApp = inApp;
+    }
+
+    public String getUrlVebView() {
+        return urlVebView;
+    }
+
+    public void setUrlVebView(String urlVebView) {
+        this.urlVebView = urlVebView;
     }
 }

@@ -119,7 +119,7 @@ public class SplashScreenActivity extends BaseActivity {
                     intent = new Intent(this, AuthenticationActivity.class);
                     startActivity(intent);
             }
-        }else{
+        }else if (notification.getActionType() != null) {
             switch (notification.getActionType()) {
                 case DEEP_LINK:
                     intent = new Intent(Intent.ACTION_VIEW);

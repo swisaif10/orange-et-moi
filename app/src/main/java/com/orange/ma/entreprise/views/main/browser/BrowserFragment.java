@@ -46,6 +46,10 @@ public class BrowserFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
+                .name(Constants.SHARED_PREFS_NAME)
+                .build();
+
         if (getArguments() != null)
             url = getArguments().getString("url");
     }
@@ -68,9 +72,16 @@ public class BrowserFragment extends BaseFragment {
         super.onResume();
         if(flag==0)
             init();
-        else if(flag==1)
+        else
             ((MainActivity)getActivity()).moveToDashboardFragment();
         flag++;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden)
+            init();
     }
 
     private void init() {

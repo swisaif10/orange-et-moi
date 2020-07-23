@@ -86,77 +86,87 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
             holder.separator.setVisibility(View.GONE);
 
 int size = arrayList.get(position).getElements().size();
-        if (size>0 && arrayList.get(position).getElements().get(0).getType().equalsIgnoreCase("txt")) {
+        switch (templateKey){
+            case Template.TEMPLATE_BILLING:
+            case Template.TEMPLATE_PARCK:
+                if (size>0 && arrayList.get(position).getElements().get(0).getType().equalsIgnoreCase("txt")) {
 
-            if (templateKey == Template.TEMPLATE_PARCK) {
-                holder.layout1.setVisibility(View.GONE);
-                holder.layout2.setVisibility(View.GONE);
-                holder.layout3.setVisibility(View.VISIBLE);
-                if(size>0){
-                    String text = arrayList.get(position).getElements().get(0).getValue();
-                    holder.value3pad.setText(Utilities.padLeft("0", max - text.length()));
+                    if (templateKey == Template.TEMPLATE_PARCK) {
+                        holder.layout1.setVisibility(View.GONE);
+                        holder.layout2.setVisibility(View.GONE);
+                        holder.layout3.setVisibility(View.VISIBLE);
+                        if(size>0){
+                            String text = arrayList.get(position).getElements().get(0).getValue();
+                            holder.value3pad.setText(Utilities.padLeft("0", max - text.length()));
 
-                    setTextsValues(holder.value3,text,arrayList.get(position).getElements().get(0).getColor(),"#FE7900");
-                    if(size>1)
-                        setTextsValues(holder.name3,arrayList.get(position).getElements().get(1).getValue(),arrayList.get(position).getElements().get(1).getColor(),"#000000");
-                    else
-                        setTextsValues(holder.name3,"-","#000000","#000000");
-                }else{
-                    setTextsValues(holder.value3,"-","#FE7900","#FE7900");
-                    setTextsValues(holder.name3,"-","#000000","#000000");
+                            setTextsValues(holder.value3,text,arrayList.get(position).getElements().get(0).getColor(),"#FE7900");
+                            if(size>1)
+                                setTextsValues(holder.name3,arrayList.get(position).getElements().get(1).getValue(),arrayList.get(position).getElements().get(1).getColor(),"#000000");
+                            else
+                                setTextsValues(holder.name3,"-","#000000","#000000");
+                        }else{
+                            setTextsValues(holder.value3,"-","#FE7900","#FE7900");
+                            setTextsValues(holder.name3,"-","#000000","#000000");
+                        }
+                    } else if (templateKey==Template.TEMPLATE_LIST||templateKey == Template.TEMPLATE_LIST_SLIDER){//(arrayList.get(position).getElements().get(0).getValue().length() > 3) {
+                        holder.layout1.setVisibility(View.GONE);
+                        holder.layout2.setVisibility(View.VISIBLE);
+                        if(size>0){
+                            setTextsValues(holder.value2,arrayList.get(position).getElements().get(0).getValue(),arrayList.get(position).getElements().get(0).getColor(),"#FE7900");
+                            if(size>1)
+                                setTextsValues(holder.name2,arrayList.get(position).getElements().get(1).getValue(),arrayList.get(position).getElements().get(1).getColor(),"#000000");
+                            else
+                                setTextsValues(holder.name2,"-","#000000","#000000");
+                        }else{
+                            setTextsValues(holder.value2,"-","#FE7900","#FE7900");
+                            setTextsValues(holder.name2,"-","#000000","#000000");
+                        }
+                    } else {
+                        holder.layout1.setVisibility(View.VISIBLE);
+                        holder.layout2.setVisibility(View.GONE);
+                        if(size>0){
+                            setTextsValues(holder.value1,arrayList.get(position).getElements().get(0).getValue(),arrayList.get(position).getElements().get(0).getColor(),"#FE7900");
+                            if(size>1)
+                                setTextsValues(holder.name1,arrayList.get(position).getElements().get(1).getValue(),arrayList.get(position).getElements().get(1).getColor(),"#000000");
+                            else
+                                setTextsValues(holder.name1,"-","#000000","#000000");
+                        }else{
+                            setTextsValues(holder.value1,"-","#FE7900","#FE7900");
+                            setTextsValues(holder.name1,"-","#000000","#000000");
+                        }
+                    }
+
                 }
-            } else if (templateKey==Template.TEMPLATE_LIST||templateKey == Template.TEMPLATE_LIST_SLIDER){//(arrayList.get(position).getElements().get(0).getValue().length() > 3) {
-                holder.layout1.setVisibility(View.GONE);
-                holder.layout2.setVisibility(View.VISIBLE);
-                if(size>0){
-                    setTextsValues(holder.value2,arrayList.get(position).getElements().get(0).getValue(),arrayList.get(position).getElements().get(0).getColor(),"#FE7900");
-                    if(size>1)
-                        setTextsValues(holder.name2,arrayList.get(position).getElements().get(1).getValue(),arrayList.get(position).getElements().get(1).getColor(),"#000000");
-                    else
-                        setTextsValues(holder.name2,"-","#000000","#000000");
-                }else{
-                    setTextsValues(holder.value2,"-","#FE7900","#FE7900");
-                    setTextsValues(holder.name2,"-","#000000","#000000");
+                break;
+            case Template.TEMPLATE_SMALL_LIST:
+            case Template.TEMPLATE_LIST_SLIDER:
+            case Template.TEMPLATE_LIST:
+                if(size >0) {
+
+                    if (templateKey == Template.TEMPLATE_LIST_SLIDER)
+                        setLayoutParams(holder, position);
+
+                    int icon = context.getResources().getIdentifier(arrayList.get(position).getElements().get(0).getValue(), "drawable", context.getPackageName());
+                    holder.icon.setImageResource(icon);
+                    ImageViewCompat.setImageTintList(holder.icon, ColorStateList.valueOf(Color.parseColor(arrayList.get(position).getElements().get(0).getColor())));
+                    holder.title.setText(arrayList.get(position).getElements().get(1).getValue());
+                    holder.title.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(1).getColor()));
+                    holder.arrow.setVisibility(arrayList.get(position).getActionType().equalsIgnoreCase("none")||arrayList.get(position).getActionType().trim().isEmpty()?View.INVISIBLE:View.VISIBLE);
+                    ColorStateList mStateDrawableBtn1 = new ColorStateList(new int[][]{
+                            new int[]{-android.R.attr.state_pressed},
+                            new int[]{android.R.attr.state_pressed},
+                    },
+                            new int[]{
+                                    Color.parseColor(Utilities.isNullOrEmpty(arrayList.get(position).getElements().get(1).getColor())
+                                            ? "#000000" : arrayList.get(position).getElements().get(1).getColor()),
+                                    Color.parseColor(Utilities.isNullOrEmpty(arrayList.get(position).getElements().get(1).getHoverValueColor())
+                                            ? "#FE7900" : arrayList.get(position).getElements().get(1).getHoverValueColor())});
+                    holder.title.setTextColor(mStateDrawableBtn1);
+
+                    if (LocaleManager.getLanguagePref(context).equalsIgnoreCase("ar"))
+                        holder.arrow.setScaleX(-1);
                 }
-            } else {
-                holder.layout1.setVisibility(View.VISIBLE);
-                holder.layout2.setVisibility(View.GONE);
-                if(size>0){
-                    setTextsValues(holder.value1,arrayList.get(position).getElements().get(0).getValue(),arrayList.get(position).getElements().get(0).getColor(),"#FE7900");
-                    if(size>1)
-                        setTextsValues(holder.name1,arrayList.get(position).getElements().get(1).getValue(),arrayList.get(position).getElements().get(1).getColor(),"#000000");
-                    else
-                        setTextsValues(holder.name1,"-","#000000","#000000");
-                }else{
-                    setTextsValues(holder.value1,"-","#FE7900","#FE7900");
-                    setTextsValues(holder.name1,"-","#000000","#000000");
-                }
-            }
-
-        } else if(size >0) {
-
-            if (templateKey == Template.TEMPLATE_LIST_SLIDER)
-                setLayoutParams(holder, position);
-
-            int icon = context.getResources().getIdentifier(arrayList.get(position).getElements().get(0).getValue(), "drawable", context.getPackageName());
-            holder.icon.setImageResource(icon);
-            ImageViewCompat.setImageTintList(holder.icon, ColorStateList.valueOf(Color.parseColor(arrayList.get(position).getElements().get(0).getColor())));
-            holder.title.setText(arrayList.get(position).getElements().get(1).getValue());
-            holder.title.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(1).getColor()));
-            holder.arrow.setVisibility(arrayList.get(position).getActionType().equalsIgnoreCase("none")||arrayList.get(position).getActionType().trim().isEmpty()?View.INVISIBLE:View.VISIBLE);
-            ColorStateList mStateDrawableBtn1 = new ColorStateList(new int[][]{
-                    new int[]{-android.R.attr.state_pressed},
-                    new int[]{android.R.attr.state_pressed},
-            },
-                    new int[]{
-                            Color.parseColor(Utilities.isNullOrEmpty(arrayList.get(position).getElements().get(1).getColor())
-                                    ? "#000000" : arrayList.get(position).getElements().get(1).getColor()),
-                            Color.parseColor(Utilities.isNullOrEmpty(arrayList.get(position).getElements().get(1).getHoverValueColor())
-                                    ? "#FE7900" : arrayList.get(position).getElements().get(1).getHoverValueColor())});
-            holder.title.setTextColor(mStateDrawableBtn1);
-
-            if (LocaleManager.getLanguagePref(context).equalsIgnoreCase("ar"))
-                holder.arrow.setScaleX(-1);
+                break;
         }
 
         holder.itemView.setOnClickListener(v -> onTemplateItemSelectedListener.onTemplateItemSelected(arrayList.get(position)));

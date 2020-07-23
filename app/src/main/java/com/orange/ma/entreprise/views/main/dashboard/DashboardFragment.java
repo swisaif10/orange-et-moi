@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Browser;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.baoyz.widget.PullRefreshLayout;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
@@ -69,6 +72,8 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
     private DashboardVM dashboardVM;
     private PreferenceManager preferenceManager;
     private Bundle bundle;
+//    private Gson gson;
+//    private DashboardData dashboardData;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -97,8 +102,22 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         ButterKnife.bind(this, view);
+        //loadOldDashboard();
         return view;
     }
+
+//    private void loadOldDashboard() {
+//        try {
+//            String dashString = preferenceManager.getValue(Constants.M_DASHBOARD,null);
+//            gson = new Gson();
+//            if (!Utilities.isNullOrEmpty(dashString)&&!dashString.equals("null"))
+//                dashboardData = gson.fromJson(dashString,DashboardData.class);
+//            if(dashboardData!=null)
+//                handleDashboardData(dashboardData);
+//        }catch (JsonSyntaxException ex){
+//            ex.printStackTrace();
+//        }
+//    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -172,9 +191,10 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
                         break;
                 }
             } else if (compoundElement.getInApp()) {
-                fragment = WebViewFragment.newInstance(compoundElement.getAction(), compoundElement.getElements().get(1).getValue());
-                if (fragmentNavigation != null)
-                    fragmentNavigation.pushFragment(fragment);
+                //fragment = WebViewFragment.newInstance(compoundElement.getAction(), compoundElement.getElements().get(1).getValue());
+                ((MainActivity)getActivity()).handleInApp(compoundElement.getAction(), compoundElement.getElements().get(1).getValue());
+//                if (fragmentNavigation != null)
+//                    fragmentNavigation.pushFragment(fragment);
             } else {
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
@@ -190,6 +210,7 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
     }
 
     private void init(DashboardResponseData dashboardResponseData) {
+        ((MainActivity) getActivity()).fragmentHistory.emptyStack();
         if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar")) {
             background1.setScaleX(-1);
             background2.setScaleX(-1);
@@ -202,7 +223,13 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                if (dashboardResponseData.getTemplates().get(position).getSize().equalsIgnoreCase("small")) {
+                if ((dashboardResponseData.getTemplates().get(position).getSize().equalsIgnoreCase("small")
+                        &&!dashboardResponseData.getTemplates().get(position).getTemplateKey().equals("template_list_slider")
+                        &&!dashboardResponseData.getTemplates().get(position).getTemplateKey().equals("template_list"))
+                        ||
+                        ((dashboardResponseData.getTemplates().get(position).getTemplateKey().equals("template_list_slider")
+                        ||dashboardResponseData.getTemplates().get(position).getTemplateKey().equals("template_list")))
+                                && dashboardResponseData.getTemplates().get(position).getElementComplex().size()>2) {
                     return 1;
                 } else
                     return 2;
@@ -232,6 +259,7 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
             switch (code) {
                 case 200:
                     init(dashboardData.getResponse().getData());
+                    //preferenceManager.putValue(Constants.M_DASHBOARD,gson.toJson(dashboardData));
                     break;
                 case 403:
                     Intent intent = new Intent(getActivity(), AuthenticationActivity.class);

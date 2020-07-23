@@ -3,9 +3,12 @@ package com.orange.ma.entreprise.views.main.webview;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
@@ -40,16 +43,22 @@ public class WebViewFragment extends BaseFragment {
     TextView title;
     private String url;
     private String titleTxt;
+    private String urlVebView;
     private Connectivity connectivity;
     private PreferenceManager preferenceManager;
 
-    public static WebViewFragment newInstance(String url, String title) {
+    public static WebViewFragment newInstance(String url, String title,String urlVebView) {
         WebViewFragment fragment = new WebViewFragment();
         Bundle args = new Bundle();
         args.putString("url", url);
         args.putString("title", title);
+        if(!Utilities.isNullOrEmpty(urlVebView)) args.putString("urlVebView", urlVebView);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public static WebViewFragment newInstance(String url, String title) {
+        return WebViewFragment.newInstance(url, title, null);
     }
 
     public WebViewFragment() {
@@ -67,6 +76,8 @@ public class WebViewFragment extends BaseFragment {
         if (getArguments() != null) {
             url = getArguments().getString("url");
             titleTxt = getArguments().getString("title");
+            titleTxt = getArguments().getString("title");
+            urlVebView = getArguments().getString("urlVebView");
         }
     }
 
@@ -111,16 +122,23 @@ public class WebViewFragment extends BaseFragment {
             public void onPageFinished(WebView view, String url) {
                 loader.setVisibility(View.GONE);
             }
+
+            @Nullable
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+                Log.d("TAG", "shouldInterceptRequest: "+url);
+                return super.shouldInterceptRequest(view, url);
+            }
         });
         webview.getSettings().setDefaultTextEncodingName("utf-8");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             LocaleManager.setLocale(getContext());
         }
         if (connectivity.isConnected()) {
-            if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))) {
-                Map<String, String> headers = new HashMap<>();
-                headers.put(Constants.X_AUTHORIZATION, preferenceManager.getValue(Constants.TOKEN_KEY, ""));
-                webview.loadUrl(url, headers);
+            if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && !Utilities.isNullOrEmpty(urlVebView)) {
+                String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
+                urlVebView = urlVebView.concat("?url=").concat(url).concat("&token=").concat(token);
+                webview.loadUrl(urlVebView);
             } else
                 webview.loadUrl(url);
 

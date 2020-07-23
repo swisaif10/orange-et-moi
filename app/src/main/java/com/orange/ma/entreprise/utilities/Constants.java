@@ -41,4 +41,6 @@ public interface Constants {
     String ENDPOINT = "endpoint";
     String ENDPOINT_TITLE = "endpoint_title";
     String ACTION_TYPE = "action";
+    String M_DASHBOARD = "dashboard";
+    String M_SETTING = "setting";
 }

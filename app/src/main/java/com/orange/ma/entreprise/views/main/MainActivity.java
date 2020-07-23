@@ -2,6 +2,7 @@ package com.orange.ma.entreprise.views.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +54,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
     private PreferenceManager preferenceManager;
     private Fragment fragment;
     private FragNavController fragNavController;
-    private FragmentHistory fragmentHistory;
+    public FragmentHistory fragmentHistory;
     private Bundle savedInstanceState;
 
 
@@ -131,9 +132,11 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             } else {
                 if (fragmentHistory.getStackSize() > 1) {
                     int position = fragmentHistory.popPrevious();
+                    switchTab(position);
                     tabLayout.getTabAt(position).setTag("bp");
                     tabLayout.getTabAt(position).select();
                 } else {
+                    switchTab(0);
                     tabLayout.getTabAt(0).select();
                     fragmentHistory.emptyStack();
                 }
@@ -195,7 +198,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                     switchTab(position);
                 } else
                     tab.setTag(null);
-                tabLayout.getTabAt(position).select();
+                //tabLayout.getTabAt(position).select();
             }
 
             @Override
@@ -297,7 +300,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         }
     }
 
-    private void handleInApp(String endpoint, String endpointdata) {
+    public void handleInApp(String endpoint, String endpointdata) {
         fragment = WebViewFragment.newInstance(endpoint, endpointdata);
         switchFragment(fragment, "");
     }

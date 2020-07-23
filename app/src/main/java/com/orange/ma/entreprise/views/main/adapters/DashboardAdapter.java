@@ -90,7 +90,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         holder.title.setText(template.getTitle());
         RecyclerView.LayoutManager layoutManager;
         if(template.getElementComplex().size()<=0) return;
-        if (arrayList.get(position).getSize().equalsIgnoreCase("small")) {
+        if (arrayList.get(position).getSize().equalsIgnoreCase("small")&&holder.viewType!=Template.TEMPLATE_LIST_SLIDER&&holder.viewType!=Template.TEMPLATE_LIST) {
             layoutManager = new LinearLayoutManager(context);
             holder.recycler.setLayoutManager(layoutManager);
             holder.recycler.setPadding((int) context.getResources().getDimension(R.dimen._2sdp), 0, 0, 0);
@@ -107,7 +107,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             holder.recycler.setLayoutManager(layoutManager);
             holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements(), onTemplateItemSelectedListener, holder.getItemViewType()));
 
-            if (holder.viewType== Template.TEMPLATE_LIST_SLIDER && template.getElementComplex().get(0).getCompoundElements().size() > 2) {
+            if (holder.viewType== Template.TEMPLATE_LIST_SLIDER && template.getElementComplex().get(0).getCompoundElements().size() > 4) {
                 GridPagerSnapHelper gridPagerSnapHelper = new GridPagerSnapHelper();
                 gridPagerSnapHelper.setRow(2).setColumn(2);
                 gridPagerSnapHelper.attachToRecyclerView(holder.recycler);
