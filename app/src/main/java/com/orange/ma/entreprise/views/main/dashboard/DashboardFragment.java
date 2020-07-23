@@ -179,12 +179,12 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
                 CustomTabsIntent customTabsIntent = builder.build();
-                if(!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))){
-                    Bundle headers = new Bundle();
-                    headers.putString(Constants.X_AUTHORIZATION,preferenceManager.getValue(Constants.TOKEN_KEY, ""));
-                    customTabsIntent.intent.putExtra(Browser.EXTRA_HEADERS, headers);
+                String urlVebView = compoundElement.getAction();
+                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
+                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
                 }
-                customTabsIntent.launchUrl(getContext(), Uri.parse(compoundElement.getAction()));
+                customTabsIntent.launchUrl(getContext(), Uri.parse(urlVebView));
             }
         }
     }

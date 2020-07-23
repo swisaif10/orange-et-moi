@@ -66,4 +66,5 @@ public class SettingsItem {
     public void setInApp(boolean inApp) {
         this.inApp = inApp;
     }
+
 }

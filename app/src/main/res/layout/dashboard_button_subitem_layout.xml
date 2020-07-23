@@ -5,12 +5,14 @@
     android:id="@+id/layout_item"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_30sdp"
-    android:layout_marginBottom="@dimen/_5sdp">
+    android:layout_marginBottom="@dimen/_5sdp"
+    android:background="@color/orange">
 
     <RelativeLayout
         android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_29sdp">
+        android:layout_height="@dimen/_29sdp"
+        tools:ignore="MissingConstraints">
 
         <ImageView
             android:id="@+id/icon"

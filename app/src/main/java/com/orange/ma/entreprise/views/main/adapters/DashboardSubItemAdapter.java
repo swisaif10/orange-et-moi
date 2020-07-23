@@ -261,9 +261,9 @@ int size = arrayList.get(position).getElements().size();
                     (int)context.getResources().getDimension(R.dimen._8sdp));
         if(position<=1 && arrayList.size()<=6)
             params.setMargins(
-                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._3sdp:R.dimen._1sdp),
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._5sdp:R.dimen._1sdp),
                     (int)context.getResources().getDimension(R.dimen._minus1sdp),
-                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._1sdp:R.dimen._3sdp),
+                    (int)context.getResources().getDimension(lang.equalsIgnoreCase("ar")?R.dimen._4sdp:R.dimen._3sdp),
                     (int)context.getResources().getDimension(R.dimen._8sdp));
         holder.itemView.setLayoutParams(params);
 
