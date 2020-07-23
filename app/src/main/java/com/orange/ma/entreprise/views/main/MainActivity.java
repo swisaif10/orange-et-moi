@@ -38,6 +38,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT;
 import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT_TITLE;
 
@@ -53,7 +54,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
     private PreferenceManager preferenceManager;
     private Fragment fragment;
     private FragNavController fragNavController;
-    private FragmentHistory fragmentHistory;
+    public FragmentHistory fragmentHistory;
     private Bundle savedInstanceState;
 
 
@@ -131,10 +132,12 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             } else {
                 if (fragmentHistory.getStackSize() > 1) {
                     int position = fragmentHistory.popPrevious();
+                    switchTab(position);
                     tabLayout.getTabAt(position).setTag("bp");
-                    tabLayout.getTabAt(position).select();
+                    tabLayout.selectTab(tabLayout.getTabAt(position));
                 } else {
-                    tabLayout.getTabAt(0).select();
+                    switchTab(0);
+                    tabLayout.selectTab(tabLayout.getTabAt(0));
                     fragmentHistory.emptyStack();
                 }
             }
@@ -195,7 +198,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                     switchTab(position);
                 } else
                     tab.setTag(null);
-                tabLayout.getTabAt(position).select();
+                //tabLayout.getTabAt(position).select();
             }
 
             @Override
@@ -207,10 +210,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-
-        switchTab(0);
-        tabLayout.getTabAt(0).select();
-
     }
 
     private void showCompleteProfileDialog() {

@@ -190,6 +190,7 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
     }
 
     private void init(DashboardResponseData dashboardResponseData) {
+        ((MainActivity) getActivity()).fragmentHistory.emptyStack();
         if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar")) {
             background1.setScaleX(-1);
             background2.setScaleX(-1);

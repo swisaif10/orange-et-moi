@@ -62,7 +62,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     @Override
     public int getItemViewType(int position) {
-        switch (arrayList.get(position).getTemplateKey()) {
+        switch (arrayList.get(position).getTemplateKey().toLowerCase()) {
             case "template_billing":
                 return Template.TEMPLATE_BILLING;
             case "template_parck":
@@ -89,6 +89,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
         holder.title.setText(template.getTitle());
         RecyclerView.LayoutManager layoutManager;
+        if(template.getElementComplex().size()<=0) return;
         if (arrayList.get(position).getSize().equalsIgnoreCase("small")) {
             layoutManager = new LinearLayoutManager(context);
             holder.recycler.setLayoutManager(layoutManager);

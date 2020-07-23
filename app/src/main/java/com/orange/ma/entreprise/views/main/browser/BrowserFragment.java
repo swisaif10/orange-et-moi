@@ -1,19 +1,13 @@
 package com.orange.ma.entreprise.views.main.browser;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.provider.Browser;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 
@@ -28,7 +22,7 @@ public class BrowserFragment extends BaseFragment {
 
     private String url;
     private int flag;
-    PreferenceManager preferenceManager;
+    private PreferenceManager preferenceManager;
 
     public static BrowserFragment newInstance(String url) {
         BrowserFragment fragment = new BrowserFragment();
@@ -46,6 +40,10 @@ public class BrowserFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
+                .name(Constants.SHARED_PREFS_NAME)
+                .build();
+
         if (getArguments() != null)
             url = getArguments().getString("url");
     }
@@ -53,26 +51,31 @@ public class BrowserFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
-                .name(Constants.SHARED_PREFS_NAME)
-                .build();
-        init();
+        //init();
+        flag = 0;
         return inflater.inflate(R.layout.fragment_browser, container, false);
     }
-
-
 
     @Override
     public void onResume() {
         super.onResume();
-        if(flag==1)
-            ((MainActivity)getActivity()).moveToDashboardFragment();
+        if (flag == 0)
+            init();
+        else {
+            ((MainActivity) getActivity()).tabLayout.getTabAt(0).select();
+        }
         flag++;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden)
+            init();
     }
 
     private void init() {
         if (url != null) {
-            flag = 0;
             CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
             builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
             CustomTabsIntent customTabsIntent = builder.build();

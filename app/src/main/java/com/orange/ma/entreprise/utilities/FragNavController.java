@@ -129,7 +129,7 @@ public class FragNavController {
                 }
             }
 
-            executePendingTransactions();
+            //executePendingTransactions();
 
             mCurrentFrag = fragment;
             if (mTransactionListener != null) {
@@ -162,7 +162,7 @@ public class FragNavController {
             ft.add(mContainerId, fragment, generateTag(fragment));
             ft.commit();
 
-            executePendingTransactions();
+            //executePendingTransactions();
 
             mFragmentStacks.get(mSelectedTabIndex).push(fragment);
 
@@ -253,7 +253,7 @@ public class FragNavController {
             }
         }
 
-        executePendingTransactions();
+        //executePendingTransactions();
 
         //Need to have this down here so that that tag has been
         // committed to the fragment before we add to the stack
@@ -321,7 +321,7 @@ public class FragNavController {
                 }
             }
 
-            executePendingTransactions();
+            //executePendingTransactions();
 
             if (bShouldPush) {
                 mFragmentStacks.get(mSelectedTabIndex).push(fragment);
@@ -368,7 +368,7 @@ public class FragNavController {
             //Commit our transactions
             ft.commit();
 
-            executePendingTransactions();
+            //executePendingTransactions();
 
             fragmentStack.push(fragment);
             mCurrentFrag = fragment;
@@ -507,7 +507,7 @@ public class FragNavController {
         ft.add(mContainerId, fragment, generateTag(fragment));
         ft.commit();
 
-        executePendingTransactions();
+        //executePendingTransactions();
 
         mCurrentFrag = fragment;
         if (mTransactionListener != null) {
@@ -635,7 +635,7 @@ public class FragNavController {
                 }
             }
             ft.commit();
-            executePendingTransactions();
+            //executePendingTransactions();
         }
     }
 
