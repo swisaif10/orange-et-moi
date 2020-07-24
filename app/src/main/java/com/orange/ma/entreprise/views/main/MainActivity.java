@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.orange.ma.entreprise.utilities.Constants.DASH_TEMPLATE_HASH;
 import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT;
 import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT_TITLE;
 
@@ -254,7 +255,11 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             int code = tabMenuData.getHeader().getCode();
             switch (code) {
                 case 200:
-                    init(tabMenuData);
+                    String hash = preferenceManager.getValue(Constants.TAB_MENU_HASH,"");
+                    if(Utilities.isNullOrEmpty(hash)||!hash.equals(tabMenuData.getTabMenuResponse().getHash())){
+                        init(tabMenuData);
+                        preferenceManager.putValue(Constants.TAB_MENU_HASH,tabMenuData.getTabMenuResponse().getHash());
+                    }
                     handleIntent();
                     break;
                 case 403:

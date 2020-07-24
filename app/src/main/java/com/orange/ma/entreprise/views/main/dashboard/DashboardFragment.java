@@ -47,6 +47,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.droidsonroids.gif.GifImageView;
 
+import static com.orange.ma.entreprise.utilities.Constants.DASH_TEMPLATE_HASH;
+
 public class DashboardFragment extends BaseFragment implements OnTemplateItemSelectedListener {
 
     @BindView(R.id.dashboard_recycler)
@@ -232,7 +234,11 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
             int code = dashboardData.getHeader().getCode();
             switch (code) {
                 case 200:
-                    init(dashboardData.getResponse().getData());
+                    String hash = preferenceManager.getValue(DASH_TEMPLATE_HASH,"");
+                    if(Utilities.isNullOrEmpty(hash)||!hash.equals(dashboardData.getResponse().getHashTemplates())){
+                        init(dashboardData.getResponse().getData());
+                        preferenceManager.putValue(DASH_TEMPLATE_HASH,dashboardData.getResponse().getHashTemplates());
+                    }
                     break;
                 case 403:
                     Intent intent = new Intent(getActivity(), AuthenticationActivity.class);

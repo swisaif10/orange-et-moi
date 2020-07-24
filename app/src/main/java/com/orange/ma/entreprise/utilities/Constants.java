@@ -44,4 +44,7 @@ public interface Constants {
     String M_DASHBOARD = "dashboard";
     String M_SETTING = "setting";
     CharSequence EX_SSO_TOKEN = "{sso_token}";
+    String DASH_TEMPLATE_HASH = "dash_hash";
+    String TAB_MENU_HASH = "tabmenu_hash";
+    String VISITOR_TEMPLATE_HASH = "visitor_hash";
 }
