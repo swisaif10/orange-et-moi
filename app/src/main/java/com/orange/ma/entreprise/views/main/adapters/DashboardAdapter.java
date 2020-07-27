@@ -82,6 +82,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         Template template = arrayList.get(position);
+
+        if(template.getElementComplex().get(0).getCompoundElements()==null || template.getElementComplex().get(0).getCompoundElements().size()==0)return;
+
         holder.color.setBackgroundColor(Color.parseColor(template.getColorIcone()));
         int icon = context.getResources().getIdentifier(template.getIcon(), "drawable", context.getPackageName());
         holder.icon.setImageResource(icon);

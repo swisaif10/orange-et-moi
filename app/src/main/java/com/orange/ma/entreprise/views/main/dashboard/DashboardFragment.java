@@ -32,6 +32,7 @@ import com.orange.ma.entreprise.listeners.OnTemplateItemSelectedListener;
 import com.orange.ma.entreprise.models.dashboard.CompoundElement;
 import com.orange.ma.entreprise.models.dashboard.DashboardData;
 import com.orange.ma.entreprise.models.dashboard.DashboardResponseData;
+import com.orange.ma.entreprise.models.dashboard.Template;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.LocaleManager;
@@ -42,6 +43,8 @@ import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.adapters.DashboardAdapter;
 import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,6 +74,7 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
     private DashboardVM dashboardVM;
     private PreferenceManager preferenceManager;
     private Bundle bundle;
+    private boolean initRun = true;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -235,9 +239,10 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
             switch (code) {
                 case 200:
                     String hash = preferenceManager.getValue(DASH_TEMPLATE_HASH,"");
-                    if(Utilities.isNullOrEmpty(hash)||!hash.equals(dashboardData.getResponse().getHashTemplates())){
-                        init(dashboardData.getResponse().getData());
+                    if((Utilities.isNullOrEmpty(hash)||!hash.equals(dashboardData.getResponse().getHashTemplates()))|initRun){
+                        init(filterList(dashboardData.getResponse().getData()));
                         preferenceManager.putValue(DASH_TEMPLATE_HASH,dashboardData.getResponse().getHashTemplates());
+                        initRun = false;
                     }
                     break;
                 case 403:
@@ -253,4 +258,17 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
             ;
         }
     }
+
+    private DashboardResponseData filterList(DashboardResponseData data) {
+
+        ArrayList<Template> mTemplates= new ArrayList<>();
+        for (Template template:data.getTemplates()
+             ) {
+            if(template.getElementComplex().get(0).getCompoundElements()!=null)
+                mTemplates.add(template);
+        }
+        data.setTemplates(mTemplates);
+        return data;
+    }
+
 }

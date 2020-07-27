@@ -271,6 +271,7 @@ int size = arrayList.get(position).getElements().size();
     }
 
     private void findMaxLength() {
+        if(arrayList==null) return;
         for (CompoundElement e : arrayList)
             if(e.getElements().size()>0)
                 if (max < e.getElements().get(0).getValue().length())
