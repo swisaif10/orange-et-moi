@@ -83,7 +83,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
         Template template = arrayList.get(position);
 
-        if(template.getElementComplex().get(0).getCompoundElements()==null || template.getElementComplex().get(0).getCompoundElements().size()==0)return;
+        if(template.getElementComplex().getCompoundElements()==null || template.getElementComplex().getCompoundElements().size()==0)return;
 
         holder.color.setBackgroundColor(Color.parseColor(template.getColorIcone()));
         int icon = context.getResources().getIdentifier(template.getIcon(), "drawable", context.getPackageName());
@@ -92,25 +92,25 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
         holder.title.setText(template.getTitle());
         RecyclerView.LayoutManager layoutManager;
-        if(template.getElementComplex().size()<=0) return;
+
         if (arrayList.get(position).getSize().equalsIgnoreCase("small")) {
             layoutManager = new LinearLayoutManager(context);
             holder.recycler.setLayoutManager(layoutManager);
             holder.recycler.setPadding((int) context.getResources().getDimension(R.dimen._2sdp), 0, 0, 0);
-            holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements(), onTemplateItemSelectedListener, holder.getItemViewType()));
+            holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().getCompoundElements(), onTemplateItemSelectedListener, holder.getItemViewType()));
         } else {
             holder.recycler.setHasFixedSize(true);
             if(holder.viewType == Template.TEMPLATE_LIST){
                 layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-                int h = (int)(context.getResources().getDimension(R.dimen._30sdp)*(template.getElementComplex().get(0).getCompoundElements().size()-2)+context.getResources().getDimension(R.dimen._150sdp));
+                int h = (int)(context.getResources().getDimension(R.dimen._30sdp)*(template.getElementComplex().getCompoundElements().size()-2)+context.getResources().getDimension(R.dimen._150sdp));
                 holder.sliderCard.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,h));
             }
             else
                 layoutManager = new GridLayoutManager(context, 2, LinearLayoutManager.HORIZONTAL, false);
             holder.recycler.setLayoutManager(layoutManager);
-            holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().get(0).getCompoundElements(), onTemplateItemSelectedListener, holder.getItemViewType()));
+            holder.recycler.setAdapter(new DashboardSubItemAdapter(context, template.getElementComplex().getCompoundElements(), onTemplateItemSelectedListener, holder.getItemViewType()));
 
-            if (holder.viewType== Template.TEMPLATE_LIST_SLIDER && template.getElementComplex().get(0).getCompoundElements().size() > 2) {
+            if (holder.viewType== Template.TEMPLATE_LIST_SLIDER && template.getElementComplex().getCompoundElements().size() > 2) {
                 GridPagerSnapHelper gridPagerSnapHelper = new GridPagerSnapHelper();
                 gridPagerSnapHelper.setRow(2).setColumn(2);
                 gridPagerSnapHelper.attachToRecyclerView(holder.recycler);

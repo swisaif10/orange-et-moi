@@ -17,7 +17,7 @@ public class Template {
     @SerializedName("color_icone")
     private String colorIcone;
     @SerializedName("element_complex")
-    private List<ElementComplex> elementComplex;
+    private ElementComplex elementComplex;
     @Expose
     private String icon;
     @Expose
@@ -41,11 +41,11 @@ public class Template {
         this.colorIcone = colorIcone;
     }
 
-    public List<ElementComplex> getElementComplex() {
+    public ElementComplex getElementComplex() {
         return elementComplex;
     }
 
-    public void setElementComplex(List<ElementComplex> elementComplex) {
+    public void setElementComplex(ElementComplex elementComplex) {
         this.elementComplex = elementComplex;
     }
 
