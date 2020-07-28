@@ -176,7 +176,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                         break;
                 }
             } else if (item.getInApp())
-                fragment = WebViewFragment.newInstance(item.getAction(), item.getTitle());
+                fragment = BrowserFragment.newInstance(item.getAction());//fragment = WebViewFragment.newInstance(item.getAction(), item.getTitle());
             else
                 fragment = BrowserFragment.newInstance(item.getAction());
 

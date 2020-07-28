@@ -47,4 +47,8 @@ public interface Constants {
     String DASH_TEMPLATE_HASH = "dash_hash";
     String TAB_MENU_HASH = "tabmenu_hash";
     String VISITOR_TEMPLATE_HASH = "visitor_hash";
+
+    //TAG
+    String FORGOT_PASSWORD_TAG = "forgot_password";
+    String CHANGE_ACCOUNT_MANAGER_TAG = "change_account_manager";
 }

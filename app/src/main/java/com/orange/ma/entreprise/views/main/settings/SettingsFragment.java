@@ -127,19 +127,24 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                         break;
                 }
             } else if (settingsItem.isInApp()) {
-                fragment = WebViewFragment.newInstance(settingsItem.getAction(), settingsItem.getTitle());
-                if (fragmentNavigation != null)
-                    fragmentNavigation.pushFragment(fragment);
-            } else {
-                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
-                CustomTabsIntent customTabsIntent = builder.build();
+//                fragment = WebViewFragment.newInstance(settingsItem.getAction(), settingsItem.getTitle());
+//                if (fragmentNavigation != null)
+//                    fragmentNavigation.pushFragment(fragment);
+
                 String urlVebView = settingsItem.getAction();
                 if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
                     String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
                     urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
                 }
-                customTabsIntent.launchUrl(getContext(), Uri.parse(urlVebView));
+                Utilities.openCustomTab(getContext(), urlVebView);
+
+            } else {
+                String urlVebView = settingsItem.getAction();
+                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
+                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
+                }
+                Utilities.openCustomTab(getContext(), urlVebView);
             }
         }
     }

@@ -3,6 +3,7 @@ package com.orange.ma.entreprise.views.authentication.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,6 +20,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -27,6 +30,7 @@ import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.models.login.LoginData;
+import com.orange.ma.entreprise.models.login.SettingTagData;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.LocaleManager;
@@ -79,6 +83,7 @@ public class LoginFragment extends Fragment {
                 .build();
 
         authenticationVM.getLoginMutableLiveData().observe(this, this::handleLoginResponse);
+        authenticationVM.getSettingTagMutableLiveData().observe(this,this::handleSettingTagAction);
 
         //firebaseAnalyticsEvent
         OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_login", LocaleManager.getLanguagePref(getContext()));
@@ -118,7 +123,7 @@ public class LoginFragment extends Fragment {
         init();
     }
 
-    @OnClick({R.id.signin_btn, R.id.valid_btn, R.id.container, R.id.show_password_btn, R.id.close_btn, R.id.visitor_mode})
+    @OnClick({R.id.signin_btn, R.id.valid_btn, R.id.container, R.id.show_password_btn, R.id.close_btn, R.id.visitor_mode,R.id.forgotten_pwd_btn,R.id.gest_account_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.signin_btn:
@@ -152,16 +157,18 @@ public class LoginFragment extends Fragment {
                 break;
             case R.id.visitor_mode:
                 ((AuthenticationActivity) getActivity()).replaceFragment(new VisitorFragment());
-
+                break;
             case R.id.forgotten_pwd_btn:
                 bundle = new Bundle();
                 bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
                 OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("bnt_forgotten_password", bundle);
+                performTagAction(Constants.FORGOT_PASSWORD_TAG);
                 break;
             case R.id.gest_account_btn:
                 bundle = new Bundle();
                 bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
                 OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_changement_gestionnaire", bundle);
+                performTagAction(Constants.CHANGE_ACCOUNT_MANAGER_TAG);
                 break;
             default:
                 break;
@@ -206,7 +213,16 @@ public class LoginFragment extends Fragment {
     private void login() {
 
         if (connectivity.isConnected())
-            authenticationVM.login(String.valueOf(id.getText()).trim(), String.valueOf(password.getText()).trim(), saveBtn.isChecked(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
+            authenticationVM.login(String.valueOf(id.getText()).trim(), String.valueOf(password.getText()).trim(), saveBtn.isChecked(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"),preferenceManager);
+        else {
+            errorLayout.setVisibility(View.VISIBLE);
+            errorDescription.setText(getString(R.string.no_internet));
+        }
+    }
+
+    private void performTagAction(String tag) {
+        if (connectivity.isConnected())
+            authenticationVM.performTagAction(tag,preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
         else {
             errorLayout.setVisibility(View.VISIBLE);
             errorDescription.setText(getString(R.string.no_internet));
@@ -230,8 +246,6 @@ public class LoginFragment extends Fragment {
                     preferenceManager.clearValue(Constants.PASS_KEY);
                     preferenceManager.clearValue(Constants.SAVE_CREDENTIALS_KEY);
                 }
-                preferenceManager.putValue(Constants.TOKEN_KEY, "Bearer " + loginData.getResponse().getToken());
-                preferenceManager.putValue(Constants.IS_AUTHENTICATED, true);
 
                 intent = new Intent(getActivity(), MainActivity.class);
                 intent.putExtra("isCompleted", loginData.getResponse().getData().getUserInfos().isCompleted());
@@ -240,6 +254,32 @@ public class LoginFragment extends Fragment {
             } else {
                 errorLayout.setVisibility(View.VISIBLE);
                 errorDescription.setText(loginData.getHeader().getMessage());
+            }
+        }
+    }
+
+    private void handleSettingTagAction(SettingTagData settingTagData) {
+        if(settingTagData == null){
+            errorLayout.setVisibility(View.VISIBLE);
+            errorDescription.setText(getString(R.string.generic_error));
+        }else{
+            int code = settingTagData.getHeader().getCode();
+            switch (code){
+                case 200:
+                    if(settingTagData.getResponse().getData().getActionType().equals("external")&&settingTagData.getResponse().getData().isInApp()){
+                        String url = settingTagData.getResponse().getData().getAction();
+                        if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&url.contains(Constants.EX_SSO_TOKEN)) {
+                            String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
+                            url = url.replace(Constants.EX_SSO_TOKEN,token);
+                        }
+                        Utilities.openCustomTab(getContext(),url);
+                    }else{
+                        Utilities.openInBrowser(getContext(),settingTagData.getResponse().getData().getAction());
+                    }
+                    break;
+                default:
+                    errorLayout.setVisibility(View.VISIBLE);
+                    errorDescription.setText(settingTagData.getHeader().getMessage());
             }
         }
     }

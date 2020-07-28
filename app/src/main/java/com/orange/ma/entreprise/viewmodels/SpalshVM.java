@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.orange.ma.entreprise.datamanager.retrofit.ApiUrls;
 import com.orange.ma.entreprise.datamanager.retrofit.RestService;
 import com.orange.ma.entreprise.models.controlversion.ControlVersionData;
 
@@ -33,7 +34,7 @@ public class SpalshVM extends AndroidViewModel {
 
 
     public void getVersionCheck(String lang) {
-        Call<ControlVersionData> call = RestService.getInstance().endpoint().getVersionCheck(lang);
+        Call<ControlVersionData> call = RestService.getInstance().endpoint().getVersionCheck(ApiUrls.AUTHORIZATION,lang);
         call.enqueue(new Callback<ControlVersionData>() {
             @Override
             public void onResponse(Call<ControlVersionData> call, Response<ControlVersionData> response) {

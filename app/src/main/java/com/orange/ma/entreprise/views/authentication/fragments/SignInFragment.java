@@ -335,7 +335,7 @@ public class SignInFragment extends Fragment {
 
     private void SignIn() {
         if (connectivity.isConnected())
-            authenticationVM.signIn(id.getText().toString(), cin.getText().toString(), email.getText().toString(), password.getText().toString(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
+            authenticationVM.signIn(id.getText().toString(), cin.getText().toString(), email.getText().toString(), password.getText().toString(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"),preferenceManager);
         else {
             errorLayout.setVisibility(View.VISIBLE);
             errorDescription.setText(getString(R.string.no_internet));
@@ -350,7 +350,6 @@ public class SignInFragment extends Fragment {
             int code = responseData.getHeader().getCode();
             if (code == 200) {
                 preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
-                preferenceManager.putValue(Constants.TOKEN_KEY, "Bearer " + responseData.getResponse().getToken());
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.putExtra("isCompleted", responseData.getResponse().getData().getUserInfos().isCompleted());
                 startActivity(intent);

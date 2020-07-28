@@ -178,19 +178,24 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
                         break;
                 }
             } else if (compoundElement.getInApp()) {
-                fragment = WebViewFragment.newInstance(compoundElement.getAction(), compoundElement.getElements().get(1).getValue());
-                if (fragmentNavigation != null)
-                    fragmentNavigation.pushFragment(fragment);
-            } else {
-                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
-                CustomTabsIntent customTabsIntent = builder.build();
+//                fragment = WebViewFragment.newInstance(compoundElement.getAction(), compoundElement.getElements().get(1).getValue());
+//                if (fragmentNavigation != null)
+//                    fragmentNavigation.pushFragment(fragment);
+
                 String urlVebView = compoundElement.getAction();
                 if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
                     String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
                     urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
                 }
-                customTabsIntent.launchUrl(getContext(), Uri.parse(urlVebView));
+                Utilities.openCustomTab(getContext(),urlVebView);
+
+            } else {
+                String urlVebView = compoundElement.getAction();
+                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
+                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
+                }
+                Utilities.openCustomTab(getContext(),urlVebView);
             }
         }
     }
@@ -240,7 +245,7 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
                 case 200:
                     String hash = preferenceManager.getValue(DASH_TEMPLATE_HASH,"");
                     if((Utilities.isNullOrEmpty(hash)||!hash.equals(dashboardData.getResponse().getHashTemplates()))|initRun){
-                        init(filterList(dashboardData.getResponse().getData()));
+                        init(dashboardData.getResponse().getData());
                         preferenceManager.putValue(DASH_TEMPLATE_HASH,dashboardData.getResponse().getHashTemplates());
                         initRun = false;
                     }
@@ -257,18 +262,6 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
             }
             ;
         }
-    }
-
-    private DashboardResponseData filterList(DashboardResponseData data) {
-
-        ArrayList<Template> mTemplates= new ArrayList<>();
-        for (Template template:data.getTemplates()
-             ) {
-            if(template.getElementComplex().get(0).getCompoundElements()!=null)
-                mTemplates.add(template);
-        }
-        data.setTemplates(mTemplates);
-        return data;
     }
 
 }

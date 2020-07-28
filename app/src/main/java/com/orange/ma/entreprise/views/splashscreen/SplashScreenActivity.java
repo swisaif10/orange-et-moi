@@ -138,15 +138,12 @@ public class SplashScreenActivity extends BaseActivity {
                 case OUT_APP_URL:
                     if(!notification.getEndPoint().startsWith("http"))
                         notification.setEndPoint("https://"+notification.getEndPoint());
-                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                    builder.setToolbarColor(ContextCompat.getColor(this, R.color.black));
-                    CustomTabsIntent customTabsIntent = builder.build();
                     String urlVebView = notification.getEndPoint();
                     if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
                         String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
                         urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
                     }
-                    customTabsIntent.launchUrl(this, Uri.parse(urlVebView));
+                    Utilities.openCustomTab(this,urlVebView);
                     break;
                 case APP_VIEW:
                     intent = new Intent(this, MainActivity.class);

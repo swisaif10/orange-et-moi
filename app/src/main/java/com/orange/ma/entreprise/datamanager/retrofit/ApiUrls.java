@@ -1,6 +1,10 @@
 package com.orange.ma.entreprise.datamanager.retrofit;
 
 
+import com.orange.ma.entreprise.BuildConfig;
+
+import okhttp3.Credentials;
+
 public interface ApiUrls {
 
     String CHECK_VERSION_URL = "{locale}/api/version-control/check";
@@ -12,5 +16,7 @@ public interface ApiUrls {
     String GET_DASHBOARD_LIST_URL = "{locale}/api/account/dashboard";
     String LOGOUT_URL = "{locale}/api/account/logout";
     String GUEST_LOGIN_URL = "{locale}/api/account/guest-login";
+    String AUTHORIZATION = Credentials.basic(BuildConfig.ID, BuildConfig.DOMAIN);
 
+    String SETTING_BY_TAG = "{locale}/api/setting/by-tag";
 }
