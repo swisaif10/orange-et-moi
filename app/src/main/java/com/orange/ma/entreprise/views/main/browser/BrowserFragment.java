@@ -79,10 +79,10 @@ public class BrowserFragment extends BaseFragment {
             CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
             builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
             CustomTabsIntent customTabsIntent = builder.build();
-            if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))) {
-                Bundle headers = new Bundle();
-                headers.putString(Constants.X_AUTHORIZATION, preferenceManager.getValue(Constants.TOKEN_KEY, ""));
-                customTabsIntent.intent.putExtra(Browser.EXTRA_HEADERS, headers);
+            String urlVebView = url;
+            if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&url.contains(Constants.EX_SSO_TOKEN)) {
+                String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
+                url = url.replace(Constants.EX_SSO_TOKEN,token);
             }
             customTabsIntent.launchUrl(getContext(), Uri.parse(url));
         }

@@ -1,5 +1,6 @@
 package com.orange.ma.entreprise.views.splashscreen;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
@@ -77,12 +79,12 @@ public class SplashScreenActivity extends BaseActivity {
                 });
         //firebaseAnalyticsEvent
         OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "page_splash", null);
-        Log.d("TAG", "onCreate: firebase " + FirebaseInstanceId.getInstance().getToken());
+        Log.d("TAG", "onCreate: firebase "+FirebaseInstanceId.getInstance().getToken());
     }
 
     private void goToNextActivity() {
         Intent intent = getIntent();
-        if (intent.getData() != null)
+        if(intent.getData()!=null)
             deepLink();
         else {
             if (preferenceManager.getValue(Constants.FIRST_TIME, true)) {
@@ -106,7 +108,8 @@ public class SplashScreenActivity extends BaseActivity {
         notification.setActionType(intent.getStringExtra(ACTION_TYPE));
         notification.setEndPoint(intent.getStringExtra(ENDPOINT));
         notification.setEndPointTitle(intent.getStringExtra(ENDPOINT_TITLE));
-        if (Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, ""))) {
+        if(Utilities.isNullOrEmpty(notification.getActionType()))return;
+        if(Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, ""))){
             switch (notification.getActionType()) {
                 case INSCRIPTION:
                     intent = new Intent(this, AuthenticationActivity.class);
@@ -117,7 +120,7 @@ public class SplashScreenActivity extends BaseActivity {
                     intent = new Intent(this, AuthenticationActivity.class);
                     startActivity(intent);
             }
-        } else if (notification.getActionType() != null) {
+        }else{
             switch (notification.getActionType()) {
                 case DEEP_LINK:
                     intent = new Intent(Intent.ACTION_VIEW);
@@ -126,24 +129,21 @@ public class SplashScreenActivity extends BaseActivity {
                     break;
                 case IN_APP_URL:
                     intent = new Intent(this, MainActivity.class);
-                    if (!notification.getEndPoint().startsWith("http"))
-                        notification.setEndPoint("https://" + notification.getEndPoint());
+                    if(!notification.getEndPoint().startsWith("http"))
+                        notification.setEndPoint("https://"+notification.getEndPoint());
                     intent.putExtra(ENDPOINT, notification.getEndPoint());
                     intent.putExtra(ENDPOINT_TITLE, notification.getEndPointTitle());
                     startActivity(intent);
                     break;
                 case OUT_APP_URL:
-                    if (!notification.getEndPoint().startsWith("http"))
-                        notification.setEndPoint("https://" + notification.getEndPoint());
-                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                    builder.setToolbarColor(ContextCompat.getColor(this, R.color.black));
-                    CustomTabsIntent customTabsIntent = builder.build();
-                    if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))) {
-                        Bundle headers = new Bundle();
-                        headers.putString(Constants.X_AUTHORIZATION, preferenceManager.getValue(Constants.TOKEN_KEY, ""));
-                        customTabsIntent.intent.putExtra(Browser.EXTRA_HEADERS, headers);
+                    if(!notification.getEndPoint().startsWith("http"))
+                        notification.setEndPoint("https://"+notification.getEndPoint());
+                    String urlVebView = notification.getEndPoint();
+                    if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                        String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
+                        urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
                     }
-                    customTabsIntent.launchUrl(this, Uri.parse(notification.getEndPoint()));
+                    Utilities.openCustomTab(this,urlVebView);
                     break;
                 case APP_VIEW:
                     intent = new Intent(this, MainActivity.class);
@@ -196,7 +196,7 @@ public class SplashScreenActivity extends BaseActivity {
     private void deepLink() {
         String host = getIntent().getData().getHost();
         Intent intent;
-        if (Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, ""))) {
+        if(Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, ""))){
             switch (host) {
                 case "inscription":
                     intent = new Intent(SplashScreenActivity.this, AuthenticationActivity.class);
@@ -206,7 +206,7 @@ public class SplashScreenActivity extends BaseActivity {
                 default:
                     startActivity(new Intent(SplashScreenActivity.this, AuthenticationActivity.class));
             }
-        } else {
+        }else{
             switch (host) {
                 case "inscription":
                     intent = new Intent(SplashScreenActivity.this, AuthenticationActivity.class);

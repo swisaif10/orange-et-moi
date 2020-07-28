@@ -3,9 +3,12 @@ package com.orange.ma.entreprise.views.main.webview;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
@@ -67,6 +70,7 @@ public class WebViewFragment extends BaseFragment {
         if (getArguments() != null) {
             url = getArguments().getString("url");
             titleTxt = getArguments().getString("title");
+            titleTxt = getArguments().getString("title");
         }
     }
 
@@ -111,18 +115,24 @@ public class WebViewFragment extends BaseFragment {
             public void onPageFinished(WebView view, String url) {
                 loader.setVisibility(View.GONE);
             }
+
+            @Nullable
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+                Log.d("TAG", "shouldInterceptRequest: "+url);
+                return super.shouldInterceptRequest(view, url);
+            }
         });
         webview.getSettings().setDefaultTextEncodingName("utf-8");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             LocaleManager.setLocale(getContext());
         }
         if (connectivity.isConnected()) {
-            if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))) {
-                Map<String, String> headers = new HashMap<>();
-                headers.put(Constants.X_AUTHORIZATION, preferenceManager.getValue(Constants.TOKEN_KEY, ""));
-                webview.loadUrl(url, headers);
-            } else
-                webview.loadUrl(url);
+            if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&url.contains(Constants.EX_SSO_TOKEN)) {
+                String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
+                url = url.replace(Constants.EX_SSO_TOKEN,token);
+            }
+            webview.loadUrl(url);
 
         }
     }

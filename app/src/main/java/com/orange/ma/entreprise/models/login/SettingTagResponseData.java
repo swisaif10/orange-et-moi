@@ -1,23 +1,28 @@
-
-package com.orange.ma.entreprise.models.settings;
+package com.orange.ma.entreprise.models.login;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
-public class SettingsItem {
-
+public class SettingTagResponseData {
+    @Expose
+    private String title;
     @Expose
     private String action;
     @Expose
     private String actionType;
     @Expose
+    private boolean inApp;
+    @Expose
     private String icon;
     @Expose
     private String status;
-    @Expose
-    private String title;
-    @Expose
-    private boolean inApp;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getAction() {
         return action;
@@ -35,6 +40,14 @@ public class SettingsItem {
         this.actionType = actionType;
     }
 
+    public boolean isInApp() {
+        return inApp;
+    }
+
+    public void setInApp(boolean inApp) {
+        this.inApp = inApp;
+    }
+
     public String getIcon() {
         return icon;
     }
@@ -50,21 +63,4 @@ public class SettingsItem {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public boolean isInApp() {
-        return inApp;
-    }
-
-    public void setInApp(boolean inApp) {
-        this.inApp = inApp;
-    }
-
 }

@@ -1,6 +1,7 @@
 package com.orange.ma.entreprise.views.authentication.fragments;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -28,7 +31,10 @@ import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.AuthenticationVM;
+import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
+import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.adapters.DashboardAdapter;
+import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
 import java.util.List;
 
@@ -36,6 +42,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pl.droidsonroids.gif.GifImageView;
+
+import static com.orange.ma.entreprise.utilities.Constants.DASH_TEMPLATE_HASH;
+import static com.orange.ma.entreprise.utilities.Constants.VISITOR_TEMPLATE_HASH;
 
 public class VisitorFragment extends Fragment implements OnTemplateItemSelectedListener {
 
@@ -99,7 +108,38 @@ public class VisitorFragment extends Fragment implements OnTemplateItemSelectedL
 
     @Override
     public void onTemplateItemSelected(CompoundElement compoundElement) {
+        if (!compoundElement.getActionType().equalsIgnoreCase("none")) {
+            Fragment fragment;
+            if (compoundElement.getActionType().equalsIgnoreCase("internal")) {
+                ((AuthenticationActivity)getActivity()).onBackPressed();
+            } else if (compoundElement.getInApp()) {
+//                fragment = WebViewFragment.newInstance(compoundElement.getAction(), compoundElement.getElements().get(1).getValue());
+//                ((AuthenticationActivity)getActivity()).addFragment(fragment,"inapp");
+                String urlVebView = compoundElement.getAction();
+                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
+                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
+                }
+                Utilities.openCustomTab(getContext(),urlVebView);
+            } else {
+//                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+//                builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
+//                CustomTabsIntent customTabsIntent = builder.build();
+//                String urlVebView = compoundElement.getAction();
+//                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+//                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
+//                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
+//                }
+//                customTabsIntent.launchUrl(getContext(), Uri.parse(urlVebView));
 
+                String urlVebView = compoundElement.getAction();
+                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
+                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
+                }
+                Utilities.openInBrowser(getContext(),urlVebView);
+            }
+        }
     }
 
     private void init(List<Template> templates) {
@@ -134,7 +174,11 @@ public class VisitorFragment extends Fragment implements OnTemplateItemSelectedL
         } else {
             int code = guestLoginData.getHeader().getCode();
             if (code == 200) {
-                init(guestLoginData.getResponse().getData().getTemplates());
+//                String hash = preferenceManager.getValue(VISITOR_TEMPLATE_HASH,"");
+//                if(Utilities.isNullOrEmpty(hash)||!hash.equals(guestLoginData.getResponse().getHashTemplates())){
+                    init(guestLoginData.getResponse().getData().getTemplates());
+//                    preferenceManager.putValue(VISITOR_TEMPLATE_HASH,guestLoginData.getResponse().getHashTemplates());
+//                }
             } else
                 Utilities.showErrorPopup(getContext(), guestLoginData.getHeader().getMessage());
         }

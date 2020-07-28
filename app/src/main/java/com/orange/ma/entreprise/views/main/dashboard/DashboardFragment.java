@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.orange.ma.entreprise.OrangeEtMoiPro;
@@ -31,6 +32,7 @@ import com.orange.ma.entreprise.listeners.OnTemplateItemSelectedListener;
 import com.orange.ma.entreprise.models.dashboard.CompoundElement;
 import com.orange.ma.entreprise.models.dashboard.DashboardData;
 import com.orange.ma.entreprise.models.dashboard.DashboardResponseData;
+import com.orange.ma.entreprise.models.dashboard.Template;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.LocaleManager;
@@ -42,9 +44,13 @@ import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.adapters.DashboardAdapter;
 import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.droidsonroids.gif.GifImageView;
+
+import static com.orange.ma.entreprise.utilities.Constants.DASH_TEMPLATE_HASH;
 
 public class DashboardFragment extends BaseFragment implements OnTemplateItemSelectedListener {
 
@@ -68,6 +74,7 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
     private DashboardVM dashboardVM;
     private PreferenceManager preferenceManager;
     private Bundle bundle;
+    private boolean initRun = true;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -171,19 +178,24 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
                         break;
                 }
             } else if (compoundElement.getInApp()) {
-                fragment = WebViewFragment.newInstance(compoundElement.getAction(), compoundElement.getElements().get(1).getValue());
-                if (fragmentNavigation != null)
-                    fragmentNavigation.pushFragment(fragment);
-            } else {
-                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
-                CustomTabsIntent customTabsIntent = builder.build();
-                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))) {
-                    Bundle headers = new Bundle();
-                    headers.putString(Constants.X_AUTHORIZATION, preferenceManager.getValue(Constants.TOKEN_KEY, ""));
-                    customTabsIntent.intent.putExtra(Browser.EXTRA_HEADERS, headers);
+//                fragment = WebViewFragment.newInstance(compoundElement.getAction(), compoundElement.getElements().get(1).getValue());
+//                if (fragmentNavigation != null)
+//                    fragmentNavigation.pushFragment(fragment);
+
+                String urlVebView = compoundElement.getAction();
+                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
+                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
                 }
-                customTabsIntent.launchUrl(getContext(), Uri.parse(compoundElement.getAction()));
+                Utilities.openCustomTab(getContext(),urlVebView);
+
+            } else {
+                String urlVebView = compoundElement.getAction();
+                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
+                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
+                }
+                Utilities.openCustomTab(getContext(),urlVebView);
             }
         }
     }
@@ -231,7 +243,12 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
             int code = dashboardData.getHeader().getCode();
             switch (code) {
                 case 200:
-                    init(dashboardData.getResponse().getData());
+                    String hash = preferenceManager.getValue(DASH_TEMPLATE_HASH,"");
+                    if((Utilities.isNullOrEmpty(hash)||!hash.equals(dashboardData.getResponse().getHashTemplates()))|initRun){
+                        init(dashboardData.getResponse().getData());
+                        preferenceManager.putValue(DASH_TEMPLATE_HASH,dashboardData.getResponse().getHashTemplates());
+                        initRun = false;
+                    }
                     break;
                 case 403:
                     Intent intent = new Intent(getActivity(), AuthenticationActivity.class);
@@ -246,4 +263,5 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
             ;
         }
     }
+
 }

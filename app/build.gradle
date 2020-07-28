@@ -34,16 +34,22 @@ android {
         dev {
             dimension "app"
             buildConfigField "String", "BASEURL", DEV_URL
+            buildConfigField "String", "ID", ID
+            buildConfigField "String", "DOMAIN", DOMAIN
         }
 
         preprod {
             dimension "app"
             buildConfigField "String", "BASEURL", PREPROD_URL
+            buildConfigField "String", "ID", ID
+            buildConfigField "String", "DOMAIN", DOMAIN
         }
 
         publicPreprod {
             dimension "app"
             buildConfigField "String", "BASEURL", PUBLIC_PREPROD_URL
+            buildConfigField "String", "ID", ID
+            buildConfigField "String", "DOMAIN", DOMAIN
         }
 
     }

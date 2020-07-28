@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -48,6 +49,10 @@ import butterknife.OnClick;
 public class SignInFragment extends Fragment {
 
     private static final int REQUEST_CODE = 100;
+    private static final String IDENTIFIANT = "id";
+    private static final String CIN = "cin";
+    private static final String EMAIL = "email";
+    private static final String PASSWORD = "password";
 
     @BindView(R.id.id)
     EditText id;
@@ -85,6 +90,7 @@ public class SignInFragment extends Fragment {
     private Connectivity connectivity;
     private AuthenticationVM authenticationVM;
     private Boolean from_cgu = false;
+    private Boolean instanceData = false;
     private Bundle bundle;
 
     public SignInFragment() {
@@ -120,6 +126,12 @@ public class SignInFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if(getActivity().getIntent().getExtras()!=null && getActivity().getIntent().getStringExtra(IDENTIFIANT)!=null){
+            id.setText(getActivity().getIntent().getStringExtra(IDENTIFIANT));
+            cin.setText(getActivity().getIntent().getStringExtra(CIN));
+            email.setText(getActivity().getIntent().getStringExtra(EMAIL));
+            instanceData = true;
+        }
         init();
     }
 
@@ -217,7 +229,7 @@ public class SignInFragment extends Fragment {
         password.addTextChangedListener(textWatcher);
         email.addTextChangedListener(textWatcher);
 
-        if (!from_cgu) {
+        if (!from_cgu && !instanceData ) {
             id.getText().clear();
             cin.getText().clear();
             password.getText().clear();
@@ -323,7 +335,7 @@ public class SignInFragment extends Fragment {
 
     private void SignIn() {
         if (connectivity.isConnected())
-            authenticationVM.signIn(id.getText().toString(), cin.getText().toString(), email.getText().toString(), password.getText().toString(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
+            authenticationVM.signIn(id.getText().toString(), cin.getText().toString(), email.getText().toString(), password.getText().toString(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"),preferenceManager);
         else {
             errorLayout.setVisibility(View.VISIBLE);
             errorDescription.setText(getString(R.string.no_internet));
@@ -338,7 +350,6 @@ public class SignInFragment extends Fragment {
             int code = responseData.getHeader().getCode();
             if (code == 200) {
                 preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
-                preferenceManager.putValue(Constants.TOKEN_KEY, "Bearer " + responseData.getResponse().getToken());
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.putExtra("isCompleted", responseData.getResponse().getData().getUserInfos().isCompleted());
                 startActivity(intent);
@@ -350,4 +361,12 @@ public class SignInFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().getIntent().putExtra(IDENTIFIANT,String.valueOf(id.getText()));
+        getActivity().getIntent().putExtra(CIN,String.valueOf(cin.getText()));
+        getActivity().getIntent().putExtra(EMAIL,String.valueOf(email.getText()));
+        getActivity().getIntent().putExtra(PASSWORD,String.valueOf(password.getText()));
+    }
 }
