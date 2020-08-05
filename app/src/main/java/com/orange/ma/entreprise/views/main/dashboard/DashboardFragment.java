@@ -113,7 +113,7 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
 
         getDashboardList();
 
-        LinearSnapHelper snapHelper = new LinearSnapHelper();
+        StartSnapHelper snapHelper;
             /*@Override
             public int findTargetSnapPosition(RecyclerView.LayoutManager layoutManager, int velocityX, int velocityY) {
                 View centerView = findSnapView(layoutManager);
@@ -144,6 +144,8 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
         };*/
         //snapHelper.attachToRecyclerView(dashboardRecycler);
 
+        snapHelper  = new StartSnapHelper();
+        snapHelper.attachToRecyclerView(dashboardRecycler);
         swipeRefresh.setOnRefreshListener(() -> {
             getDashboardList();
             swipeRefresh.setRefreshing(false);

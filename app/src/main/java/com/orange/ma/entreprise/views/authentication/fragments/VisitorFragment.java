@@ -34,6 +34,7 @@ import com.orange.ma.entreprise.viewmodels.AuthenticationVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.adapters.DashboardAdapter;
+import com.orange.ma.entreprise.views.main.dashboard.StartSnapHelper;
 import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
 import java.util.List;
@@ -57,6 +58,7 @@ public class VisitorFragment extends Fragment implements OnTemplateItemSelectedL
     private PreferenceManager preferenceManager;
     private Connectivity connectivity;
     private AuthenticationVM authenticationVM;
+    StartSnapHelper snapHelper = new StartSnapHelper();
 
     public VisitorFragment() {
         // Required empty public constructor
@@ -156,6 +158,7 @@ public class VisitorFragment extends Fragment implements OnTemplateItemSelectedL
 
         recycler.setLayoutManager(layoutManager);
         DashboardAdapter dashboardAdapter = new DashboardAdapter(getContext(), templates, this::onTemplateItemSelected);
+        snapHelper.attachToRecyclerView(recycler);
         recycler.setAdapter(dashboardAdapter);
     }
 

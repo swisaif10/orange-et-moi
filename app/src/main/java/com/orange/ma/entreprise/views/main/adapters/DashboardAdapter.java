@@ -113,7 +113,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             if (holder.viewType== Template.TEMPLATE_LIST_SLIDER && template.getElementComplex().getCompoundElements().size() > 2) {
                 GridPagerSnapHelper gridPagerSnapHelper = new GridPagerSnapHelper();
                 gridPagerSnapHelper.setRow(2).setColumn(2);
-                gridPagerSnapHelper.attachToRecyclerView(holder.recycler);
+                if(holder.recycler.getOnFlingListener()==null) gridPagerSnapHelper.attachToRecyclerView(holder.recycler);
                 holder.recycler.addItemDecoration(new LinePagerIndicatorDecoration(6, 6 + 5, 0, context.getResources().getColor(R.color.orange), context.getResources().getColor(R.color.orange), context));
             }
         }
