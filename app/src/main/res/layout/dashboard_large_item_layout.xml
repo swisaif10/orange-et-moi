@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/large_item_card"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_140sdp"
+    android:layout_height="@dimen/_145sdp"
     android:background="@color/grey"
     app:cardCornerRadius="0dp"
     app:cardElevation="5dp"
