@@ -105,7 +105,8 @@ public class AuthenticationVM extends AndroidViewModel {
         call.enqueue(new Callback<LoginData>() {
             @Override
             public void onResponse(Call<LoginData> call, Response<LoginData> response) {
-                preferenceManager.putValue(Constants.TOKEN_KEY, "Bearer " + response.headers().get("x_auth_token"));
+                String token = response.raw().header("x-auth-token");
+                preferenceManager.putValue(Constants.TOKEN_KEY, "Bearer " + token);
                 preferenceManager.putValue(Constants.IS_AUTHENTICATED, true);
                 signInMutableLiveData.setValue(response.body());
             }

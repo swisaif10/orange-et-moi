@@ -85,8 +85,8 @@ public class FragNavController {
         }
     }
 
-    public static Builder newBuilder(@Nullable Bundle savedInstanceState, FragmentManager fragmentManager, int containerId) {
-        return new Builder(savedInstanceState, fragmentManager, containerId);
+    public static Builder newBuilder(@Nullable Bundle savedInstanceState, FragmentManager fragmentManager, int containerId, int index) {
+        return new Builder(savedInstanceState, fragmentManager, containerId, index);
     }
 
     //endregion
@@ -914,17 +914,18 @@ public class FragNavController {
         private FragmentManager mFragmentManager;
         private RootFragmentListener mRootFragmentListener;
         @TabIndex
-        private int mSelectedTabIndex = TAB1;
+        private int mSelectedTabIndex;
         private TransactionListener mTransactionListener;
         private FragNavTransactionOptions mDefaultTransactionOptions;
         private int mNumberOfTabs = 0;
         private List<Fragment> mRootFragments;
         private Bundle mSavedInstanceState;
 
-        public Builder(@Nullable Bundle savedInstanceState, FragmentManager mFragmentManager, int mContainerId) {
+        public Builder(@Nullable Bundle savedInstanceState, FragmentManager mFragmentManager, int mContainerId, int index) {
             this.mSavedInstanceState = savedInstanceState;
             this.mFragmentManager = mFragmentManager;
             this.mContainerId = mContainerId;
+            this.mSelectedTabIndex = index;
         }
 
         /**

@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -24,9 +23,6 @@ import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.main.MainActivity;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -97,9 +93,6 @@ public class WebViewFragment extends BaseFragment {
 
     @OnClick(R.id.back_btn)
     public void onViewClicked() {
-//        ((MainActivity) getActivity()).tabLayout.getTabAt(0).select();
-//        if (fragmentNavigation != null)
-//            fragmentNavigation.pushFragment(new DashboardFragment());
         ((MainActivity) getActivity()).onBackPressed();
     }
 
@@ -119,7 +112,7 @@ public class WebViewFragment extends BaseFragment {
             @Nullable
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-                Log.d("TAG", "shouldInterceptRequest: "+url);
+                Log.d("TAG", "shouldInterceptRequest: " + url);
                 return super.shouldInterceptRequest(view, url);
             }
         });
@@ -128,9 +121,9 @@ public class WebViewFragment extends BaseFragment {
             LocaleManager.setLocale(getContext());
         }
         if (connectivity.isConnected()) {
-            if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&url.contains(Constants.EX_SSO_TOKEN)) {
-                String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
-                url = url.replace(Constants.EX_SSO_TOKEN,token);
+            if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && url.contains(Constants.EX_SSO_TOKEN)) {
+                String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
+                url = url.replace(Constants.EX_SSO_TOKEN, token);
             }
             webview.loadUrl(url);
 

@@ -3,7 +3,6 @@ package com.orange.ma.entreprise.views.main.browser;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Browser;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,14 @@ import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.main.MainActivity;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import pl.droidsonroids.gif.GifImageView;
+
 public class BrowserFragment extends BaseFragment {
 
+    @BindView(R.id.loader)
+    GifImageView loader;
     private String url;
     private int flag;
     private PreferenceManager preferenceManager;
@@ -51,9 +56,11 @@ public class BrowserFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //init();
         flag = 0;
-        return inflater.inflate(R.layout.fragment_browser, container, false);
+        View view = inflater.inflate(R.layout.fragment_browser, container, false);
+        ButterKnife.bind(this,view);
+        loader.setVisibility(View.VISIBLE);
+        return view;
     }
 
     @Override
@@ -61,9 +68,8 @@ public class BrowserFragment extends BaseFragment {
         super.onResume();
         if (flag == 0)
             init();
-        else {
-            ((MainActivity) getActivity()).tabLayout.getTabAt(0).select();
-        }
+        else
+            ((MainActivity) getActivity()).moveToDashboardFragment();
         flag++;
     }
 
@@ -79,10 +85,9 @@ public class BrowserFragment extends BaseFragment {
             CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
             builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
             CustomTabsIntent customTabsIntent = builder.build();
-            String urlVebView = url;
-            if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&url.contains(Constants.EX_SSO_TOKEN)) {
-                String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
-                url = url.replace(Constants.EX_SSO_TOKEN,token);
+            if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && url.contains(Constants.EX_SSO_TOKEN)) {
+                String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
+                url = url.replace(Constants.EX_SSO_TOKEN, token);
             }
             customTabsIntent.launchUrl(getContext(), Uri.parse(url));
         }

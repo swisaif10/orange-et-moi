@@ -68,29 +68,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-    public void switchFragmentWithoutAnimation(Fragment fragment, String tag) {
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, fragment, tag)
-                .addToBackStack(tag)
-                .commit();
-    }
-
     public void switchFragment(Fragment fragment, String tag) {
 
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container, fragment, tag)
                 .addToBackStack(tag)
-                .commit();
-    }
-
-    public void switchFragmentWithoutBackStack(Fragment fragment) {
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, fragment)
                 .commit();
     }
 }

@@ -352,6 +352,7 @@ public class SignInFragment extends Fragment {
                 preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.putExtra("isCompleted", responseData.getResponse().getData().getUserInfos().isCompleted());
+                intent.putExtra("settingCompleteAccount", responseData.getResponse().getData().getSettingCompleteAccount());
                 startActivity(intent);
                 getActivity().finish();
             } else {

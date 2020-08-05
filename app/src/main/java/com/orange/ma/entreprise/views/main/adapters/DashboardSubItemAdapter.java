@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.ImageViewCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.orange.ma.entreprise.R;
@@ -38,19 +39,21 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
     private List<CompoundElement> arrayList;
     private OnTemplateItemSelectedListener onTemplateItemSelectedListener;
     private int templateKey;
-    private PreferenceManager preferenceManager;
-    private String lang;
     private int max = 1;
+    private int cellWidth;
+    private String lang;
 
-    public DashboardSubItemAdapter(Context context, List<CompoundElement> arrayList, OnTemplateItemSelectedListener onTemplateItemSelectedListener, int templateKey) {
+    public DashboardSubItemAdapter(Context context, List<CompoundElement> arrayList, OnTemplateItemSelectedListener onTemplateItemSelectedListener, int templateKey, int cellWidth) {
         this.context = context;
         this.arrayList = arrayList;
         this.onTemplateItemSelectedListener = onTemplateItemSelectedListener;
         this.templateKey = templateKey;
-        findMaxLength();
-        preferenceManager = new PreferenceManager.Builder(context, Context.MODE_PRIVATE)
+        this.cellWidth = cellWidth;
+        PreferenceManager preferenceManager = new PreferenceManager.Builder(context, Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
+        lang = preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr");
+
     }
 
     @NonNull
@@ -60,8 +63,19 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
             case Template.TEMPLATE_BILLING:
             case Template.TEMPLATE_PARCK:
                 return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_string_subitem_layout, parent, false));
-            case Template.TEMPLATE_SMALL_LIST:
             case Template.TEMPLATE_LIST_SLIDER:
+                ConstraintLayout layout = (ConstraintLayout) LayoutInflater.from(context).inflate(R.layout.dashboard_button_subitem_layout, parent, false);
+                RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) layout.getLayoutParams();
+                layoutParams.width = cellWidth ;
+                        //- (int) context.getResources().getDimension(R.dimen._4sdp);
+                /*if (lang.equalsIgnoreCase("ar"))
+                    layoutParams.setMargins((int) context.getResources().getDimension(R.dimen._7sdp), 0, 0, 0);
+                else
+                    layoutParams.setMargins(0, 0, (int) context.getResources().getDimension(R.dimen._7sdp), 0);*/
+
+                layout.setLayoutParams(layoutParams);
+                return new ViewHolder(layout);
+            case Template.TEMPLATE_SMALL_LIST:
             case Template.TEMPLATE_LIST:
                 return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_button_subitem_layout, parent, false));
             default:
@@ -131,22 +145,32 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
                         setTextsValues(holder.name1, "-", "#000000", "#000000");
                     }
                 }
-            }catch (Exception ignored){
+            } catch (Exception ignored) {
 
             }
 
         } else if (size > 0) {
 
-            if (templateKey == Template.TEMPLATE_LIST_SLIDER)
-                setLayoutParams(holder, position);
 
             int icon = context.getResources().getIdentifier(arrayList.get(position).getElements().get(0).getValue(), "drawable", context.getPackageName());
             holder.icon.setImageResource(icon);
-            ImageViewCompat.setImageTintList(holder.icon, ColorStateList.valueOf(Color.parseColor(arrayList.get(position).getElements().get(0).getColor())));
+
+            ColorStateList stateIconColor = new ColorStateList(new int[][]{
+                    new int[]{-android.R.attr.state_pressed},
+                    new int[]{android.R.attr.state_pressed},
+            },
+                    new int[]{
+                            Color.parseColor(Utilities.isNullOrEmpty(arrayList.get(position).getElements().get(0).getColor())
+                                    ? "#000000" : arrayList.get(position).getElements().get(0).getColor()),
+                            Color.parseColor(Utilities.isNullOrEmpty(arrayList.get(position).getElements().get(0).getHoverValueColor())
+                                    ? "#FE7900" : arrayList.get(position).getElements().get(0).getHoverValueColor())});
+
+            ImageViewCompat.setImageTintList(holder.icon, stateIconColor);
+
             holder.title.setText(arrayList.get(position).getElements().get(1).getValue());
             holder.title.setTextColor(Color.parseColor(arrayList.get(position).getElements().get(1).getColor()));
             holder.arrow.setVisibility(arrayList.get(position).getActionType().equalsIgnoreCase("none") || arrayList.get(position).getActionType().trim().isEmpty() ? View.INVISIBLE : View.VISIBLE);
-            ColorStateList mStateDrawableBtn1 = new ColorStateList(new int[][]{
+            ColorStateList stateTextColor = new ColorStateList(new int[][]{
                     new int[]{-android.R.attr.state_pressed},
                     new int[]{android.R.attr.state_pressed},
             },
@@ -155,7 +179,7 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
                                     ? "#000000" : arrayList.get(position).getElements().get(1).getColor()),
                             Color.parseColor(Utilities.isNullOrEmpty(arrayList.get(position).getElements().get(1).getHoverValueColor())
                                     ? "#FE7900" : arrayList.get(position).getElements().get(1).getHoverValueColor())});
-            holder.title.setTextColor(mStateDrawableBtn1);
+            holder.title.setTextColor(stateTextColor);
 
             if (LocaleManager.getLanguagePref(context).equalsIgnoreCase("ar"))
                 holder.arrow.setScaleX(-1);
@@ -235,8 +259,7 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         // 1.053 est le pourcentage de différence entre la largeur du slider et la largeur du device
         DisplayMetrics displayMetrics;
         displayMetrics = context.getResources().getDisplayMetrics();
-        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams((int) ((displayMetrics.widthPixels / 1.053) / 2) - (int) context.getResources().getDimension(R.dimen._8sdp), (int) context.getResources().getDimension(R.dimen._30sdp));
-        lang = preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr");
+        GridLayoutManager.LayoutParams params = (GridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
 
         if (position % 4 == 0 || (position - 1) % 4 == 0)
             params.setMargins(

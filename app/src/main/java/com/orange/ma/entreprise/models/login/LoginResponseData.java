@@ -2,7 +2,6 @@
 package com.orange.ma.entreprise.models.login;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import com.orange.ma.entreprise.models.tabmenu.TabMenuItem;
 
 import java.util.List;
@@ -13,6 +12,8 @@ public class LoginResponseData {
     private List<TabMenuItem> tabMenu;
     @Expose
     private UserInfos userInfos;
+    @Expose
+    private SettingCompleteAccount settingCompleteAccount;
 
     public List<TabMenuItem> getTabMenu() {
         return tabMenu;
@@ -30,4 +31,11 @@ public class LoginResponseData {
         this.userInfos = userInfos;
     }
 
+    public SettingCompleteAccount getSettingCompleteAccount() {
+        return settingCompleteAccount;
+    }
+
+    public void setSettingCompleteAccount(SettingCompleteAccount settingCompleteAccount) {
+        this.settingCompleteAccount = settingCompleteAccount;
+    }
 }

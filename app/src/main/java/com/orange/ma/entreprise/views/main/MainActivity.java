@@ -17,6 +17,7 @@ import com.orange.ma.entreprise.OrangeEtMoiPro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.listeners.OnDialogButtonsClickListener;
+import com.orange.ma.entreprise.models.login.SettingCompleteAccount;
 import com.orange.ma.entreprise.models.tabmenu.TabMenuData;
 import com.orange.ma.entreprise.models.tabmenu.TabMenuItem;
 import com.orange.ma.entreprise.utilities.Connectivity;
@@ -39,7 +40,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.orange.ma.entreprise.utilities.Constants.DASH_TEMPLATE_HASH;
 import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT;
 import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT_TITLE;
 
@@ -54,9 +54,10 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
     private ArrayList<Fragment> fragments;
     private PreferenceManager preferenceManager;
     private Fragment fragment;
-    private FragNavController fragNavController;
+    public FragNavController fragNavController;
     public FragmentHistory fragmentHistory;
     private Bundle savedInstanceState;
+    private SettingCompleteAccount settingCompleteAccount;
 
 
     @Override
@@ -75,6 +76,8 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         mainVM.getTabMenuMutableLiveData().observe(this, this::handleTabMenuResponse);
 
         getTabMenu();
+
+        settingCompleteAccount = (SettingCompleteAccount) getIntent().getSerializableExtra("settingCompleteAccount");
     }
 
     @Override
@@ -114,17 +117,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
 
     @Override
     public void onBackPressed() {
-        /*if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-            finish();
-        } else {
-            String fragmentTag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 2).getName();
-            Fragment fragment = getSupportFragmentManager().findFragmentByTag(fragmentTag);
-            int index = fragments.indexOf(fragment);
-            tabLayout.getTabAt(index).setTag("bp");
-            tabLayout.getTabAt(index).select();
-
-            super.onBackPressed();
-        }*/
         if (!fragNavController.isRootFragment()) {
             fragNavController.popFragment();
         } else {
@@ -137,9 +129,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                     tabLayout.getTabAt(position).setTag("bp");
                     tabLayout.selectTab(tabLayout.getTabAt(position));
                 } else {
-                    switchTab(0);
-                    tabLayout.selectTab(tabLayout.getTabAt(0));
-                    fragmentHistory.emptyStack();
+                    moveToFirstFragment();
                 }
             }
         }
@@ -183,11 +173,17 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             fragments.add(fragment);
         }
 
+        int index = getDashboardIndex();
         fragmentHistory = new FragmentHistory();
-        fragNavController = FragNavController.newBuilder(savedInstanceState, getSupportFragmentManager(), R.id.container)
-                .transactionListener(this)
-                .rootFragmentListener(this, fragments.size())
-                .build();
+        if (index != -1) {
+            fragNavController = FragNavController.newBuilder(savedInstanceState, getSupportFragmentManager(), R.id.container, index)
+                    .transactionListener(this)
+                    .rootFragmentListener(this, fragments.size())
+                    .build();
+
+            tabLayout.selectTab(tabLayout.getTabAt(index));
+        }
+
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -199,7 +195,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                     switchTab(position);
                 } else
                     tab.setTag(null);
-                //tabLayout.getTabAt(position).select();
             }
 
             @Override
@@ -211,6 +206,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+
     }
 
     private void showCompleteProfileDialog() {
@@ -222,6 +218,19 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                 bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getApplicationContext()));
                 bundle.putString(Constants.FIREBASE_RC_KEY, preferenceManager.getValue(Constants.LOGIN_KEY, ""));
                 OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("Clic_completer_mon_profil", bundle);
+
+                if (settingCompleteAccount.getInApp()) {
+                    Fragment fragment = WebViewFragment.newInstance(settingCompleteAccount.getAction(), settingCompleteAccount.getTitle());
+                    switchFragment(fragment, "");
+                } else {
+
+                    String url = settingCompleteAccount.getAction();
+                    if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && url.contains(Constants.EX_SSO_TOKEN)) {
+                        String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
+                        url = url.replace(Constants.EX_SSO_TOKEN, token);
+                    }
+                    Utilities.openCustomTab(MainActivity.this, url);
+                }
             }
 
             @Override
@@ -236,8 +245,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
 
         if (getIntent().getStringExtra("link") != null && getIntent().getStringExtra("link").equalsIgnoreCase("setting"))
             moveToSettingsFragment();
-        else
-            tabLayout.getTabAt(0).select();
     }
 
     private void getTabMenu() {
@@ -255,10 +262,10 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             int code = tabMenuData.getHeader().getCode();
             switch (code) {
                 case 200:
-                    String hash = preferenceManager.getValue(Constants.TAB_MENU_HASH,"");
-                    if(Utilities.isNullOrEmpty(hash)||!hash.equals(tabMenuData.getTabMenuResponse().getHash())){
+                    String hash = preferenceManager.getValue(Constants.TAB_MENU_HASH, "");
+                    if (Utilities.isNullOrEmpty(hash) || !hash.equals(tabMenuData.getTabMenuResponse().getHash())) {
                         init(tabMenuData);
-                        preferenceManager.putValue(Constants.TAB_MENU_HASH,tabMenuData.getTabMenuResponse().getHash());
+                        preferenceManager.putValue(Constants.TAB_MENU_HASH, tabMenuData.getTabMenuResponse().getHash());
                     }
                     handleIntent();
                     break;
@@ -277,7 +284,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         }
     }
 
-    private void switchTab(int position) {
+    public void switchTab(int position) {
         fragNavController.switchTab(position);
     }
 
@@ -346,6 +353,21 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         }
         if (index != -1)
             tabLayout.getTabAt(index).select();
+    }
+
+    public void moveToFirstFragment() {
+        switchTab(0);
+        tabLayout.selectTab(tabLayout.getTabAt(0));
+        fragmentHistory.emptyStack();
+    }
+
+    private int getDashboardIndex() {
+        for (int i = 0; i < fragments.size(); i++) {
+            if (fragments.get(i) instanceof DashboardFragment) {
+                return i;
+            }
+        }
+        return -1;
     }
 
 }

@@ -236,6 +236,7 @@ public class LoginFragment extends Fragment {
         } else {
             int code = loginData.getHeader().getCode();
             if (code == 200) {
+
                 if (saveBtn.isChecked()) {
                     preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
                     preferenceManager.putValue(Constants.LOGIN_KEY, id.getText().toString());
@@ -249,6 +250,7 @@ public class LoginFragment extends Fragment {
 
                 intent = new Intent(getActivity(), MainActivity.class);
                 intent.putExtra("isCompleted", loginData.getResponse().getData().getUserInfos().isCompleted());
+                intent.putExtra("settingCompleteAccount", loginData.getResponse().getData().getSettingCompleteAccount());
                 startActivity(intent);
                 getActivity().finish();
             } else {

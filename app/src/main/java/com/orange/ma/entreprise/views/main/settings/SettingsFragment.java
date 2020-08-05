@@ -67,11 +67,9 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
         settingsVM.getSettingsMutableLiveData().observe(this, this::handleSettingsDataResponse);
         settingsVM.getLogoutLiveData().observe(this, this::handleLogoutDataResponse);
 
-
         preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
-        //firebaseAnalyticsEvent
 
         OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_parametres", LocaleManager.getLanguagePref(getContext()));
 
@@ -103,7 +101,6 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
     @Override
     public void onItemSelected(SettingsItem settingsItem) {
         if (!settingsItem.getActionType().equalsIgnoreCase("none")) {
-            Fragment fragment;
             if (settingsItem.getActionType().equalsIgnoreCase("internal")) {
                 switch (settingsItem.getAction()) {
                     case "deconnexion":
@@ -127,17 +124,9 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                         break;
                 }
             } else if (settingsItem.isInApp()) {
-//                fragment = WebViewFragment.newInstance(settingsItem.getAction(), settingsItem.getTitle());
-//                if (fragmentNavigation != null)
-//                    fragmentNavigation.pushFragment(fragment);
-
-                String urlVebView = settingsItem.getAction();
-                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
-                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
-                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
-                }
-                Utilities.openCustomTab(getContext(), urlVebView);
-
+                Fragment fragment = WebViewFragment.newInstance(settingsItem.getAction(), settingsItem.getTitle());
+                if (fragmentNavigation != null)
+                    fragmentNavigation.pushFragment(fragment);
             } else {
                 String urlVebView = settingsItem.getAction();
                 if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {

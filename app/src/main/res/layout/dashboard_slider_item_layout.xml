@@ -65,9 +65,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_7sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="2"
                     tools:itemCount="8"
                     tools:listitem="@layout/dashboard_button_subitem_layout" />
 

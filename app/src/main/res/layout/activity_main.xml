@@ -25,7 +25,6 @@
         app:tabIndicatorFullWidth="true"
         app:tabIndicatorHeight="0dp"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/orange"
         app:tabTextAppearance="@style/MineCustomTabText"
         app:tabTextColor="@color/grey" />
 
