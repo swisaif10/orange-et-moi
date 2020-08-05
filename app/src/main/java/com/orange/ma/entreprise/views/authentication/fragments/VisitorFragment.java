@@ -1,22 +1,17 @@
 package com.orange.ma.entreprise.views.authentication.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.orange.ma.entreprise.OrangeEtMoiPro;
@@ -32,9 +27,8 @@ import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.AuthenticationVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
-import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.adapters.DashboardAdapter;
-import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
+import com.orange.ma.entreprise.utilities.StartSnapHelper;
 
 import java.util.List;
 
@@ -42,9 +36,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pl.droidsonroids.gif.GifImageView;
-
-import static com.orange.ma.entreprise.utilities.Constants.DASH_TEMPLATE_HASH;
-import static com.orange.ma.entreprise.utilities.Constants.VISITOR_TEMPLATE_HASH;
 
 public class VisitorFragment extends Fragment implements OnTemplateItemSelectedListener {
 
@@ -57,6 +48,7 @@ public class VisitorFragment extends Fragment implements OnTemplateItemSelectedL
     private PreferenceManager preferenceManager;
     private Connectivity connectivity;
     private AuthenticationVM authenticationVM;
+    StartSnapHelper snapHelper = new StartSnapHelper();
 
     public VisitorFragment() {
         // Required empty public constructor
@@ -156,6 +148,7 @@ public class VisitorFragment extends Fragment implements OnTemplateItemSelectedL
 
         recycler.setLayoutManager(layoutManager);
         DashboardAdapter dashboardAdapter = new DashboardAdapter(getContext(), templates, this::onTemplateItemSelected);
+        snapHelper.attachToRecyclerView(recycler);
         recycler.setAdapter(dashboardAdapter);
     }
 

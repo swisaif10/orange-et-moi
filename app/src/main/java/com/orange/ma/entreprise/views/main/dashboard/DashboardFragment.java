@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baoyz.widget.PullRefreshLayout;
@@ -30,6 +29,7 @@ import com.orange.ma.entreprise.models.dashboard.DashboardResponseData;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.LocaleManager;
+import com.orange.ma.entreprise.utilities.StartSnapHelper;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.DashboardVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
@@ -105,37 +105,8 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
 
         getDashboardList();
 
-        LinearSnapHelper snapHelper = new LinearSnapHelper();
-            /*@Override
-            public int findTargetSnapPosition(RecyclerView.LayoutManager layoutManager, int velocityX, int velocityY) {
-                View centerView = findSnapView(layoutManager);
-                if (centerView == null)
-                    return RecyclerView.NO_POSITION;
-
-                int position = layoutManager.getPosition(centerView);
-                int targetPosition = -1;
-
-
-                if (layoutManager.canScrollVertically()) {
-                    if (velocityY < 0) {
-                        targetPosition = position - 1;
-                    } else {
-                        targetPosition = position + 1;
-                    }
-                }
-
-                final int firstItem = 0;
-                final int lastItem = layoutManager.getItemCount() - 1;
-                targetPosition = Math.min(lastItem, Math.max(targetPosition, firstItem));
-
-
-                int activePosition = layoutManager.findFirstCompletelyVisibleItemPosition();
-
-                return targetPosition;
-            }
-        };*/
-        //snapHelper.attachToRecyclerView(dashboardRecycler);
-
+        StartSnapHelper snapHelper = new StartSnapHelper();
+        snapHelper.attachToRecyclerView(dashboardRecycler);
         swipeRefresh.setOnRefreshListener(() -> {
             getDashboardList();
             swipeRefresh.setRefreshing(false);
@@ -173,14 +144,6 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
                 fragment = WebViewFragment.newInstance(compoundElement.getAction(), compoundElement.getElements().get(1).getValue());
                 if (fragmentNavigation != null)
                     fragmentNavigation.pushFragment(fragment);
-
-  /*              String urlVebView = compoundElement.getAction();
-                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && urlVebView.contains(Constants.EX_SSO_TOKEN)) {
-                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
-                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN, token);
-                }
-                Utilities.openCustomTab(getContext(), urlVebView);*/
-
             } else {
                 String urlVebView = compoundElement.getAction();
                 if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && urlVebView.contains(Constants.EX_SSO_TOKEN)) {
