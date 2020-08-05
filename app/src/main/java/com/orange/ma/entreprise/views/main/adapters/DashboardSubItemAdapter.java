@@ -3,7 +3,6 @@ package com.orange.ma.entreprise.views.main.adapters;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.ImageViewCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.orange.ma.entreprise.R;
@@ -66,8 +64,8 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
             case Template.TEMPLATE_LIST_SLIDER:
                 ConstraintLayout layout = (ConstraintLayout) LayoutInflater.from(context).inflate(R.layout.dashboard_button_subitem_layout, parent, false);
                 RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) layout.getLayoutParams();
-                layoutParams.width = cellWidth ;
-                        //- (int) context.getResources().getDimension(R.dimen._4sdp);
+                layoutParams.width = cellWidth;
+                //- (int) context.getResources().getDimension(R.dimen._4sdp);
                 /*if (lang.equalsIgnoreCase("ar"))
                     layoutParams.setMargins((int) context.getResources().getDimension(R.dimen._7sdp), 0, 0, 0);
                 else
@@ -255,7 +253,7 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         }
     }
 
-    private void setLayoutParams(@NonNull ViewHolder holder, int position) {
+/*    private void setLayoutParams(@NonNull ViewHolder holder, int position) {
         // 1.053 est le pourcentage de différence entre la largeur du slider et la largeur du device
         DisplayMetrics displayMetrics;
         displayMetrics = context.getResources().getDisplayMetrics();
@@ -301,5 +299,5 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
             if (e.getElements().size() > 0)
                 if (max < e.getElements().get(0).getValue().length())
                     max = e.getElements().get(0).getValue().length();
-    }
+    }*/
 }
