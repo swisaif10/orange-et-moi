@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.hhl.gridpagersnaphelper.GridPagerSnapHelper;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.listeners.OnTemplateItemSelectedListener;
 import com.orange.ma.entreprise.models.dashboard.CompoundElement;
@@ -27,6 +26,7 @@ import com.orange.ma.entreprise.utilities.LinePagerIndicatorDecoration;
 import com.orange.ma.entreprise.utilities.SnapToBlock;
 
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -128,16 +128,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
             if (holder.viewType == Template.TEMPLATE_LIST_SLIDER && template.getElementComplex().getCompoundElements().size() > 2) {
 
-                if (holder.viewType == Template.TEMPLATE_LIST_SLIDER && template.getElementComplex().getCompoundElements().size() > 2) {
-                    GridPagerSnapHelper gridPagerSnapHelper = new GridPagerSnapHelper();
-                    gridPagerSnapHelper.setRow(2).setColumn(2);
-                    if (holder.recycler.getOnFlingListener() == null)
-                        gridPagerSnapHelper.attachToRecyclerView(holder.recycler);
-                    holder.recycler.addItemDecoration(new LinePagerIndicatorDecoration(6, 6 + 5, 0, context.getResources().getColor(R.color.orange), context.getResources().getColor(R.color.orange), context));
-                }
+                holder.recycler.addItemDecoration(new LinePagerIndicatorDecoration(6, 6 + 5, 0, context.getResources().getColor(R.color.orange), context.getResources().getColor(R.color.orange), context));
             }
         }
-
     }
 
     private void createViews(@NonNull ViewHolder holder, List<CompoundElement> compoundElements) {
