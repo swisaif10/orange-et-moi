@@ -36,9 +36,11 @@ import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.adapters.SettingsAdapter;
+import com.orange.ma.entreprise.views.main.browser.BrowserFragment;
+import com.orange.ma.entreprise.views.main.browser.ExternalBrowserFragment;
 import com.orange.ma.entreprise.views.main.dialogs.ChangeLanguageDialog;
 import com.orange.ma.entreprise.views.main.dialogs.LogoutDialog;
-import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
+//import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -123,17 +125,16 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                     default:
                         break;
                 }
-            } else if (settingsItem.isInApp()) {
-                Fragment fragment = WebViewFragment.newInstance(settingsItem.getAction(), settingsItem.getTitle());
-                if (fragmentNavigation != null)
-                    fragmentNavigation.pushFragment(fragment);
-            } else {
+            } else{
                 String urlVebView = settingsItem.getAction();
                 if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
                     String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
                     urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
                 }
-                Utilities.openCustomTab(getContext(), urlVebView);
+                if (settingsItem.isInApp())
+                    Utilities.openCustomTab(getContext(), urlVebView);
+                else
+                    Utilities.openInBrowser(getContext(), urlVebView);
             }
         }
     }

@@ -268,15 +268,16 @@ public class LoginFragment extends Fragment {
             int code = settingTagData.getHeader().getCode();
             switch (code){
                 case 200:
-                    if(settingTagData.getResponse().getData().getActionType().equals("external")&&settingTagData.getResponse().getData().isInApp()){
+                    if(settingTagData.getResponse().getData().getActionType().equals("external")){
                         String url = settingTagData.getResponse().getData().getAction();
                         if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&url.contains(Constants.EX_SSO_TOKEN)) {
                             String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
                             url = url.replace(Constants.EX_SSO_TOKEN,token);
                         }
-                        Utilities.openCustomTab(getContext(),url);
-                    }else{
-                        Utilities.openInBrowser(getContext(),settingTagData.getResponse().getData().getAction());
+                        if(settingTagData.getResponse().getData().isInApp())
+                            Utilities.openCustomTab(getContext(),url);
+                        else
+                            Utilities.openInBrowser(getContext(),url);
                     }
                     break;
                 default:

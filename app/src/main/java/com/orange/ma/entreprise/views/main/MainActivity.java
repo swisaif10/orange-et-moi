@@ -31,14 +31,17 @@ import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseActivity;
 import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.main.browser.BrowserFragment;
+import com.orange.ma.entreprise.views.main.browser.ExternalBrowserFragment;
 import com.orange.ma.entreprise.views.main.dashboard.DashboardFragment;
 import com.orange.ma.entreprise.views.main.settings.SettingsFragment;
-import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
+//import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.internal.Utils;
+import okhttp3.internal.Util;
 
 import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT;
 import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT_TITLE;
@@ -167,8 +170,9 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                 }
             } else if (item.getInApp())
                 fragment = BrowserFragment.newInstance(item.getAction());//fragment = WebViewFragment.newInstance(item.getAction(), item.getTitle());
+
             else
-                fragment = BrowserFragment.newInstance(item.getAction());
+                fragment = ExternalBrowserFragment.newInstance(item.getAction());//fragment = BrowserFragment.newInstance(item.getAction());
 
             fragments.add(fragment);
         }
@@ -219,18 +223,16 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                 bundle.putString(Constants.FIREBASE_RC_KEY, preferenceManager.getValue(Constants.LOGIN_KEY, ""));
                 OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("Clic_completer_mon_profil", bundle);
 
-                if (settingCompleteAccount.getInApp()) {
-                    Fragment fragment = WebViewFragment.newInstance(settingCompleteAccount.getAction(), settingCompleteAccount.getTitle());
-                    switchFragment(fragment, "");
-                } else {
 
-                    String url = settingCompleteAccount.getAction();
-                    if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && url.contains(Constants.EX_SSO_TOKEN)) {
-                        String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
-                        url = url.replace(Constants.EX_SSO_TOKEN, token);
-                    }
-                    Utilities.openCustomTab(MainActivity.this, url);
+                String urlVebView = settingCompleteAccount.getAction();
+                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
+                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
                 }
+                if (settingCompleteAccount.getInApp())
+                    Utilities.openCustomTab(MainActivity.this, urlVebView);
+                else
+                    Utilities.openInBrowser(MainActivity.this, urlVebView);
             }
 
             @Override
@@ -309,7 +311,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
     }
 
     private void handleInApp(String endpoint, String endpointdata) {
-        fragment = WebViewFragment.newInstance(endpoint, endpointdata);
+        fragment = BrowserFragment.newInstance(endpoint);//WebViewFragment.newInstance(endpoint, endpointdata);
         switchFragment(fragment, "");
     }
 

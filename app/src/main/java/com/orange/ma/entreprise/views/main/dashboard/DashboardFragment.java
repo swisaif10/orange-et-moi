@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,9 @@ import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.adapters.DashboardAdapter;
-import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
+import com.orange.ma.entreprise.views.main.browser.BrowserFragment;
+import com.orange.ma.entreprise.views.main.browser.ExternalBrowserFragment;
+//import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,6 +70,8 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
     private PreferenceManager preferenceManager;
     private Bundle bundle;
     private boolean initRun = true;
+    GridLayoutManager layoutManager;
+    StartSnapHelper snapHelper;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -105,7 +110,8 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
 
         getDashboardList();
 
-        StartSnapHelper snapHelper = new StartSnapHelper();
+        layoutManager = new GridLayoutManager(getActivity(), 2);
+        snapHelper = new StartSnapHelper();
         snapHelper.attachToRecyclerView(dashboardRecycler);
         swipeRefresh.setOnRefreshListener(() -> {
             getDashboardList();
@@ -140,21 +146,19 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
                         ((MainActivity) getActivity()).moveToSettingsFragment();
                         break;
                 }
-            } else if (compoundElement.getInApp()) {
-                fragment = WebViewFragment.newInstance(compoundElement.getAction(), compoundElement.getElements().get(1).getValue());
-                if (fragmentNavigation != null)
-                    fragmentNavigation.pushFragment(fragment);
-            } else {
+            } else{
                 String urlVebView = compoundElement.getAction();
-                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && urlVebView.contains(Constants.EX_SSO_TOKEN)) {
-                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
-                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN, token);
+                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
+                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
                 }
-                Utilities.openCustomTab(getContext(), urlVebView);
+                if (compoundElement.getInApp())
+                    Utilities.openCustomTab(getContext(), urlVebView);
+                else
+                    Utilities.openInBrowser(getContext(), urlVebView);
             }
         }
     }
-
     private void init(DashboardResponseData dashboardResponseData) {
         ((MainActivity) getActivity()).fragmentHistory.emptyStack();
         if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar")) {
@@ -165,7 +169,7 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
         businessName.setText(dashboardResponseData.getUserInfos().getBusinessName());
         fidelity.setText(Html.fromHtml(dashboardResponseData.getUserInfos().getStringFidelity()));
 
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
