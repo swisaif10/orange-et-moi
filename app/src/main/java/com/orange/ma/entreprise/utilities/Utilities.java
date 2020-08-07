@@ -169,4 +169,11 @@ public interface Utilities {
         CustomTabsIntent customTabsIntent = builder.build();
         customTabsIntent.launchUrl(context, Uri.parse(url));
     }
+
+    static float aspect(Context context) {
+        float h = context.getResources().getDisplayMetrics().heightPixels;
+        float w = context.getResources().getDisplayMetrics().widthPixels;
+        float asp = h/w;
+        return asp;
+    }
 }

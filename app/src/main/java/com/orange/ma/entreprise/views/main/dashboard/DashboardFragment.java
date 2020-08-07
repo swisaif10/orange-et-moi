@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baoyz.widget.PullRefreshLayout;
@@ -36,14 +38,16 @@ import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.adapters.DashboardAdapter;
+import com.orange.ma.entreprise.views.main.adapters.OnBottomReachedListener;
+import com.orange.ma.entreprise.views.main.browser.BrowserFragment;
+import com.orange.ma.entreprise.views.main.browser.ExternalBrowserFragment;
+//import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.droidsonroids.gif.GifImageView;
 
 import static com.orange.ma.entreprise.utilities.Constants.DASH_TEMPLATE_HASH;
-
-//import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
 public class DashboardFragment extends BaseFragment implements OnTemplateItemSelectedListener {
 
@@ -172,15 +176,32 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                if (dashboardResponseData.getTemplates().get(position).getSize().equalsIgnoreCase("small")) {
+                if (dashboardResponseData.getTemplates().get(position).getSize()!=null && dashboardResponseData.getTemplates().get(position).getSize().equalsIgnoreCase("small")) {
                     return 1;
                 } else
                     return 2;
             }
         });
 
+        LinearSmoothScroller linearSmoothScroller = new LinearSmoothScroller(getContext());
         dashboardRecycler.setLayoutManager(layoutManager);
         DashboardAdapter dashboardAdapter = new DashboardAdapter(getContext(), dashboardResponseData.getTemplates(), this::onTemplateItemSelected);
+        dashboardAdapter.setListener(new OnBottomReachedListener() {
+            @Override
+            public void onBottomReached(DashboardAdapter.ViewHolder holder, int position) {
+                int lastPosition = layoutManager.findLastCompletelyVisibleItemPosition();
+                int first = layoutManager.findFirstVisibleItemPosition();
+                int itemCount = layoutManager.getItemCount();
+                View lastView = layoutManager.findViewByPosition(lastPosition);
+                Log.d("TAGGGG", "onBottomReached: lastPosition "+lastPosition);
+                Log.d("TAGGGG", "onBottomReached: first "+first);
+                if(lastView!=null && lastView.getTag().equals("blanc")&& lastPosition==itemCount-1){
+                    Log.d("TAGGGG", "onScrolled first: "+ first);
+                    linearSmoothScroller.setTargetPosition(lastPosition);
+                    layoutManager.startSmoothScroll(linearSmoothScroller);
+                }
+            }
+        });
         dashboardRecycler.setAdapter(dashboardAdapter);
         userInfoLayout.setVisibility(View.VISIBLE);
 

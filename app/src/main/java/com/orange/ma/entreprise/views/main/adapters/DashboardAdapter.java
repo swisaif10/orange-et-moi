@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.orange.ma.entreprise.models.dashboard.CompoundElement;
 import com.orange.ma.entreprise.models.dashboard.Template;
 import com.orange.ma.entreprise.utilities.LinePagerIndicatorDecoration;
 import com.orange.ma.entreprise.utilities.SnapToBlock;
+import com.orange.ma.entreprise.utilities.Utilities;
 
 import java.util.List;
 import java.util.concurrent.TimeoutException;
@@ -37,11 +39,19 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     private List<Template> arrayList;
     private OnTemplateItemSelectedListener onTemplateItemSelectedListener;
     private int recyclerViewMaxWidth;
+    private OnBottomReachedListener listener;
 
     public DashboardAdapter(Context context, List<Template> arrayList, OnTemplateItemSelectedListener onTemplateItemSelectedListener) {
         this.context = context;
         this.arrayList = arrayList;
         this.onTemplateItemSelectedListener = onTemplateItemSelectedListener;
+        this.arrayList.add(getBlancTemplate());
+    }
+
+    private Template getBlancTemplate() {
+        Template t = new Template();
+        t.setTemplateKey("blanc");
+        return t;
     }
 
     @NonNull
@@ -56,9 +66,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             case Template.TEMPLATE_LIST_SLIDER:
             case Template.TEMPLATE_LIST:
                 return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_slider_item_layout, parent, false), viewType);
+
+            case Template.BLANC_SPACE:
+                return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_blanc, parent, false), viewType);
             default:
                 return null;
         }
+    }
+
+    public void setListener(OnBottomReachedListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -74,6 +91,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 return Template.TEMPLATE_SMALL_LIST;
             case "template_list":
                 return Template.TEMPLATE_LIST;
+            case "blanc":
+                return Template.BLANC_SPACE;
             default:
                 return -1;
         }
@@ -82,8 +101,18 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Template template = arrayList.get(position);
+        if(holder.viewType==Template.BLANC_SPACE){
 
+            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(holder.itemView.getLayoutParams().width,getHeightByDencity());
+            //p.bottomMargin = ;//(int) context.getResources().getDimension(R.dimen._50sdp);
+            holder.itemView.setLayoutParams(p);
+            holder.itemView.setTag(arrayList.get(position).getTemplateKey().toLowerCase());
+            listener.onBottomReached(holder,position);
+            return;
+        }
+
+        Template template = arrayList.get(position);
+        holder.itemView.setTag(arrayList.get(position).getTemplateKey().toLowerCase());
         if (template.getElementComplex().getCompoundElements() == null || template.getElementComplex().getCompoundElements().size() == 0)
             return;
 
@@ -133,6 +162,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         }
     }
 
+    private int getHeightByDencity() {
+        int h = (int) context.getResources().getDimension(R.dimen._50sdp);
+        int densityDpi = (int)(context.getResources().getDisplayMetrics().densityDpi);
+        if(Utilities.aspect(context)>1.8f)
+            return 0;
+        if(densityDpi<500)
+            h = (int) context.getResources().getDimension(R.dimen._22sdp);
+        return h;
+    }
+
     private void createViews(@NonNull ViewHolder holder, List<CompoundElement> compoundElements) {
 
         holder.recycler.setOnFlingListener(null);
@@ -155,13 +194,17 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         return arrayList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        @Nullable
         @BindView(R.id.color)
         View color;
+        @Nullable
         @BindView(R.id.icon)
         ImageView icon;
+        @Nullable
         @BindView(R.id.title)
         TextView title;
+        @Nullable
         @BindView(R.id.recycler)
         RecyclerView recycler;
         @Nullable

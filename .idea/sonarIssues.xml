@@ -3,6 +3,16 @@
   <component name="issues">
     <option name="index">
       <map>
+        <entry key="/Dummy.txt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="/fragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../CDG-ANDROID/app/src/main/java/com/mobiblanc/amanti/DataService/RequestHandlers/ApiURLs.java">
           <value>
             <set />
@@ -14,6 +24,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/.idea/sonarIssues.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/orange/ma/entreprise/models/dashboard/Template.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/orange/ma/entreprise/utilities/Utilities.java">
           <value>
             <set />
           </value>
@@ -48,6 +68,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/orange/ma/entreprise/views/main/adapters/OnBottomReachedListener.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/orange/ma/entreprise/views/main/browser/ExternalBrowserFragment.java">
           <value>
             <set />
@@ -63,12 +88,72 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/layout/dashboard_blanc.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../blancCommerce/app/src/main/java/com/mobiblanc/blanccommerce/presenterimplement/auth/SignInFragmentPI.java">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../my2m3mars/c3/Android_Oct18/app/src/main/java/com/mobiblanc/my2m/commons/Defined.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../my2m3mars/c3/Android_Oct18/app/src/main/java/com/mobiblanc/my2m/ui/detail/DetailFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../my2m3mars/c3/Android_Oct18/app/src/main/java/com/mobiblanc/my2m/ui/infos/InfosAdapterArticles.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../my2m3mars/c3/Android_Oct18/app/src/main/java/com/mobiblanc/my2m/ui/infos/InfosFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../my2m3mars/c3/Android_Oct18/app/src/main/java/com/mobiblanc/my2m/ui/infos/InfosPresenter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../my2m3mars/c3/Android_Oct18/app/src/main/java/com/mobiblanc/my2m/ui/language/LanguePresenter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../my2m3mars/c3/Android_Oct18/app/src/main/java/com/mobiblanc/my2m/ui/main/MainPresenter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../my2m3mars/c3/Android_Oct18/app/src/main/java/com/mobiblanc/my2m/ui/player/PlayerPresenter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../signeTqApp/Telquel-Android-nr/app/src/main/java/com/mobiblanc/telquel/database/repositories/MagazineRepository.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../signeTqApp/Telquel-Android-nr/app/src/main/java/com/mobiblanc/telquel/ui/dashboard/magazine/MagazineFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../signeTqApp/Telquel-Android-nr/app/src/main/java/com/mobiblanc/telquel/utils/Constants.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../signeTqApp/Telquel-Android-nr/app/src/main/res/xml/network_traffic_config.xml">
           <value>
             <set />
           </value>
