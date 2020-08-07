@@ -2,19 +2,13 @@ package com.orange.ma.entreprise.views.main.settings;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Browser;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,13 +30,9 @@ import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.adapters.SettingsAdapter;
-import com.orange.ma.entreprise.views.main.browser.BrowserFragment;
-import com.orange.ma.entreprise.views.main.browser.ExternalBrowserFragment;
 import com.orange.ma.entreprise.views.main.dialogs.ChangeLanguageDialog;
 import com.orange.ma.entreprise.views.main.dialogs.LogoutDialog;
-//import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -121,15 +111,16 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                         OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_parametres", bundle);
                         break;
                     case "home":
-                        ((MainActivity)getActivity()).moveToDashboardFragment();break;
+                        ((MainActivity) getActivity()).moveToDashboardFragment();
+                        break;
                     default:
                         break;
                 }
-            } else{
+            } else {
                 String urlVebView = settingsItem.getAction();
-                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
-                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
-                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
+                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
+                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN, token);
                 }
                 if (settingsItem.isInApp())
                     Utilities.openCustomTab(getContext(), urlVebView);
@@ -169,20 +160,21 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
             Utilities.showErrorPopup(getContext(), getString(R.string.generic_error));
         } else {
             int code = settingsData.getHeader().getCode();
-            switch(code){
+            switch (code) {
                 case 200:
                     init(settingsData.getResponse().getData());
                     break;
                 case 403:
                     Intent intent = new Intent(getContext(), AuthenticationActivity.class);
-                    intent.putExtra(Constants.ERROR_CODE,settingsData.getHeader().getCode());
-                    intent.putExtra(Constants.ERROR_MESSAGE,settingsData.getHeader().getMessage());
+                    intent.putExtra(Constants.ERROR_CODE, settingsData.getHeader().getCode());
+                    intent.putExtra(Constants.ERROR_MESSAGE, settingsData.getHeader().getMessage());
                     startActivity(intent);
                     getActivity().finish();
                     break;
                 default:
                     Utilities.showErrorPopup(getContext(), settingsData.getHeader().getMessage());
-            };
+            }
+            ;
 
         }
     }
@@ -201,7 +193,7 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
             Utilities.showErrorPopup(getContext(), getString(R.string.generic_error));
         } else {
             int code = responseData.getHeader().getCode();
-            switch(code){
+            switch (code) {
                 case 200:
                     preferenceManager.putValue(Constants.IS_LOGGED_IN, false);
                     preferenceManager.clearValue(Constants.TOKEN_KEY);
@@ -211,14 +203,15 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                     break;
                 case 403:
                     Intent intent = new Intent(getContext(), AuthenticationActivity.class);
-                    intent.putExtra(Constants.ERROR_CODE,responseData.getHeader().getCode());
-                    intent.putExtra(Constants.ERROR_MESSAGE,responseData.getHeader().getMessage());
+                    intent.putExtra(Constants.ERROR_CODE, responseData.getHeader().getCode());
+                    intent.putExtra(Constants.ERROR_MESSAGE, responseData.getHeader().getMessage());
                     startActivity(intent);
                     getActivity().finish();
                     break;
                 default:
                     Utilities.showErrorPopup(getContext(), responseData.getHeader().getMessage());
-            };
+            }
+            ;
         }
     }
 }

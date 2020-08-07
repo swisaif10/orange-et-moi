@@ -83,7 +83,6 @@ public class ExternalBrowserFragment extends BaseFragment {
                 String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
                 url = url.replace(Constants.EX_SSO_TOKEN, token);
             }
-            Toast.makeText(getContext(), url, Toast.LENGTH_SHORT).show();
             Utilities.openInBrowser(getContext(),url);
         }
     }

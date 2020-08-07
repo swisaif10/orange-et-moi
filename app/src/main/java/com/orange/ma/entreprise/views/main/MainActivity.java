@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.tabs.TabLayout;
@@ -22,32 +23,27 @@ import com.orange.ma.entreprise.models.tabmenu.TabMenuData;
 import com.orange.ma.entreprise.models.tabmenu.TabMenuItem;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
-import com.orange.ma.entreprise.utilities.FragNavController;
-import com.orange.ma.entreprise.utilities.FragmentHistory;
 import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.MainVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseActivity;
-import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.main.browser.BrowserFragment;
 import com.orange.ma.entreprise.views.main.browser.ExternalBrowserFragment;
 import com.orange.ma.entreprise.views.main.dashboard.DashboardFragment;
 import com.orange.ma.entreprise.views.main.settings.SettingsFragment;
-//import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.internal.Utils;
-import okhttp3.internal.Util;
 
 import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT;
 import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT_TITLE;
 
-
-public class MainActivity extends BaseActivity implements BaseFragment.FragmentNavigation, FragNavController.TransactionListener, FragNavController.RootFragmentListener {
+public class MainActivity extends BaseActivity
+        //implements BaseFragment.FragmentNavigation, FragNavController.TransactionListener, FragNavController.RootFragmentListener
+{
 
     @BindView(R.id.tabLayout)
     public TabLayout tabLayout;
@@ -57,9 +53,9 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
     private ArrayList<Fragment> fragments;
     private PreferenceManager preferenceManager;
     private Fragment fragment;
-    public FragNavController fragNavController;
-    public FragmentHistory fragmentHistory;
-    private Bundle savedInstanceState;
+    //public FragNavController fragNavController;
+    //public FragmentHistory fragmentHistory;
+    //private Bundle savedInstanceState;
     private SettingCompleteAccount settingCompleteAccount;
 
 
@@ -68,7 +64,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        this.savedInstanceState = savedInstanceState;
+        //this.savedInstanceState = savedInstanceState;
 
         mainVM = ViewModelProviders.of(this).get(MainVM.class);
         connectivity = new Connectivity(this, this);
@@ -83,7 +79,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         settingCompleteAccount = (SettingCompleteAccount) getIntent().getSerializableExtra("settingCompleteAccount");
     }
 
-    @Override
+/*    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (fragNavController != null) {
@@ -116,11 +112,18 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
     @Override
     public void onFragmentTransaction(Fragment fragment, FragNavController.TransactionType transactionType) {
 
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
-        if (!fragNavController.isRootFragment()) {
+
+        if (getCurrentFragment() instanceof DashboardFragment)
+            finish();
+        else {
+            super.onBackPressed();
+            tabLayout.selectTab(tabLayout.getTabAt(getFragmentIndex(getCurrentFragment())));
+        }
+        /*if (!fragNavController.isRootFragment()) {
             fragNavController.popFragment();
         } else {
             if (fragmentHistory.isEmpty()) {
@@ -135,7 +138,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                     moveToFirstFragment();
                 }
             }
-        }
+        }*/
     }
 
     private void init(TabMenuData tabMenuData) {
@@ -169,22 +172,23 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                         break;
                 }
             } else if (item.getInApp())
-                fragment = BrowserFragment.newInstance(item.getAction());//fragment = WebViewFragment.newInstance(item.getAction(), item.getTitle());
-
+                fragment = BrowserFragment.newInstance(item.getAction());
             else
-                fragment = ExternalBrowserFragment.newInstance(item.getAction());//fragment = BrowserFragment.newInstance(item.getAction());
+                fragment = ExternalBrowserFragment.newInstance(item.getAction());
 
             fragments.add(fragment);
         }
 
         int index = getDashboardIndex();
-        fragmentHistory = new FragmentHistory();
+        //fragmentHistory = new FragmentHistory();
         if (index != -1) {
-            fragNavController = FragNavController.newBuilder(savedInstanceState, getSupportFragmentManager(), R.id.container, index)
+           /* fragNavController = FragNavController.newBuilder(savedInstanceState, getSupportFragmentManager(), R.id.container, index)
                     .transactionListener(this)
                     .rootFragmentListener(this, fragments.size())
                     .build();
 
+*/
+            switchFragment(fragments.get(index), "");
             tabLayout.selectTab(tabLayout.getTabAt(index));
         }
 
@@ -195,8 +199,9 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
                 int position = tab.getPosition();
 
                 if (tab.getTag() == null || !tab.getTag().equals("bp")) {
-                    fragmentHistory.push(position);
-                    switchTab(position);
+                    switchFragment(fragments.get(position), "");
+                    //fragmentHistory.push(position);
+                    //switchTab(position);
                 } else
                     tab.setTag(null);
             }
@@ -208,6 +213,9 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                switchFragment(fragments.get(position), "");
+
             }
         });
 
@@ -225,9 +233,9 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
 
 
                 String urlVebView = settingCompleteAccount.getAction();
-                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
-                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
-                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
+                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
+                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN, token);
                 }
                 if (settingCompleteAccount.getInApp())
                     Utilities.openCustomTab(MainActivity.this, urlVebView);
@@ -286,9 +294,9 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         }
     }
 
-    public void switchTab(int position) {
+ /*   public void switchTab(int position) {
         fragNavController.switchTab(position);
-    }
+    }*/
 
     private void handleIntent() {
         if (getIntent().getExtras() != null) {
@@ -357,11 +365,11 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
             tabLayout.getTabAt(index).select();
     }
 
-    public void moveToFirstFragment() {
+    /*public void moveToFirstFragment() {
         switchTab(0);
         tabLayout.selectTab(tabLayout.getTabAt(0));
         fragmentHistory.emptyStack();
-    }
+    }*/
 
     private int getDashboardIndex() {
         for (int i = 0; i < fragments.size(); i++) {
@@ -371,5 +379,18 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentN
         }
         return -1;
     }
+
+    private Fragment getCurrentFragment() {
+        return getSupportFragmentManager().findFragmentById(R.id.container);
+    }
+
+    private int getFragmentIndex(Fragment fragment) {
+        for (int i = 0; i < fragments.size(); i++) {
+            if (fragments.get(i).getClass().equals(fragment.getClass()))
+                return i;
+        }
+        return -1;
+    }
+
 
 }

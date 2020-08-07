@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,15 +36,14 @@ import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.adapters.DashboardAdapter;
-import com.orange.ma.entreprise.views.main.browser.BrowserFragment;
-import com.orange.ma.entreprise.views.main.browser.ExternalBrowserFragment;
-//import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.droidsonroids.gif.GifImageView;
 
 import static com.orange.ma.entreprise.utilities.Constants.DASH_TEMPLATE_HASH;
+
+//import com.orange.ma.entreprise.views.main.webview.WebViewFragment;
 
 public class DashboardFragment extends BaseFragment implements OnTemplateItemSelectedListener {
 
@@ -146,11 +144,11 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
                         ((MainActivity) getActivity()).moveToSettingsFragment();
                         break;
                 }
-            } else{
+            } else {
                 String urlVebView = compoundElement.getAction();
-                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&urlVebView.contains(Constants.EX_SSO_TOKEN)) {
-                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
-                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN,token);
+                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
+                    urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN, token);
                 }
                 if (compoundElement.getInApp())
                     Utilities.openCustomTab(getContext(), urlVebView);
@@ -159,8 +157,9 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
             }
         }
     }
+
     private void init(DashboardResponseData dashboardResponseData) {
-        ((MainActivity) getActivity()).fragmentHistory.emptyStack();
+        //((MainActivity) getActivity()).fragmentHistory.emptyStack();
         if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar")) {
             background1.setScaleX(-1);
             background2.setScaleX(-1);
@@ -203,11 +202,11 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
             switch (code) {
                 case 200:
                     String hash = preferenceManager.getValue(DASH_TEMPLATE_HASH, "");
-                    if ((Utilities.isNullOrEmpty(hash) || !hash.equals(dashboardData.getResponse().getHashTemplates())) | initRun) {
+                    //if ((Utilities.isNullOrEmpty(hash) || !hash.equals(dashboardData.getResponse().getHashTemplates()))) {
                         init(dashboardData.getResponse().getData());
                         preferenceManager.putValue(DASH_TEMPLATE_HASH, dashboardData.getResponse().getHashTemplates());
-                        initRun = false;
-                    }
+                        //initRun = false;
+                    //}
                     break;
                 case 403:
                     Intent intent = new Intent(getActivity(), AuthenticationActivity.class);
@@ -222,6 +221,5 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
             ;
         }
     }
-
 
 }
