@@ -3,6 +3,7 @@ package com.orange.ma.entreprise.views.main.settings;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
     private PreferenceManager preferenceManager;
     private SettingsVM settingsVM;
     private Connectivity connectivity;
+    private long lastClickTime = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,10 +94,15 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
 
     @Override
     public void onItemSelected(SettingsItem settingsItem) {
+        if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+            return;
+        }
+        lastClickTime = SystemClock.elapsedRealtime();
         if (!settingsItem.getActionType().equalsIgnoreCase("none")) {
             if (settingsItem.getActionType().equalsIgnoreCase("internal")) {
                 switch (settingsItem.getAction()) {
                     case "deconnexion":
+                    case "logout":
                         new LogoutDialog(getActivity(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), this).show();
                         Bundle bundle = new Bundle();
                         bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));

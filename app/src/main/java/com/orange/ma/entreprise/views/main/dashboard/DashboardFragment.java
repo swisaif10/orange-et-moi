@@ -3,6 +3,7 @@ package com.orange.ma.entreprise.views.main.dashboard;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,9 +68,10 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
     private DashboardVM dashboardVM;
     private PreferenceManager preferenceManager;
     private Bundle bundle;
-    private boolean initRun = true;
-    GridLayoutManager layoutManager;
-    StartSnapHelper snapHelper;
+    private GridLayoutManager layoutManager;
+    private StartSnapHelper snapHelper;
+    private long lastClickTime = 0;
+
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -132,9 +134,11 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
 
     @Override
     public void onTemplateItemSelected(CompoundElement compoundElement) {
-
+        if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+            return;
+        }
+        lastClickTime = SystemClock.elapsedRealtime();
         if (!compoundElement.getActionType().equalsIgnoreCase("none")) {
-            Fragment fragment;
             if (compoundElement.getActionType().equalsIgnoreCase("internal")) {
                 switch (compoundElement.getAction()) {
                     case "home":

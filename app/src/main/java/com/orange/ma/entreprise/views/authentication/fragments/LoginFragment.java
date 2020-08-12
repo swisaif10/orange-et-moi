@@ -3,8 +3,8 @@ package com.orange.ma.entreprise.views.authentication.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
@@ -20,8 +20,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatCheckBox;
-import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -65,8 +63,9 @@ public class LoginFragment extends Fragment {
     private AuthenticationVM authenticationVM;
     private Connectivity connectivity;
     private PreferenceManager preferenceManager;
-    private Bundle bundle;
     private Intent intent;
+    private long lastClickTime = 0;
+
 
     public LoginFragment() {
         // Required empty public constructor
@@ -83,7 +82,7 @@ public class LoginFragment extends Fragment {
                 .build();
 
         authenticationVM.getLoginMutableLiveData().observe(this, this::handleLoginResponse);
-        authenticationVM.getSettingTagMutableLiveData().observe(this,this::handleSettingTagAction);
+        authenticationVM.getSettingTagMutableLiveData().observe(this, this::handleSettingTagAction);
 
         //firebaseAnalyticsEvent
         OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_login", LocaleManager.getLanguagePref(getContext()));
@@ -123,12 +122,17 @@ public class LoginFragment extends Fragment {
         init();
     }
 
-    @OnClick({R.id.signin_btn, R.id.valid_btn, R.id.container, R.id.show_password_btn, R.id.close_btn, R.id.visitor_mode,R.id.forgotten_pwd_btn,R.id.gest_account_btn})
+    @OnClick({R.id.signin_btn, R.id.valid_btn, R.id.container, R.id.show_password_btn, R.id.close_btn, R.id.visitor_mode, R.id.forgotten_pwd_btn, R.id.gest_account_btn})
     public void onViewClicked(View view) {
+        if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+            return;
+        }
+        lastClickTime = SystemClock.elapsedRealtime();
+
         switch (view.getId()) {
             case R.id.signin_btn:
                 ((AuthenticationActivity) getActivity()).replaceFragment(new SignInFragment());
-                bundle = new Bundle();
+                Bundle bundle = new Bundle();
                 bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
                 OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_creer_compte", bundle);
                 break;
@@ -172,7 +176,6 @@ public class LoginFragment extends Fragment {
                 break;
             default:
                 break;
-
         }
     }
 
@@ -213,7 +216,7 @@ public class LoginFragment extends Fragment {
     private void login() {
 
         if (connectivity.isConnected())
-            authenticationVM.login(String.valueOf(id.getText()).trim(), String.valueOf(password.getText()).trim(), saveBtn.isChecked(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"),preferenceManager);
+            authenticationVM.login(String.valueOf(id.getText()).trim(), String.valueOf(password.getText()).trim(), saveBtn.isChecked(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), preferenceManager);
         else {
             errorLayout.setVisibility(View.VISIBLE);
             errorDescription.setText(getString(R.string.no_internet));
@@ -222,7 +225,7 @@ public class LoginFragment extends Fragment {
 
     private void performTagAction(String tag) {
         if (connectivity.isConnected())
-            authenticationVM.performTagAction(tag,preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
+            authenticationVM.performTagAction(tag, preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
         else {
             errorLayout.setVisibility(View.VISIBLE);
             errorDescription.setText(getString(R.string.no_internet));
@@ -261,23 +264,23 @@ public class LoginFragment extends Fragment {
     }
 
     private void handleSettingTagAction(SettingTagData settingTagData) {
-        if(settingTagData == null){
+        if (settingTagData == null) {
             errorLayout.setVisibility(View.VISIBLE);
             errorDescription.setText(getString(R.string.generic_error));
-        }else{
+        } else {
             int code = settingTagData.getHeader().getCode();
-            switch (code){
+            switch (code) {
                 case 200:
-                    if(settingTagData.getResponse().getData().getActionType().equals("external")){
+                    if (settingTagData.getResponse().getData().getActionType().equals("external")) {
                         String url = settingTagData.getResponse().getData().getAction();
-                        if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null))&&url.contains(Constants.EX_SSO_TOKEN)) {
-                            String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ","");
-                            url = url.replace(Constants.EX_SSO_TOKEN,token);
+                        if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && url.contains(Constants.EX_SSO_TOKEN)) {
+                            String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
+                            url = url.replace(Constants.EX_SSO_TOKEN, token);
                         }
-                        if(settingTagData.getResponse().getData().isInApp())
-                            Utilities.openCustomTab(getContext(),url);
+                        if (settingTagData.getResponse().getData().isInApp())
+                            Utilities.openCustomTab(getContext(), url);
                         else
-                            Utilities.openInBrowser(getContext(),url);
+                            Utilities.openInBrowser(getContext(), url);
                     }
                     break;
                 default:

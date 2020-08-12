@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
@@ -91,7 +92,7 @@ public class SignInFragment extends Fragment {
     private AuthenticationVM authenticationVM;
     private Boolean from_cgu = false;
     private Boolean instanceData = false;
-    private Bundle bundle;
+    private long lastClickTime = 0;
 
     public SignInFragment() {
         // Required empty public constructor
@@ -146,11 +147,15 @@ public class SignInFragment extends Fragment {
 
     @OnClick({R.id.login_btn, R.id.cgu_btn, R.id.valid_btn, R.id.constraintLayout, R.id.show_password_btn, R.id.close_btn})
     public void onViewClicked(View view) {
+        if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+            return;
+        }
+        lastClickTime = SystemClock.elapsedRealtime();
         switch (view.getId()) {
             case R.id.login_btn:
                 from_cgu = false;
                 ((AuthenticationActivity) getActivity()).replaceFragment(new LoginFragment());
-                bundle = new Bundle();
+                Bundle bundle = new Bundle();
                 bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
                 OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_déjà_compte", bundle);
                 break;

@@ -5,11 +5,11 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,7 +28,6 @@ import com.orange.ma.entreprise.utilities.SnapToBlock;
 import com.orange.ma.entreprise.utilities.Utilities;
 
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -101,13 +100,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        if(holder.viewType==Template.BLANC_SPACE){
+        if (holder.viewType == Template.BLANC_SPACE) {
 
-            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(holder.itemView.getLayoutParams().width,getHeightByDencity());
+            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(holder.itemView.getLayoutParams().width, getHeightByDensity());
             //p.bottomMargin = ;//(int) context.getResources().getDimension(R.dimen._50sdp);
             holder.itemView.setLayoutParams(p);
             holder.itemView.setTag(arrayList.get(position).getTemplateKey().toLowerCase());
-            listener.onBottomReached(holder,position);
+            listener.onBottomReached(holder, position);
             return;
         }
 
@@ -162,12 +161,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         }
     }
 
-    private int getHeightByDencity() {
-        int h = (int) context.getResources().getDimension(R.dimen._50sdp);
-        int densityDpi = (int)(context.getResources().getDisplayMetrics().densityDpi);
-        if(Utilities.aspect(context)>1.8f)
+    private int getHeightByDensity() {
+        int h = (int) context.getResources().getDimension(R.dimen._60sdp);
+        int densityDpi = (int) (context.getResources().getDisplayMetrics().densityDpi);
+        if (Utilities.aspect(context) > 1.8f)
             return 0;
-        if(densityDpi<500)
+        if (densityDpi < 500 && ViewConfiguration.get(context).hasPermanentMenuKey())
             h = (int) context.getResources().getDimension(R.dimen._22sdp);
         return h;
     }
