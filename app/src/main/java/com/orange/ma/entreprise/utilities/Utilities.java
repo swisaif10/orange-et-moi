@@ -2,6 +2,7 @@ package com.orange.ma.entreprise.utilities;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -163,11 +165,18 @@ public interface Utilities {
     }
 
     static void openCustomTab(Context context, String url) {
-        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-        builder.setToolbarColor(ContextCompat.getColor(context, R.color.black));
-        builder.setShowTitle(true);
-        CustomTabsIntent customTabsIntent = builder.build();
-        customTabsIntent.launchUrl(context, Uri.parse(url));
+        if(url.contains(" ")){
+            return;
+        } try{
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            builder.setToolbarColor(ContextCompat.getColor(context, R.color.black));
+            builder.setShowTitle(true);
+            CustomTabsIntent customTabsIntent = builder.build();
+            customTabsIntent.launchUrl(context, Uri.parse(url));
+        }catch (ActivityNotFoundException ex){
+            ex.printStackTrace();
+        }
+
     }
 
     static float aspect(Context context) {
