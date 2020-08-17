@@ -2,6 +2,7 @@ package com.orange.ma.entreprise.utilities;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -148,36 +150,39 @@ public interface Utilities {
     }
 
     static String padLeft(String s, int n) {
-        if (n > 0) return String.format("%" + n + "s", s).replace(' ', '_');
+        if(n>0) return String.format("%"+n+"s", s).replace(' ','_');
         return "";
     }
 
-    static boolean isNullOrEmpty(String value) {
-        return value == null || value.trim().isEmpty();
+    static boolean isNullOrEmpty(String value){
+        return value==null||value.trim().isEmpty();
     }
 
-    static void openInBrowser(Context context, String url) {
+    static void openInBrowser(Context context,String url) {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         context.startActivity(i);
     }
 
     static void openCustomTab(Context context, String url) {
-        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-        builder.setToolbarColor(ContextCompat.getColor(context, R.color.black));
-        builder.setShowTitle(true);
-        CustomTabsIntent customTabsIntent = builder.build();
-        try {
+        if(url.contains(" ")){
+            return;
+        } try{
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            builder.setToolbarColor(ContextCompat.getColor(context, R.color.black));
+            builder.setShowTitle(true);
+            CustomTabsIntent customTabsIntent = builder.build();
             customTabsIntent.launchUrl(context, Uri.parse(url));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        }catch (ActivityNotFoundException ex){
+            ex.printStackTrace();
         }
+
     }
 
     static float aspect(Context context) {
         float h = context.getResources().getDisplayMetrics().heightPixels;
         float w = context.getResources().getDisplayMetrics().widthPixels;
-        float asp = h / w;
+        float asp = h/w;
         return asp;
     }
 }

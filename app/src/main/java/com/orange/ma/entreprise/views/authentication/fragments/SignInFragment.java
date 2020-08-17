@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -145,7 +146,7 @@ public class SignInFragment extends Fragment {
         }
     }
 
-    @OnClick({R.id.login_btn, R.id.cgu_btn, R.id.valid_btn, R.id.constraintLayout, R.id.show_password_btn, R.id.close_btn})
+    @OnClick({R.id.login_btn, R.id.cgu_btn, R.id.valid_btn, R.id.constraintLayout, R.id.close_btn})
     public void onViewClicked(View view) {
         if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
             return;
@@ -175,13 +176,13 @@ public class SignInFragment extends Fragment {
                 Utilities.hideSoftKeyboard(getContext(), getView());
                 break;
             case R.id.show_password_btn:
-                if (password.getTransformationMethod() instanceof PasswordTransformationMethod) {
-                    password.setTransformationMethod(null);
-                } else {
-                    password.setTransformationMethod(new PasswordTransformationMethod());
-                }
-                password.setSelection(password.getText().length());
-                break;
+//                if (password.getTransformationMethod() instanceof PasswordTransformationMethod) {
+//                    password.setTransformationMethod(null);
+//                } else {
+//                    password.setTransformationMethod(new PasswordTransformationMethod());
+//                }
+//                password.setSelection(password.getText().length());
+//                break;
             case R.id.close_btn:
                 errorLayout.setVisibility(View.GONE);
                 break;
@@ -254,6 +255,14 @@ public class SignInFragment extends Fragment {
 
         if (showPasswordBtn.isChecked())
             password.setTransformationMethod(null);
+
+        showPasswordBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                password.setTransformationMethod(!isChecked?new PasswordTransformationMethod():null);
+                password.setSelection(password.getText().length());
+            }
+        });
     }
 
     private void validateForm() {

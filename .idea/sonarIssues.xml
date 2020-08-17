@@ -48,6 +48,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/orange/ma/entreprise/views/authentication/fragments/SignInFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/orange/ma/entreprise/views/authentication/fragments/VisitorFragment.java">
           <value>
             <set />
@@ -88,7 +93,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/drawable/selector_password_button.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/layout/dashboard_blanc.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/layout/fragment_login.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/layout/fragment_signin.xml">
           <value>
             <set />
           </value>
@@ -134,6 +154,26 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../my2m3mars/c3/Android_Oct18/app/src/main/java/com/mobiblanc/my2m/ui/player/PlayerPresenter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../orange_et_moi_incrementale_/orange-et-moi-android/app/src/main/AndroidManifest.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../orange_et_moi_incrementale_/orange-et-moi-android/app/src/main/java/com/orange/meditel/mediteletmoi/fragments/orangemoney/FactureConfirmationFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../orange_et_moi_incrementale_/orange-et-moi-android/app/src/main/java/com/orange/meditel/mediteletmoi/fragments/rechargesimple/RechargerListRechargeChoixMultipleFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../orange_et_moi_incrementale_/orange-et-moi-android/app/src/main/java/com/orange/meditel/mediteletmoi/utils/Utils.java">
           <value>
             <set />
           </value>
