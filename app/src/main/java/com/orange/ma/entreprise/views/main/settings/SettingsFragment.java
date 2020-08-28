@@ -117,7 +117,7 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                         bundle.putString(Constants.FIREBASE_ELEMENT_NAME_KEY, settingsItem.getAction());
                         OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_parametres", bundle);
                         break;
-                    case "home":
+                    case "home_disabled":
                         ((MainActivity) getActivity()).moveToDashboardFragment();
                         break;
                     default:

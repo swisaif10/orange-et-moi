@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -150,30 +149,31 @@ public interface Utilities {
     }
 
     static String padLeft(String s, int n) {
-        if(n>0) return String.format("%"+n+"s", s).replace(' ','_');
+        if (n > 0) return String.format("%" + n + "s", s).replace(' ', '_');
         return "";
     }
 
-    static boolean isNullOrEmpty(String value){
-        return value==null||value.trim().isEmpty();
+    static boolean isNullOrEmpty(String value) {
+        return value == null || value.trim().isEmpty();
     }
 
-    static void openInBrowser(Context context,String url) {
+    static void openInBrowser(Context context, String url) {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         context.startActivity(i);
     }
 
     static void openCustomTab(Context context, String url) {
-        if(url.contains(" ")){
+        if (url.contains(" ")) {
             return;
-        } try{
+        }
+        try {
             CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
             builder.setToolbarColor(ContextCompat.getColor(context, R.color.black));
             builder.setShowTitle(true);
             CustomTabsIntent customTabsIntent = builder.build();
             customTabsIntent.launchUrl(context, Uri.parse(url));
-        }catch (ActivityNotFoundException ex){
+        } catch (ActivityNotFoundException ex) {
             ex.printStackTrace();
         }
 
@@ -182,7 +182,7 @@ public interface Utilities {
     static float aspect(Context context) {
         float h = context.getResources().getDisplayMetrics().heightPixels;
         float w = context.getResources().getDisplayMetrics().widthPixels;
-        float asp = h/w;
+        float asp = h / w;
         return asp;
     }
 }

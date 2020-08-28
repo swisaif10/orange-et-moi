@@ -42,8 +42,13 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        int icon = context.getResources().getIdentifier(arrayList.get(position).getIcon(), "drawable", context.getPackageName());
-        holder.icon.setImageDrawable(context.getResources().getDrawable(icon));
+        try {
+            int icon = context.getResources().getIdentifier(arrayList.get(position).getIcon(), "drawable", context.getPackageName());
+            holder.icon.setImageDrawable(context.getResources().getDrawable(icon));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         holder.title.setText(arrayList.get(position).getTitle());
         String langTxt = context.getString(R.string.french);
         if (lang.equalsIgnoreCase("ar")) {

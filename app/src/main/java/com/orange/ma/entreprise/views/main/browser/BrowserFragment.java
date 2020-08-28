@@ -1,5 +1,6 @@
 package com.orange.ma.entreprise.views.main.browser;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -58,7 +59,7 @@ public class BrowserFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         flag = 0;
         View view = inflater.inflate(R.layout.fragment_browser, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         loader.setVisibility(View.VISIBLE);
         return view;
     }
@@ -81,7 +82,11 @@ public class BrowserFragment extends BaseFragment {
     }
 
     private void init() {
-        if (url != null) {
+        if (url == null || url.contains(" ")) {
+            loader.setVisibility(View.GONE);
+            return;
+        }
+        try {
             CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
             builder.setToolbarColor(ContextCompat.getColor(getContext(), R.color.black));
             CustomTabsIntent customTabsIntent = builder.build();
@@ -90,6 +95,9 @@ public class BrowserFragment extends BaseFragment {
                 url = url.replace(Constants.EX_SSO_TOKEN, token);
             }
             customTabsIntent.launchUrl(getContext(), Uri.parse(url));
+        } catch (ActivityNotFoundException ex) {
+            ex.printStackTrace();
         }
+
     }
 }

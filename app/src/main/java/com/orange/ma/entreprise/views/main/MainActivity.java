@@ -2,7 +2,9 @@ package com.orange.ma.entreprise.views.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
+import android.util.StateSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.tabs.TabLayout;
@@ -41,9 +42,7 @@ import butterknife.ButterKnife;
 import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT;
 import static com.orange.ma.entreprise.utilities.Constants.ENDPOINT_TITLE;
 
-public class MainActivity extends BaseActivity
-        //implements BaseFragment.FragmentNavigation, FragNavController.TransactionListener, FragNavController.RootFragmentListener
-{
+public class MainActivity extends BaseActivity {
 
     @BindView(R.id.tabLayout)
     public TabLayout tabLayout;
@@ -53,9 +52,6 @@ public class MainActivity extends BaseActivity
     private ArrayList<Fragment> fragments;
     private PreferenceManager preferenceManager;
     private Fragment fragment;
-    //public FragNavController fragNavController;
-    //public FragmentHistory fragmentHistory;
-    //private Bundle savedInstanceState;
     private SettingCompleteAccount settingCompleteAccount;
 
 
@@ -64,7 +60,6 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        //this.savedInstanceState = savedInstanceState;
 
         mainVM = ViewModelProviders.of(this).get(MainVM.class);
         connectivity = new Connectivity(this, this);
@@ -79,41 +74,6 @@ public class MainActivity extends BaseActivity
         settingCompleteAccount = (SettingCompleteAccount) getIntent().getSerializableExtra("settingCompleteAccount");
     }
 
-/*    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (fragNavController != null) {
-            fragNavController.onSaveInstanceState(outState);
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void pushFragment(Fragment fragment) {
-        if (fragNavController != null) {
-            fragNavController.pushFragment(fragment);
-        }
-    }
-
-    @Override
-    public Fragment getRootFragment(int index) {
-        return fragments.get(index);
-    }
-
-    @Override
-    public void onTabTransaction(Fragment fragment, int index) {
-
-    }
-
-    @Override
-    public void onFragmentTransaction(Fragment fragment, FragNavController.TransactionType transactionType) {
-
-    }*/
-
     @Override
     public void onBackPressed() {
 
@@ -123,22 +83,6 @@ public class MainActivity extends BaseActivity
             super.onBackPressed();
             tabLayout.selectTab(tabLayout.getTabAt(getFragmentIndex(getCurrentFragment())));
         }
-        /*if (!fragNavController.isRootFragment()) {
-            fragNavController.popFragment();
-        } else {
-            if (fragmentHistory.isEmpty()) {
-                super.onBackPressed();
-            } else {
-                if (fragmentHistory.getStackSize() > 1) {
-                    int position = fragmentHistory.popPrevious();
-                    switchTab(position);
-                    tabLayout.getTabAt(position).setTag("bp");
-                    tabLayout.selectTab(tabLayout.getTabAt(position));
-                } else {
-                    moveToFirstFragment();
-                }
-            }
-        }*/
     }
 
     private void init(TabMenuData tabMenuData) {
@@ -153,8 +97,17 @@ public class MainActivity extends BaseActivity
             tabTextView.setText(item.getTitle());
             tab.setText(item.getTitle());
             ImageView tabImageView = view.findViewById(R.id.tabImageView);
-            int icon = getResources().getIdentifier(item.getIconDisabled(), "drawable", getPackageName());
-            tabImageView.setImageDrawable(getDrawable(icon));
+            try {
+                int iconDisabled = getResources().getIdentifier(item.getIconDisabled(), "drawable", getPackageName());
+                int iconEnabled = getResources().getIdentifier(item.getIconEnabled(), "drawable", getPackageName());
+                StateListDrawable stateListDrawable = new StateListDrawable();
+                stateListDrawable.addState(new int[]{android.R.attr.state_selected}, getDrawable(iconEnabled));
+                stateListDrawable.addState(StateSet.WILD_CARD, getDrawable(iconDisabled));
+                tabImageView.setImageDrawable(stateListDrawable);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             tabLayout.addTab(tab);
             LinearLayout layout = ((LinearLayout) ((LinearLayout) tabLayout.getChildAt(0)).getChildAt(tabMenuData.getTabMenuResponse().getData().indexOf(item)));
             layout.setBackground(null);
@@ -180,14 +133,7 @@ public class MainActivity extends BaseActivity
         }
 
         int index = getDashboardIndex();
-        //fragmentHistory = new FragmentHistory();
         if (index != -1) {
-           /* fragNavController = FragNavController.newBuilder(savedInstanceState, getSupportFragmentManager(), R.id.container, index)
-                    .transactionListener(this)
-                    .rootFragmentListener(this, fragments.size())
-                    .build();
-
-*/
             switchFragment(fragments.get(index), "");
             tabLayout.selectTab(tabLayout.getTabAt(index));
         }
@@ -200,8 +146,7 @@ public class MainActivity extends BaseActivity
 
                 if (tab.getTag() == null || !tab.getTag().equals("bp")) {
                     switchFragment(fragments.get(position), "");
-                    //fragmentHistory.push(position);
-                    //switchTab(position);
+
                 } else
                     tab.setTag(null);
             }
@@ -294,10 +239,6 @@ public class MainActivity extends BaseActivity
         }
     }
 
- /*   public void switchTab(int position) {
-        fragNavController.switchTab(position);
-    }*/
-
     private void handleIntent() {
         if (getIntent().getExtras() != null) {
             if (getIntent().getStringExtra("link") != null) {
@@ -365,12 +306,6 @@ public class MainActivity extends BaseActivity
             tabLayout.getTabAt(index).select();
     }
 
-    /*public void moveToFirstFragment() {
-        switchTab(0);
-        tabLayout.selectTab(tabLayout.getTabAt(0));
-        fragmentHistory.emptyStack();
-    }*/
-
     private int getDashboardIndex() {
         for (int i = 0; i < fragments.size(); i++) {
             if (fragments.get(i) instanceof DashboardFragment) {
@@ -391,6 +326,4 @@ public class MainActivity extends BaseActivity
         }
         return -1;
     }
-
-
 }
