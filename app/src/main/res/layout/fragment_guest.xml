@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/helveticabold"
-            android:text="@string/visitor_mode_title"
+            android:text="@string/visitor_mode"
             android:textColor="@color/white"
             android:textSize="18sp" />
 

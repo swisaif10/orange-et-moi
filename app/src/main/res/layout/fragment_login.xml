@@ -197,7 +197,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:fontFamily="@font/helveticalight"
-                android:text="@string/sign_up"
+                android:text="@string/signin"
                 android:textColor="@drawable/selector_button_text_color"
                 android:textSize="18sp" />
 
