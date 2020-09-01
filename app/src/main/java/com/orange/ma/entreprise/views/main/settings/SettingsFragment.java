@@ -221,4 +221,5 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
             ;
         }
     }
+
 }

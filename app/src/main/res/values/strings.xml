@@ -11,7 +11,7 @@
     <string name="password_hint">Mot de passe</string>
     <string name="stay_connected">Rester connecté</string>
     <string name="connect_btn">Me connecter</string>
-    <string name="forgotten_password">Mot de passe oublié ?</string>
+    <string name="forgotten_password">Mot de passe oublié</string>
     <string name="change_account_manager">Changer mon gestionnaire de compte</string>
     <string name="no_internet">Aucune connexion internet détectée. Veuillez vérifier vos paramètres de connexion puis réessayer.</string>
     <string name="generic_error">Une erreur est survenue!</string>

@@ -1,7 +1,10 @@
 package com.orange.ma.entreprise.views.main.dialogs;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.utilities.LocaleManager;
+import com.orange.ma.entreprise.views.splashscreen.SplashScreenActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -101,7 +105,17 @@ public class ChangeLanguageDialog extends Dialog {
             LocaleManager.setNewLocale(context, lang);
             Intent intent = context.getIntent();
             context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+            //restartApp();
         }
         dismiss();
+    }
+
+    private void restartApp() {
+        Intent intent = new Intent(context.getApplicationContext(), SplashScreenActivity.class);
+        int mPendingIntentId = 123456;
+        PendingIntent mPendingIntent = PendingIntent.getActivity(context.getApplicationContext(), mPendingIntentId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager mgr = (AlarmManager) context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+        System.exit(0);
     }
 }
