@@ -145,7 +145,7 @@ public class MainActivity extends BaseActivity {
                 int position = tab.getPosition();
 
                 if (tab.getTag() == null || !tab.getTag().equals("bp")) {
-                    switchFragment(fragments.get(position), "");gi
+                    switchFragment(fragments.get(position), "");
                 } else
                     tab.setTag(null);
             }
