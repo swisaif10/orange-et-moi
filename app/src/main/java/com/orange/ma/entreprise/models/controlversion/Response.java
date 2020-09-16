@@ -13,6 +13,8 @@ public class Response {
     private String message;
     @Expose
     private String status;
+    @Expose
+    private String title;
 
     public String getLink() {
         return link;
@@ -38,4 +40,11 @@ public class Response {
         this.status = status;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }
