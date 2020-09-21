@@ -15,7 +15,7 @@
     <string name="change_account_manager">تغيير مسير الحساب</string>
     <string name="no_internet">لا يوجد اتصال بالإنترنت</string>
     <string name="generic_error">لقد وقع خطأ!</string>
-    <string name="update_dialog_title">Mise à jour</string>
+    <string name="update_dialog_title">تحديث</string>
     <string name="ok_btn_hint">OK</string>
     <string name="cancel_btn_label">إلغاء</string>
     <string name="signin">إنشاء حسابك</string>
@@ -27,7 +27,7 @@
     <string name="cgu_btn"> لقد قرأت  <u><b>شروط الاستخدام</b></u> و أوافق عليها </string>
     <string name="sign_btn">إنشاء حسابي</string>
     <string name="security_level_description">يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل</string>
-    <string name="cancel_update_btn">Plus tard</string>
+    <string name="cancel_update_btn">لاحقاً</string>
     <string name="email_error">"من فضلك أدخل بريد إلكتروني صحيح"</string>
     <string name="complete_profile_later_btn">ذكرني لاحقا</string>
     <string name="Complete_profile">أكمل الحساب</string>

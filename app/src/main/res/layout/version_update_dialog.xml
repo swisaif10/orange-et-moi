@@ -22,18 +22,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="40dp"
             android:fontFamily="@font/helveticabold"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:layout_gravity="center"
             android:text="Votre application est obsolète!" />
 
         <TextView
             android:id="@+id/message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
             android:fontFamily="@font/helveticabold"
             android:text="Découvrez votre nouvelle application Orange et moi en téléchargeant la dernière version, et profitez des nouvelles fonctionnalités disponibles uniquement sur Orange et moi pro"
             android:textColor="@color/white"

@@ -19,6 +19,7 @@ import com.orange.ma.entreprise.listeners.OnDialogButtonsClickListener;
 import com.orange.ma.entreprise.models.controlversion.ControlVersionData;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
+import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.SpalshVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
@@ -48,6 +49,7 @@ public class SplashScreenActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LocaleManager.setLocale(this);
         setContentView(R.layout.activity_splash_screen);
 
         spalshVM = ViewModelProviders.of(this).get(SpalshVM.class);
@@ -59,7 +61,7 @@ public class SplashScreenActivity extends BaseActivity {
 
         if (getIntent().getExtras() != null)
             handleIntent(getIntent());
-        spalshVM.getversionMutableLiveData().observe(this, this::handleVersionCheckResponse);
+
         new Handler().postDelayed(this::getVersionCheck, 3000);
 
         FirebaseDynamicLinks.getInstance()
@@ -70,6 +72,12 @@ public class SplashScreenActivity extends BaseActivity {
         //firebaseAnalyticsEvent
         OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "page_splash", null);
         Log.d("TAG", "onCreate: firebase " + FirebaseInstanceId.getInstance().getToken());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        spalshVM.getversionMutableLiveData().observe(this, this::handleVersionCheckResponse);
     }
 
     private void goToNextActivity() {
@@ -166,7 +174,7 @@ public class SplashScreenActivity extends BaseActivity {
                 if (status.equalsIgnoreCase("current")) {
                     goToNextActivity();
                 } else {
-                    Utilities.showUpdateDialog(this, "", "", status, new OnDialogButtonsClickListener() {
+                    Utilities.showUpdateDialog(this, controlVersionData.getResponse().getMessage(), controlVersionData.getResponse().getTitle(), status, new OnDialogButtonsClickListener() {
                         @Override
                         public void firstChoice() {
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(controlVersionData.getResponse().getLink())));

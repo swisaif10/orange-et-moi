@@ -16,11 +16,14 @@ import android.widget.TextView;
 
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.utilities.LocaleManager;
+import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.splashscreen.SplashScreenActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class ChangeLanguageDialog extends Dialog {
 
@@ -103,8 +106,11 @@ public class ChangeLanguageDialog extends Dialog {
     private void selectNewLang(String lang) {
         if (!selectedLang.equalsIgnoreCase(lang)) {
             LocaleManager.setNewLocale(context, lang);
-            Intent intent = context.getIntent();
-            context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+            Intent intent = new Intent(context,MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            context.startActivity(intent);
             //restartApp();
         }
         dismiss();

@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,8 +58,11 @@ public interface Utilities {
         TextView titleTv = view.findViewById(R.id.title);
         TextView msg = view.findViewById(R.id.message);
 
-        titleTv.setText(title);
-        msg.setText(message);
+        if(title!=null)
+            titleTv.setText(Html.fromHtml(title));
+        else
+            titleTv.setVisibility(View.GONE);
+        msg.setText(Html.fromHtml(message));
 
         if (status.equalsIgnoreCase("blocked"))
             cancel.setVisibility(View.GONE);

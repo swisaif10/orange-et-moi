@@ -188,30 +188,29 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginVertical="15dp"
+                android:layout_marginTop="15dp"
                 android:background="@color/grey" />
 
             <TextView
                 android:id="@+id/signin_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
                 android:fontFamily="@font/helveticalight"
                 android:text="@string/signin"
+                android:paddingVertical="15dp"
                 android:textColor="@drawable/selector_button_text_color"
                 android:textSize="18sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginBottom="15dp"
                 android:background="@color/grey" />
 
             <TextView
                 android:id="@+id/visitor_mode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
+                android:paddingVertical="15dp"
                 android:fontFamily="@font/helveticalight"
                 android:text="@string/visitor_mode"
                 android:textColor="@drawable/selector_button_text_color"
@@ -220,14 +219,13 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginBottom="15dp"
                 android:background="@color/grey" />
 
             <TextView
                 android:id="@+id/forgotten_pwd_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
+                android:paddingVertical="15dp"
                 android:fontFamily="@font/helveticalight"
                 android:text="@string/forgotten_password"
                 android:textColor="@drawable/selector_button_text_color"
@@ -237,7 +235,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginBottom="15dp"
                 android:background="@color/grey" />
 
             <TextView
@@ -248,6 +245,7 @@
                 android:text="@string/change_account_manager"
                 android:textColor="@drawable/selector_button_text_color"
                 android:clickable="true"
+                android:paddingVertical="15dp"
                 android:textSize="18sp"/>
 
         </LinearLayout>
