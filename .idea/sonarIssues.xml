@@ -13,6 +13,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../Agriculture-android/app/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../Agriculture-android/app/proguard-rules.pro">
           <value>
             <set />
@@ -23,7 +28,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../Agriculture-android/app/src/main/java/com/mobiblanc/agridirect/views/main/MainActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Agriculture-android/app/src/main/java/com/mobiblanc/agridirect/views/main/services/DirectAccessFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Agriculture-android/app/src/main/java/com/mobiblanc/agridirect/views/main/services/FollowPriceFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../Agriculture-android/app/src/main/java/com/mobiblanc/agridirect/views/simulators/calcul/SimulatorCalculFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Agriculture-android/app/src/main/java/com/mobiblanc/agridirect/views/splashscreen/SplashScreenActivity.java">
           <value>
             <set />
           </value>
@@ -108,6 +133,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/orange/ma/entreprise/views/main/dialogs/ChangeLanguageDialog.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/orange/ma/entreprise/views/main/settings/SettingsFragment.java">
           <value>
             <set />
@@ -148,6 +178,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../Orangemoney_android/app/src/main/java/com/orange/orangemoney/data/remote/ApiHelper.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../Orangemoney_android/app/src/main/java/com/orange/orangemoney/ui/recharge/fragment/SelectAmountFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../blancCommerce/app/src/main/java/com/mobiblanc/blanccommerce/presenterimplement/auth/SignInFragmentPI.java">
           <value>
             <set />
@@ -183,12 +223,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../my2m3mars/c3/Android_Oct18/app/src/main/java/com/mobiblanc/my2m/ui/main/MainActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../my2m3mars/c3/Android_Oct18/app/src/main/java/com/mobiblanc/my2m/ui/main/MainPresenter.java">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../my2m3mars/c3/Android_Oct18/app/src/main/java/com/mobiblanc/my2m/ui/player/PlayerPresenter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../my2m3mars/c3/Android_Oct18/app/src/main/java/com/mobiblanc/my2m/ui/player/SVSJWPlayerPlugin.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../my2m3mars/c3/Android_Oct18/app/src/main/java/com/mobiblanc/my2m/ui/player/SimplePlayerFragment.java">
           <value>
             <set />
           </value>

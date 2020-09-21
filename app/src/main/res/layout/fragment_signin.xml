@@ -270,7 +270,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginVertical="15dp"
+                android:layout_marginTop="15dp"
                 android:background="@color/grey" />
 
             <TextView
@@ -279,6 +279,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/helveticalight"
                 android:text="@string/login_btn"
+                android:paddingVertical="15dp"
                 android:textColor="@drawable/selector_button_text_color"
                 android:textSize="18sp" />
         </LinearLayout>

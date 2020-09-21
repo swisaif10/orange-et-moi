@@ -61,7 +61,7 @@ public class SplashScreenActivity extends BaseActivity {
 
         if (getIntent().getExtras() != null)
             handleIntent(getIntent());
-        spalshVM.getversionMutableLiveData().observe(this, this::handleVersionCheckResponse);
+
         new Handler().postDelayed(this::getVersionCheck, 3000);
 
         FirebaseDynamicLinks.getInstance()
@@ -72,6 +72,12 @@ public class SplashScreenActivity extends BaseActivity {
         //firebaseAnalyticsEvent
         OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "page_splash", null);
         Log.d("TAG", "onCreate: firebase " + FirebaseInstanceId.getInstance().getToken());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        spalshVM.getversionMutableLiveData().observe(this, this::handleVersionCheckResponse);
     }
 
     private void goToNextActivity() {

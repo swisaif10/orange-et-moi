@@ -54,7 +54,7 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        LocaleManager.setLocale(getContext());
         settingsVM = ViewModelProviders.of(this).get(SettingsVM.class);
         connectivity = new Connectivity(getContext(), this);
 
