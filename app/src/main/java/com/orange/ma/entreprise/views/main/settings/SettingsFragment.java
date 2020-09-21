@@ -172,6 +172,9 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                     init(settingsData.getResponse().getData());
                     break;
                 case 403:
+                    preferenceManager.putValue(Constants.IS_LOGGED_IN, false);
+                    preferenceManager.clearValue(Constants.TOKEN_KEY);
+                    preferenceManager.putValue(Constants.IS_AUTHENTICATED, false);
                     Intent intent = new Intent(getContext(), AuthenticationActivity.class);
                     intent.putExtra(Constants.ERROR_CODE, settingsData.getHeader().getCode());
                     intent.putExtra(Constants.ERROR_MESSAGE, settingsData.getHeader().getMessage());

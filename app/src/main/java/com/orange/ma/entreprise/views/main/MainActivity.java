@@ -224,6 +224,9 @@ public class MainActivity extends BaseActivity {
                     handleIntent();
                     break;
                 case 403:
+                    preferenceManager.putValue(Constants.IS_LOGGED_IN, false);
+                    preferenceManager.clearValue(Constants.TOKEN_KEY);
+                    preferenceManager.putValue(Constants.IS_AUTHENTICATED, false);
                     Intent intent = new Intent(this, AuthenticationActivity.class);
                     intent.putExtra(Constants.ERROR_CODE, tabMenuData.getHeader().getCode());
                     intent.putExtra(Constants.ERROR_MESSAGE, tabMenuData.getHeader().getMessage());

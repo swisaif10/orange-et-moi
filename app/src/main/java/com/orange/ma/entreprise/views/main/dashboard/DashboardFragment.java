@@ -227,6 +227,9 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
                     //}
                     break;
                 case 403:
+                    preferenceManager.putValue(Constants.IS_LOGGED_IN, false);
+                    preferenceManager.clearValue(Constants.TOKEN_KEY);
+                    preferenceManager.putValue(Constants.IS_AUTHENTICATED, false);
                     Intent intent = new Intent(getActivity(), AuthenticationActivity.class);
                     intent.putExtra(Constants.ERROR_CODE, dashboardData.getHeader().getCode());
                     intent.putExtra(Constants.ERROR_MESSAGE, dashboardData.getHeader().getMessage());
