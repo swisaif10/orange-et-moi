@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.orange.ma.entreprise.OrangeEtMoiPro;
+import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.fcm.NotificationObject;
@@ -70,7 +70,7 @@ public class SplashScreenActivity extends BaseActivity {
                     //Log.d("TAG", "onCreate: Dynamic link host "+ pendingDynamicLinkData.getLink());
                 });
         //firebaseAnalyticsEvent
-        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "page_splash", null);
+        OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "page_splash", null);
         Log.d("TAG", "onCreate: firebase " + FirebaseInstanceId.getInstance().getToken());
     }
 

@@ -8,12 +8,12 @@ import androidx.multidex.MultiDexApplication;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.orange.ma.entreprise.utilities.LocaleManager;
 
-public class OrangeEtMoiPro extends MultiDexApplication {
+public class OrangePro extends MultiDexApplication {
 
-    private static OrangeEtMoiPro orangeApp;
+    private static OrangePro orangeApp;
     private FirebaseAnalytics mFirebaseAnalytics;
 
-    public static OrangeEtMoiPro getInstance() {
+    public static OrangePro getInstance() {
         return orangeApp;
     }
 

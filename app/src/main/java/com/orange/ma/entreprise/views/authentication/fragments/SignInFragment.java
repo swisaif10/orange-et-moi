@@ -23,7 +23,6 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -32,7 +31,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.orange.ma.entreprise.OrangeEtMoiPro;
+import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.models.login.LoginData;
@@ -111,7 +110,7 @@ public class SignInFragment extends Fragment {
 
         authenticationVM.getSignInMutableLiveData().observe(this, this::handleSignInResponse);
 
-        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "btn_valider_formulaire_inscription", LocaleManager.getLanguagePref(getContext()));
+        OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "btn_valider_formulaire_inscription", LocaleManager.getLanguagePref(getContext()));
 
         LocaleManager.setNewLocale(getContext(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"));
 
@@ -158,7 +157,7 @@ public class SignInFragment extends Fragment {
                 ((AuthenticationActivity) getActivity()).replaceFragment(new LoginFragment());
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
-                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_déjà_compte", bundle);
+                OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_déjà_compte", bundle);
                 break;
             case R.id.cgu_btn:
                 Utilities.hideSoftKeyboard(getContext(), getView());
@@ -169,7 +168,7 @@ public class SignInFragment extends Fragment {
             case R.id.valid_btn:
                 bundle = new Bundle();
                 bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
-                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_creer_compte", bundle);
+                OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_creer_compte", bundle);
                 SignIn();
                 break;
             case R.id.constraintLayout:

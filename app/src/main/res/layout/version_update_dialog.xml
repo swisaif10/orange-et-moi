@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/helveticabold"
-            android:text="Découvrez votre nouvelle application Orange et moi en téléchargeant la dernière version, et profitez des nouvelles fonctionnalités disponibles uniquement sur Orange et moi pro"
+            android:text="Découvrez votre nouvelle application Orange pro en téléchargeant la dernière version, et profitez des nouvelles fonctionnalités disponibles uniquement sur Orange pro"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold" />

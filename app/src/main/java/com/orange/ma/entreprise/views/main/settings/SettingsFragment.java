@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.orange.ma.entreprise.OrangeEtMoiPro;
+import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.listeners.OnDialogButtonsClickListener;
@@ -65,7 +65,7 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
 
-        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_parametres", LocaleManager.getLanguagePref(getContext()));
+        OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_parametres", LocaleManager.getLanguagePref(getContext()));
 
     }
 
@@ -108,14 +108,14 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                         bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
                         bundle.putString(Constants.FIREBASE_RC_KEY, preferenceManager.getValue(Constants.LOGIN_KEY, ""));
                         bundle.putString(Constants.FIREBASE_ELEMENT_NAME_KEY, settingsItem.getAction());
-                        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_parametres", bundle);
+                        OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_parametres", bundle);
                         break;
                     case "action_language":
                         new ChangeLanguageDialog(getActivity(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr")).show();
                         bundle = new Bundle();
                         bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
                         bundle.putString(Constants.FIREBASE_ELEMENT_NAME_KEY, settingsItem.getAction());
-                        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_parametres", bundle);
+                        OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_parametres", bundle);
                         break;
                     case "home_disabled":
                         ((MainActivity) getActivity()).moveToDashboardFragment();

@@ -3,8 +3,8 @@ package com.orange.ma.entreprise.utilities;
 import java.util.regex.Pattern;
 
 public interface Constants {
-    String FCM_PREFS_NAME = "com.orange.orangeetmoipro.fcm";
-    String SHARED_PREFS_NAME = "com.orange.orangeetmoipro";
+    String FCM_PREFS_NAME = "com.orange.orangepro.fcm";
+    String SHARED_PREFS_NAME = "com.orange.orangepro";
     String FIRST_TIME = "FIRST_TIME";
     String IS_LOGGED_IN = "LOGGED_IN";
     String LANGUAGE_KEY = "LANGUAGE_KEY";

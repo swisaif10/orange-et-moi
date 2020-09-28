@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.orange.ma.entreprise.OrangeEtMoiPro;
+import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.models.cgu.CGUData;
@@ -61,7 +61,7 @@ public class CGUFragment extends Fragment {
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
 
-        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(),"page_cgu_inscription", LocaleManager.getLanguagePref(getContext()));
+        OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(),"page_cgu_inscription", LocaleManager.getLanguagePref(getContext()));
 
     }
 
@@ -90,7 +90,7 @@ public class CGUFragment extends Fragment {
             //firebaseAnalyticsEvent
             Bundle bundle = new Bundle();
             bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
-            OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("clic_validation_cgu_inscription", bundle);
+            OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("clic_validation_cgu_inscription", bundle);
         } else if (id == R.id.refuse_btn) {
             intent.putExtra("cgu", false);
         }

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baoyz.widget.PullRefreshLayout;
-import com.orange.ma.entreprise.OrangeEtMoiPro;
+import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.listeners.OnTemplateItemSelectedListener;
@@ -69,7 +69,7 @@ public class VisitorFragment extends Fragment implements OnTemplateItemSelectedL
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
 
-        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_guest", LocaleManager.getLanguagePref(getContext()));
+        OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_guest", LocaleManager.getLanguagePref(getContext()));
 
     }
 

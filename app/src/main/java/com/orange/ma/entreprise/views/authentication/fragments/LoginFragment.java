@@ -25,7 +25,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.orange.ma.entreprise.OrangeEtMoiPro;
+import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.models.login.LoginData;
@@ -86,7 +86,7 @@ public class LoginFragment extends Fragment {
         authenticationVM.getSettingTagMutableLiveData().observe(this, this::handleSettingTagAction);
 
         //firebaseAnalyticsEvent
-        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_login", LocaleManager.getLanguagePref(getContext()));
+        OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_login", LocaleManager.getLanguagePref(getContext()));
 
 
     }
@@ -135,14 +135,14 @@ public class LoginFragment extends Fragment {
                 ((AuthenticationActivity) getActivity()).replaceFragment(new SignInFragment());
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
-                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_creer_compte", bundle);
+                OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_creer_compte", bundle);
                 break;
             case R.id.valid_btn:
 
                 bundle = new Bundle();
                 bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
                 bundle.putString(Constants.FIREBASE_RC_KEY, preferenceManager.getValue(Constants.LOGIN_KEY, ""));
-                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_login", bundle);
+                OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_login", bundle);
 
                 login();
                 break;
@@ -166,13 +166,13 @@ public class LoginFragment extends Fragment {
             case R.id.forgotten_pwd_btn:
                 bundle = new Bundle();
                 bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
-                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("bnt_forgotten_password", bundle);
+                OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("bnt_forgotten_password", bundle);
                 performTagAction(Constants.FORGOT_PASSWORD_TAG);
                 break;
             case R.id.gest_account_btn:
                 bundle = new Bundle();
                 bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
-                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_changement_gestionnaire", bundle);
+                OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_changement_gestionnaire", bundle);
                 performTagAction(Constants.CHANGE_ACCOUNT_MANAGER_TAG);
                 break;
             default:

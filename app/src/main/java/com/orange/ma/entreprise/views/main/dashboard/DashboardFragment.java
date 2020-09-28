@@ -15,14 +15,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baoyz.widget.PullRefreshLayout;
-import com.orange.ma.entreprise.OrangeEtMoiPro;
+import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.listeners.OnTemplateItemSelectedListener;
@@ -90,7 +89,7 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
 
         dashboardVM.getDashboardMutableLiveData().observe(this, this::handleDashboardData);
 
-        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_dash_activated", LocaleManager.getLanguagePref(getContext()));
+        OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_dash_activated", LocaleManager.getLanguagePref(getContext()));
 
 
     }
@@ -118,7 +117,7 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
             swipeRefresh.setRefreshing(false);
             bundle = new Bundle();
             bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
-            OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_dash_updated", bundle);
+            OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_dash_updated", bundle);
 
         });
     }

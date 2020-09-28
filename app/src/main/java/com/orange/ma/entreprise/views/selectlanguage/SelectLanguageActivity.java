@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.orange.ma.entreprise.OrangeEtMoiPro;
+import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.utilities.Constants;
@@ -45,7 +45,7 @@ public class SelectLanguageActivity extends BaseActivity {
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
 
-        OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "page_bienvenue", null);
+        OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "page_bienvenue", null);
 
 
     }
@@ -59,7 +59,7 @@ public class SelectLanguageActivity extends BaseActivity {
                 frenchTxt.setTextColor(getResources().getColor(R.color.black));
                 arabicTxt.setTextColor(getResources().getColor(R.color.grey));
                 selectedLang = LocaleManager.ENGLISH;
-                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_Langue_FR", null);
+                OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_Langue_FR", null);
 
                 break;
             case R.id.arabic_layout:
@@ -68,7 +68,7 @@ public class SelectLanguageActivity extends BaseActivity {
                 frenchTxt.setTextColor(getResources().getColor(R.color.grey));
                 arabicTxt.setTextColor(getResources().getColor(R.color.black));
                 selectedLang = LocaleManager.ARABIC;
-                OrangeEtMoiPro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_Langue_AR", null);
+                OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_Langue_AR", null);
 
                 break;
             case R.id.next_btn:

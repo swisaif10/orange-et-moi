@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Orange et Moi Pro</string>
+    <string name="app_name">Orange Pro</string>
 
     <string name="welcome">مرحبا</string>
     <string name="french">Français</string>
@@ -31,8 +31,8 @@
     <string name="email_error">"من فضلك أدخل بريد إلكتروني صحيح"</string>
     <string name="complete_profile_later_btn">ذكرني لاحقا</string>
     <string name="Complete_profile">أكمل الحساب</string>
-    <string name="complete_profile_description">أدخل معلوماتك الشخصية الآن للاستفادة\n الكاملة من مزايا Orange et moi pro.</string>
-    <string name="complete_profile_title">مرحبًا بك في Orange et moi pro</string>
+    <string name="complete_profile_description">أدخل معلوماتك الشخصية الآن للاستفادة\n الكاملة من مزايا Orange pro.</string>
+    <string name="complete_profile_title">مرحبًا بك في Orange pro</string>
     <string name="yes">Oui</string>
     <string name="no">لا</string>
     <string name="account_manger_btn">تغيير مسير الحساب</string>

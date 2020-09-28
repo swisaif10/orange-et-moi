@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Orange et Moi Pro</string>
+    <string name="app_name">Orange Pro</string>
 
     <string name="welcome">Bienvenue</string>
     <string name="french">Français</string>
@@ -31,8 +31,8 @@
     <string name="email_error">Merci de saisir une adresse mail valide</string>
     <string name="complete_profile_later_btn">Me le rappeler plus tard</string>
     <string name="Complete_profile">Compléter mon profile</string>
-    <string name="complete_profile_description">Renseignez dès à présent vos infos personnelles pour profiter pleinement des avantages Orange et moi pro.</string>
-    <string name="complete_profile_title">Bienvenue sur Orange et moi pro</string>
+    <string name="complete_profile_description">Renseignez dès à présent vos infos personnelles pour profiter pleinement des avantages Orange pro.</string>
+    <string name="complete_profile_title">Bienvenue sur Orange pro</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="account_manger_btn">Changer mon gestionnaire de compte</string>
