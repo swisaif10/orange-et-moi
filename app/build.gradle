@@ -53,6 +53,13 @@ android {
             buildConfigField "String", "DOMAIN", DOMAIN
         }
 
+        prod {
+            dimension "app"
+            buildConfigField "String", "BASEURL", PROD_URL
+            buildConfigField "String", "ID", ID
+            buildConfigField "String", "DOMAIN", DOMAIN
+        }
+
     }
 
     compileOptions {
