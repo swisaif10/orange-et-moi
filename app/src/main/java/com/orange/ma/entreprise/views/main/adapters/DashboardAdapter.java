@@ -3,6 +3,8 @@ package com.orange.ma.entreprise.views.main.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.view.KeyCharacterMap;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -164,7 +166,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     private int getHeightByDensity() {
         int h = (int) context.getResources().getDimension(R.dimen._60sdp);
         int densityDpi = (int) (context.getResources().getDisplayMetrics().densityDpi);
-        if (Utilities.aspect(context) > 1.8f)
+
+        boolean hasMenuKey = ViewConfiguration.get(context).hasPermanentMenuKey();
+        boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
+
+        if (Utilities.aspect(context) > 1.8f && (hasMenuKey||hasBackKey))
             return 0;
         if (densityDpi < 500 && ViewConfiguration.get(context).hasPermanentMenuKey())
             h = (int) context.getResources().getDimension(R.dimen._22sdp);
