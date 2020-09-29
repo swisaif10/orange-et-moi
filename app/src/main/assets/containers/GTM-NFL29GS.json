@@ -1,0 +1,534 @@
+{
+    "exportFormatVersion": 2,
+    "exportTime": "2020-09-29 11:05:49",
+    "containerVersion": {
+        "path": "accounts/602255738/containers/32327783/versions/1",
+        "accountId": "602255738",
+        "containerId": "32327783",
+        "containerVersionId": "1",
+        "name": "Installation GA",
+        "description": "Activation des Variables intégrées et configuration de GA 360",
+        "container": {
+            "path": "accounts/602255738/containers/32327783",
+            "accountId": "602255738",
+            "containerId": "32327783",
+            "name": "Orange et Moi Pro Android",
+            "publicId": "GTM-PSPZPZW",
+            "usageContext": [
+                "ANDROID_SDK_5"
+            ],
+            "fingerprint": "1598628685316",
+            "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/602255738/containers/32327783/workspaces?apiLink=container"
+        },
+        "tag": [
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "tagId": "7",
+                "name": "Google Analytics (Firebase)",
+                "type": "fm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "action",
+                        "value": "filter"
+                    }
+                ],
+                "fingerprint": "1601310315663",
+                "firingTriggerId": [
+                    "2147479556"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "paused": true
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "tagId": "9",
+                "name": "Google Analytics  Universal Analytics",
+                "type": "ua",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "overrideGaSettings",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "trackType",
+                        "value": "TRACK_SCREENVIEW"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "gaSettings",
+                        "value": "{{Property GA OMA}}"
+                    }
+                ],
+                "fingerprint": "1601310302861",
+                "firingTriggerId": [
+                    "2147479556"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "paused": true
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "tagId": "13",
+                "name": "Universal Analytics - Page vue - OMA",
+                "type": "ua",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "overrideGaSettings",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "trackType",
+                        "value": "TRACK_SCREENVIEW"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "gaSettings",
+                        "value": "{{Property GA OMA}}"
+                    }
+                ],
+                "fingerprint": "1601309559574",
+                "firingTriggerId": [
+                    "12"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "tagId": "16",
+                "name": "Universal Analytics - Event - OMA",
+                "type": "ua",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "nonInteraction",
+                        "value": "false"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "overrideGaSettings",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventCategory",
+                        "value": "Event App B2B"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "trackType",
+                        "value": "TRACK_EVENT"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "gaSettings",
+                        "value": "{{Property GA OMA}}"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "sendFirebaseCampaignData",
+                        "value": "true"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventAction",
+                        "value": "{{Nom Event FireBase}}"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventLabel",
+                        "value": "{{screenName}}"
+                    }
+                ],
+                "fingerprint": "1601310285257",
+                "firingTriggerId": [
+                    "15",
+                    "14"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT"
+            }
+        ],
+        "trigger": [
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "triggerId": "3",
+                "name": "Interaction des utilisateurs",
+                "type": "FIREBASE_USER_ENGAGEMENT",
+                "fingerprint": "1600868032463"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "triggerId": "4",
+                "name": "Ouverture de session",
+                "type": "FIREBASE_SESSION_START",
+                "fingerprint": "1600868062355"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "triggerId": "5",
+                "name": "Réception d'une notification",
+                "type": "FIREBASE_NOTIFICATION_RECEIVE",
+                "fingerprint": "1600868082564"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "triggerId": "6",
+                "name": "Ouverture d'une notification",
+                "type": "FIREBASE_NOTIFICATION_OPEN",
+                "fingerprint": "1600868097789"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "triggerId": "12",
+                "name": "Page vue",
+                "type": "ALWAYS",
+                "filter": [
+                    {
+                        "type": "STARTS_WITH",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{Nom Event FireBase}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "page_"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1601309548033"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "triggerId": "14",
+                "name": "Event BTN",
+                "type": "ALWAYS",
+                "filter": [
+                    {
+                        "type": "STARTS_WITH",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{Nom Event FireBase}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "btn_"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1601310058047"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "triggerId": "15",
+                "name": "Event CLIC",
+                "type": "ALWAYS",
+                "filter": [
+                    {
+                        "type": "STARTS_WITH",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{Nom Event FireBase}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "Clic_"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1601310169275"
+            }
+        ],
+        "variable": [
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "variableId": "8",
+                "name": "Property GA OMA",
+                "type": "gas",
+                "parameter": [
+                    {
+                        "type": "LIST",
+                        "key": "fieldsToSet",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "fieldName",
+                                        "value": "appName"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{App Name}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "fieldName",
+                                        "value": "appVersion"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{App Version Name}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "fieldName",
+                                        "value": "screenName"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "value",
+                                        "value": "{{screenName}}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "collectAdid",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "trackingId",
+                        "value": "UA-88561320-1"
+                    }
+                ],
+                "fingerprint": "1601309018905"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "variableId": "10",
+                "name": "screenName",
+                "type": "md",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "true"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "defaultValue",
+                        "value": "unknown screen"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventType",
+                        "value": "CUSTOM"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "key",
+                        "value": "_sn"
+                    }
+                ],
+                "fingerprint": "1601308993875"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "variableId": "11",
+                "name": "Nom Event FireBase",
+                "type": "e",
+                "fingerprint": "1601309531994"
+            }
+        ],
+        "builtInVariable": [
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "CONTAINER_VERSION",
+                "name": "Container Version"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "RANDOM_NUMBER",
+                "name": "Random Number"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "CONTAINER_ID",
+                "name": "Container ID"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "APP_ID",
+                "name": "App ID"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "APP_NAME",
+                "name": "App Name"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "APP_VERSION_CODE",
+                "name": "App Version Code"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "LANGUAGE",
+                "name": "Language"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "OS_VERSION",
+                "name": "OS Version"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "PLATFORM",
+                "name": "Platform"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "SDK_VERSION",
+                "name": "SDK Version"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "DEVICE_NAME",
+                "name": "Device Name"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "RESOLUTION",
+                "name": "Screen Resolution"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "ADVERTISER_ID",
+                "name": "Advertiser ID"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "ADVERTISING_TRACKING_ENABLED",
+                "name": "Advertiser Tracking Enabled"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "APP_VERSION_NAME",
+                "name": "App Version Name"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "EVENT_NAME",
+                "name": "Event Name"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "FIREBASE_EVENT_PARAMETER_CAMPAIGN",
+                "name": "Campaign Name"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "FIREBASE_EVENT_PARAMETER_CAMPAIGN_ACLID",
+                "name": "Click ID (aclid)"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "FIREBASE_EVENT_PARAMETER_CAMPAIGN_ANID",
+                "name": "Ad Network ID (anid)"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "FIREBASE_EVENT_PARAMETER_CAMPAIGN_CLICK_TIMESTAMP",
+                "name": "Campaign Click Timestamp"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "FIREBASE_EVENT_PARAMETER_CAMPAIGN_CONTENT",
+                "name": "Campaign Content"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "FIREBASE_EVENT_PARAMETER_CAMPAIGN_CP1",
+                "name": "Campaign Custom Parameter 1"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "FIREBASE_EVENT_PARAMETER_CAMPAIGN_GCLID",
+                "name": "Google Click ID (gclid)"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "FIREBASE_EVENT_PARAMETER_CAMPAIGN_SOURCE",
+                "name": "Campaign Source"
+            },
+            {
+                "accountId": "602255738",
+                "containerId": "32327783",
+                "type": "FIREBASE_EVENT_PARAMETER_CAMPAIGN_TERM",
+                "name": "Campaign Search Term"
+            }
+        ],
+        "fingerprint": "1601367251502",
+        "tagManagerUrl": "https://tagmanager.google.com/#/versions/accounts/602255738/containers/32327783/versions/1?apiLink=version"
+    }
+}
