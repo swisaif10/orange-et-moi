@@ -166,7 +166,7 @@ public class LoginFragment extends Fragment {
             case R.id.forgotten_pwd_btn:
                 bundle = new Bundle();
                 bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
-                OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("bnt_forgotten_password", bundle);
+                OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_forgotten_password", bundle);
                 performTagAction(Constants.FORGOT_PASSWORD_TAG);
                 break;
             case R.id.gest_account_btn:
@@ -179,8 +179,6 @@ public class LoginFragment extends Fragment {
                 break;
         }
     }
-
-
 
     private void init() {
         if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar"))

@@ -1,42 +1,35 @@
 {
   "project_info": {
-    "project_number": "404400681148",
-    "firebase_url": "https://orangeetmoi-entreprise-test.firebaseio.com",
-    "project_id": "orangeetmoi-entreprise-test",
-    "storage_bucket": "orangeetmoi-entreprise-test.appspot.com"
+    "project_number": "480709492335",
+    "firebase_url": "https://orangeetmoi-entreprise-prod.firebaseio.com",
+    "project_id": "orangeetmoi-entreprise-prod",
+    "storage_bucket": "orangeetmoi-entreprise-prod.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:404400681148:android:06faa637eb940fe3c8a0b9",
+        "mobilesdk_app_id": "1:480709492335:android:c5081b079de9918b41d79a",
         "android_client_info": {
           "package_name": "com.orange.ma.entreprise"
         }
       },
       "oauth_client": [
         {
-          "client_id": "404400681148-ins9jeqkmh050d4n2sg5iaqb9jde7amm.apps.googleusercontent.com",
+          "client_id": "480709492335-f6iqr8122po8p8olmr3enlpobspka02v.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCwVQigQLcQ6FYiiTGHwZtFw5HePGESCOg"
+          "current_key": "AIzaSyD0042QgBxtlI-yWT20Zr3g0Mq0cGIy72k"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "404400681148-ins9jeqkmh050d4n2sg5iaqb9jde7amm.apps.googleusercontent.com",
+              "client_id": "480709492335-f6iqr8122po8p8olmr3enlpobspka02v.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "404400681148-hhlfnoo8th0ka107c3j75jd5o7eagos6.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.orange.ma.entreprise"
-              }
             }
           ]
         }

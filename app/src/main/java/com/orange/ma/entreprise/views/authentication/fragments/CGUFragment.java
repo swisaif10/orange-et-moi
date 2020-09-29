@@ -90,7 +90,7 @@ public class CGUFragment extends Fragment {
             //firebaseAnalyticsEvent
             Bundle bundle = new Bundle();
             bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
-            OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("clic_validation_cgu_inscription", bundle);
+            OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("Clic_validation_cgu_inscription", bundle);
         } else if (id == R.id.refuse_btn) {
             intent.putExtra("cgu", false);
         }
