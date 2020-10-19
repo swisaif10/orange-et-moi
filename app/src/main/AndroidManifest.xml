@@ -15,6 +15,7 @@
         android:networkSecurityConfig="@xml/network_traffic_config"
         android:supportsRtl="true"
         android:launchMode="singleTask"
+        android:taskAffinity = ""
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
         <activity
