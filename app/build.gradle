@@ -10,7 +10,7 @@ android {
         applicationId "com.orange.ma.entreprise"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 12
+        versionCode 14
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -26,7 +26,6 @@ android {
             debuggable false
             minifyEnabled true
             shrinkResources false // shouldn't shrink or ignore icons or image resources
-            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
