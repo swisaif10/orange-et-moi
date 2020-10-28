@@ -15,9 +15,9 @@
         android:networkSecurityConfig="@xml/network_traffic_config"
         android:supportsRtl="true"
         android:launchMode="singleTask"
-        android:taskAffinity = ""
         android:theme="@style/AppTheme"
-        tools:replace="android:allowBackup">
+        tools:replace="android:allowBackup"
+        tools:ignore="HardcodedDebugMode">
         <activity
             android:name="com.orange.ma.entreprise.views.authentication.AuthenticationActivity"
             android:launchMode="singleTask"
