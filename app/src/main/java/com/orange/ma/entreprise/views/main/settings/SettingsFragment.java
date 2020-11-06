@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.listeners.OnDialogButtonsClickListener;
 import com.orange.ma.entreprise.listeners.OnItemSelectedListener;
@@ -50,6 +51,7 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
     private SettingsVM settingsVM;
     private Connectivity connectivity;
     private long lastClickTime = 0;
+    private EncryptedSharedPreferences encryptedSharedPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,10 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
         preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
+
+        encryptedSharedPreferences = new EncryptedSharedPreferences();
+
+        encryptedSharedPreferences.getEncryptedSharedPreferences(getContext());
 
         OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_parametres", LocaleManager.getLanguagePref(getContext()));
 
@@ -106,7 +112,7 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                         new LogoutDialog(getActivity(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), this).show();
                         Bundle bundle = new Bundle();
                         bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
-                        bundle.putString(Constants.FIREBASE_RC_KEY, preferenceManager.getValue(Constants.LOGIN_KEY, ""));
+                        bundle.putString(Constants.FIREBASE_RC_KEY, encryptedSharedPreferences.getValue(Constants.LOGIN_KEY, ""));
                         bundle.putString(Constants.FIREBASE_ELEMENT_NAME_KEY, settingsItem.getAction());
                         OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("page_parametres", bundle);
                         break;
@@ -125,8 +131,8 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                 }
             } else {
                 String urlVebView = settingsItem.getAction();
-                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && urlVebView.contains(Constants.EX_SSO_TOKEN)) {
-                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
+                if (!Utilities.isNullOrEmpty(encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, null)) && urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                    String token = encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
                     urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN, token);
                 }
                 if (settingsItem.isInApp())
@@ -156,7 +162,7 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
     private void getSettings() {
         if (connectivity.isConnected()) {
             loader.setVisibility(View.VISIBLE);
-            settingsVM.getSettingsList(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), preferenceManager.getValue(Constants.TOKEN_KEY, ""));
+            settingsVM.getSettingsList(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, ""));
         } else
             Utilities.showErrorPopup(getContext(), getString(R.string.no_internet));
     }
@@ -172,9 +178,12 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
                     init(settingsData.getResponse().getData());
                     break;
                 case 403:
-                    preferenceManager.putValue(Constants.IS_LOGGED_IN, false);
-                    preferenceManager.clearValue(Constants.TOKEN_KEY);
-                    preferenceManager.putValue(Constants.IS_AUTHENTICATED, false);
+                    encryptedSharedPreferences.putValue(Constants.IS_LOGGED_IN, false);
+//                    preferenceManager.putValue(Constants.IS_LOGGED_IN, false);
+                    encryptedSharedPreferences.clearValue(Constants.TOKEN_KEY);
+//                    preferenceManager.clearValue(Constants.TOKEN_KEY);
+                    encryptedSharedPreferences.putValue(Constants.IS_AUTHENTICATED, false);
+//                    preferenceManager.putValue(Constants.IS_AUTHENTICATED, false);
                     Intent intent = new Intent(getContext(), AuthenticationActivity.class);
                     intent.putExtra(Constants.ERROR_CODE, settingsData.getHeader().getCode());
                     intent.putExtra(Constants.ERROR_MESSAGE, settingsData.getHeader().getMessage());
@@ -192,7 +201,7 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
     private void logout() {
         if (connectivity.isConnected()) {
             loader.setVisibility(View.VISIBLE);
-            settingsVM.logout(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), preferenceManager.getValue(Constants.TOKEN_KEY, ""));
+            settingsVM.logout(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, ""));
         } else
             Utilities.showErrorPopup(getContext(), getString(R.string.no_internet));
     }
@@ -205,9 +214,12 @@ public class SettingsFragment extends BaseFragment implements OnItemSelectedList
             int code = responseData.getHeader().getCode();
             switch (code) {
                 case 200:
-                    preferenceManager.putValue(Constants.IS_LOGGED_IN, false);
-                    preferenceManager.clearValue(Constants.TOKEN_KEY);
-                    preferenceManager.putValue(Constants.IS_AUTHENTICATED, false);
+                    encryptedSharedPreferences.putValue(Constants.IS_LOGGED_IN, false);
+//                    preferenceManager.putValue(Constants.IS_LOGGED_IN, false);
+                    encryptedSharedPreferences.clearValue(Constants.TOKEN_KEY);
+//                    preferenceManager.clearValue(Constants.TOKEN_KEY);
+                    encryptedSharedPreferences.putValue(Constants.IS_AUTHENTICATED, false);
+//                    preferenceManager.putValue(Constants.IS_AUTHENTICATED, false);
                     startActivity(new Intent(getActivity(), AuthenticationActivity.class));
                     getActivity().finish();
                     break;

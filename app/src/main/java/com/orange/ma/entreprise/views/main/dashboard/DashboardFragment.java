@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.baoyz.widget.PullRefreshLayout;
 import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.listeners.OnTemplateItemSelectedListener;
 import com.orange.ma.entreprise.models.dashboard.CompoundElement;
@@ -70,6 +70,7 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
     private GridLayoutManager layoutManager;
     private StartSnapHelper snapHelper;
     private long lastClickTime = 0;
+    private EncryptedSharedPreferences encryptedSharedPreferences;
 
 
     public DashboardFragment() {
@@ -86,6 +87,10 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
         preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
+
+        encryptedSharedPreferences = new EncryptedSharedPreferences();
+
+        encryptedSharedPreferences.getEncryptedSharedPreferences(getContext());
 
         dashboardVM.getDashboardMutableLiveData().observe(this, this::handleDashboardData);
 
@@ -149,8 +154,8 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
                 }
             } else {
                 String urlVebView = compoundElement.getAction();
-                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && urlVebView.contains(Constants.EX_SSO_TOKEN)) {
-                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
+                if (!Utilities.isNullOrEmpty(encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, null)) && urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                    String token = encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
                     urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN, token);
                 }
                 if (compoundElement.getInApp())
@@ -190,10 +195,7 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
             int first = layoutManager.findFirstVisibleItemPosition();
             int itemCount = layoutManager.getItemCount();
             View lastView = layoutManager.findViewByPosition(lastPosition);
-            Log.d("TAGGGG", "onBottomReached: lastPosition " + lastPosition);
-            Log.d("TAGGGG", "onBottomReached: first " + first);
             if (lastView != null && lastView.getTag().equals("blanc") && lastPosition == itemCount - 1) {
-                Log.d("TAGGGG", "onScrolled first: " + first);
                 linearSmoothScroller.setTargetPosition(lastPosition);
                 layoutManager.startSmoothScroll(linearSmoothScroller);
             }
@@ -205,7 +207,7 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
 
     private void getDashboardList() {
         if (connectivity.isConnected())
-            dashboardVM.getDashboardList(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), preferenceManager.getValue(Constants.TOKEN_KEY, ""));
+            dashboardVM.getDashboardList(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, ""));
         else
             Utilities.showErrorPopup(getContext(), getString(R.string.no_internet));
     }
@@ -218,17 +220,20 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
             int code = dashboardData.getHeader().getCode();
             switch (code) {
                 case 200:
-                    String hash = preferenceManager.getValue(DASH_TEMPLATE_HASH, "");
+                    String hash = encryptedSharedPreferences.getValue(DASH_TEMPLATE_HASH, "");
                     //if ((Utilities.isNullOrEmpty(hash) || !hash.equals(dashboardData.getResponse().getHashTemplates()))) {
                     init(dashboardData.getResponse().getData());
-                    preferenceManager.putValue(DASH_TEMPLATE_HASH, dashboardData.getResponse().getHashTemplates());
+                    encryptedSharedPreferences.putValue(DASH_TEMPLATE_HASH, dashboardData.getResponse().getHashTemplates());
                     //initRun = false;
                     //}
                     break;
                 case 403:
-                    preferenceManager.putValue(Constants.IS_LOGGED_IN, false);
-                    preferenceManager.clearValue(Constants.TOKEN_KEY);
-                    preferenceManager.putValue(Constants.IS_AUTHENTICATED, false);
+                    encryptedSharedPreferences.putValue(Constants.IS_LOGGED_IN, false);
+//                    preferenceManager.putValue(Constants.IS_LOGGED_IN, false);
+                    encryptedSharedPreferences.clearValue(Constants.TOKEN_KEY);
+//                    preferenceManager.clearValue(Constants.TOKEN_KEY);
+                    encryptedSharedPreferences.putValue(Constants.IS_AUTHENTICATED, false);
+//                    preferenceManager.putValue(Constants.IS_AUTHENTICATED, false);
                     Intent intent = new Intent(getActivity(), AuthenticationActivity.class);
                     intent.putExtra(Constants.ERROR_CODE, dashboardData.getHeader().getCode());
                     intent.putExtra(Constants.ERROR_MESSAGE, dashboardData.getHeader().getMessage());

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 
 public class LinePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
@@ -76,6 +77,8 @@ public class LinePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
             PreferenceManager preferenceManager = new PreferenceManager.Builder(context, Context.MODE_PRIVATE)
                     .name(Constants.SHARED_PREFS_NAME)
                     .build();
+
+
             int position = ((GridLayoutManager) parent.getLayoutManager()).findLastVisibleItemPosition() + 1;
 
             if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar")) {

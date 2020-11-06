@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.android.material.tabs.TabLayout;
 import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.listeners.OnDialogButtonsClickListener;
 import com.orange.ma.entreprise.models.login.SettingCompleteAccount;
@@ -53,6 +54,7 @@ public class MainActivity extends BaseActivity {
     private PreferenceManager preferenceManager;
     private Fragment fragment;
     private SettingCompleteAccount settingCompleteAccount;
+    private EncryptedSharedPreferences encryptedSharedPreferences;
 
 
     @Override
@@ -67,6 +69,12 @@ public class MainActivity extends BaseActivity {
         preferenceManager = new PreferenceManager.Builder(this, Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
+
+        encryptedSharedPreferences = new EncryptedSharedPreferences();
+
+        encryptedSharedPreferences.getEncryptedSharedPreferences(this);
+
+
         mainVM.getTabMenuMutableLiveData().observe(this, this::handleTabMenuResponse);
 
         getTabMenu();
@@ -172,13 +180,13 @@ public class MainActivity extends BaseActivity {
                 //firebaseAnalyticsEvent
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getApplicationContext()));
-                bundle.putString(Constants.FIREBASE_RC_KEY, preferenceManager.getValue(Constants.LOGIN_KEY, ""));
+                bundle.putString(Constants.FIREBASE_RC_KEY, encryptedSharedPreferences.getValue(Constants.LOGIN_KEY, ""));
                 OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("Clic_completer_mon_profil", bundle);
 
 
                 String urlVebView = settingCompleteAccount.getAction();
-                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && urlVebView.contains(Constants.EX_SSO_TOKEN)) {
-                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
+                if (!Utilities.isNullOrEmpty(encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, null)) && urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                    String token = encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
                     urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN, token);
                 }
                 if (settingCompleteAccount.getInApp())
@@ -192,7 +200,7 @@ public class MainActivity extends BaseActivity {
 
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getApplicationContext()));
-                bundle.putString(Constants.FIREBASE_RC_KEY, preferenceManager.getValue(Constants.LOGIN_KEY, ""));
+                bundle.putString(Constants.FIREBASE_RC_KEY, encryptedSharedPreferences.getValue(Constants.LOGIN_KEY, ""));
                 OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("Clic_ignorer_completer_mon_profil", bundle);
             }
         });
@@ -203,7 +211,7 @@ public class MainActivity extends BaseActivity {
 
     private void getTabMenu() {
         if (connectivity.isConnected()) {
-            mainVM.getTabMenu(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), preferenceManager.getValue(Constants.TOKEN_KEY, ""));
+            mainVM.getTabMenu(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, ""));
         } else
             Utilities.showErrorPopup(this, getString(R.string.no_internet));
 
@@ -216,17 +224,17 @@ public class MainActivity extends BaseActivity {
             int code = tabMenuData.getHeader().getCode();
             switch (code) {
                 case 200:
-                    String hash = preferenceManager.getValue(Constants.TAB_MENU_HASH, "");
+                    String hash = encryptedSharedPreferences.getValue(Constants.TAB_MENU_HASH, "");
                     if (Utilities.isNullOrEmpty(hash) || !hash.equals(tabMenuData.getTabMenuResponse().getHash())) {
                         init(tabMenuData);
-                        preferenceManager.putValue(Constants.TAB_MENU_HASH, tabMenuData.getTabMenuResponse().getHash());
+                        encryptedSharedPreferences.putValue(Constants.TAB_MENU_HASH, tabMenuData.getTabMenuResponse().getHash());
                     }
                     handleIntent();
                     break;
                 case 403:
-                    preferenceManager.putValue(Constants.IS_LOGGED_IN, false);
-                    preferenceManager.clearValue(Constants.TOKEN_KEY);
-                    preferenceManager.putValue(Constants.IS_AUTHENTICATED, false);
+                    encryptedSharedPreferences.putValue(Constants.IS_LOGGED_IN, false);
+                    encryptedSharedPreferences.clearValue(Constants.TOKEN_KEY);
+                    encryptedSharedPreferences.putValue(Constants.IS_AUTHENTICATED, false);
                     Intent intent = new Intent(this, AuthenticationActivity.class);
                     intent.putExtra(Constants.ERROR_CODE, tabMenuData.getHeader().getCode());
                     intent.putExtra(Constants.ERROR_MESSAGE, tabMenuData.getHeader().getMessage());
@@ -262,7 +270,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void handleInApp(String endpoint, String endpointdata) {
-        fragment = BrowserFragment.newInstance(endpoint);//WebViewFragment.newInstance(endpoint, endpointdata);
+        fragment = BrowserFragment.newInstance(endpoint);
         switchFragment(fragment, "");
     }
 

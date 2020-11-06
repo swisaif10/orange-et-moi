@@ -2,7 +2,6 @@ package com.orange.ma.entreprise.views.authentication.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.baoyz.widget.PullRefreshLayout;
 import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.listeners.OnTemplateItemSelectedListener;
 import com.orange.ma.entreprise.models.dashboard.CompoundElement;
@@ -51,6 +51,7 @@ public class VisitorFragment extends Fragment implements OnTemplateItemSelectedL
     private Connectivity connectivity;
     private AuthenticationVM authenticationVM;
     StartSnapHelper snapHelper = new StartSnapHelper();
+    private EncryptedSharedPreferences encryptedSharedPreferences;
 
     public VisitorFragment() {
         // Required empty public constructor
@@ -68,6 +69,10 @@ public class VisitorFragment extends Fragment implements OnTemplateItemSelectedL
         preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
+
+        encryptedSharedPreferences = new EncryptedSharedPreferences();
+
+        encryptedSharedPreferences.getEncryptedSharedPreferences(getContext());
 
         OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_guest", LocaleManager.getLanguagePref(getContext()));
 
@@ -106,8 +111,8 @@ public class VisitorFragment extends Fragment implements OnTemplateItemSelectedL
                 ((AuthenticationActivity) getActivity()).onBackPressed();
             } else {
                 String urlVebView = compoundElement.getAction();
-                if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && urlVebView.contains(Constants.EX_SSO_TOKEN)) {
-                    String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
+                if (!Utilities.isNullOrEmpty(encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, null)) && urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                    String token = encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
                     urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN, token);
                 }
                 if (compoundElement.getInApp())
@@ -137,10 +142,7 @@ public class VisitorFragment extends Fragment implements OnTemplateItemSelectedL
             int first = layoutManager.findFirstVisibleItemPosition();
             int itemCount = layoutManager.getItemCount();
             View lastView = layoutManager.findViewByPosition(lastPosition);
-            Log.d("TAGGGG", "onBottomReached: lastPosition " + lastPosition);
-            Log.d("TAGGGG", "onBottomReached: first " + first);
             if (lastView != null && lastView.getTag().equals("blanc") && lastPosition == itemCount - 1) {
-                Log.d("TAGGGG", "onScrolled first: " + first);
                 linearSmoothScroller.setTargetPosition(lastPosition);
                 layoutManager.startSmoothScroll(linearSmoothScroller);
             }

@@ -8,6 +8,7 @@ import android.util.DisplayMetrics;
 
 import androidx.annotation.StringDef;
 
+import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 
 import java.lang.annotation.Retention;
@@ -39,6 +40,7 @@ public class LocaleManager {
         PreferenceManager preferenceManager = new PreferenceManager.Builder(context, Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
+
         return preferenceManager.getValue(Constants.LANGUAGE_KEY, ENGLISH);
     }
 
@@ -46,6 +48,7 @@ public class LocaleManager {
         PreferenceManager preferenceManager = new PreferenceManager.Builder(context, Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
+
         preferenceManager.putValue(Constants.LANGUAGE_KEY, localeKey);
     }
 

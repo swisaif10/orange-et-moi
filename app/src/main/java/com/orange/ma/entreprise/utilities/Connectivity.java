@@ -9,7 +9,6 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -93,7 +92,6 @@ public class Connectivity implements LifecycleObserver {
             int exitValue = ipProcess.waitFor();
             return (exitValue == 0);
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
             return false;
         }
     }
@@ -130,7 +128,6 @@ public class Connectivity implements LifecycleObserver {
             try {
                 context.unregisterReceiver(connectivityReceiver);
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
             }
         }
     }

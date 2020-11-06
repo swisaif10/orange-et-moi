@@ -1,13 +1,16 @@
 package com.orange.ma.entreprise.views.authentication.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -19,6 +22,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.models.cgu.CGUData;
 import com.orange.ma.entreprise.utilities.Connectivity;
@@ -44,6 +48,7 @@ public class CGUFragment extends Fragment {
     private AuthenticationVM authenticationVM;
     private Connectivity connectivity;
     private PreferenceManager preferenceManager;
+    private EncryptedSharedPreferences encryptedSharedPreferences;
 
     public CGUFragment() {
         // Required empty public constructor
@@ -60,6 +65,10 @@ public class CGUFragment extends Fragment {
         preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
+
+        encryptedSharedPreferences = new EncryptedSharedPreferences();
+
+        encryptedSharedPreferences.getEncryptedSharedPreferences(getContext());
 
         OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(),"page_cgu_inscription", LocaleManager.getLanguagePref(getContext()));
 
@@ -101,12 +110,7 @@ public class CGUFragment extends Fragment {
     private void init(String data) {
         webview.setOnLongClickListener(v -> true);
         webview.setLongClickable(false);
-        webview.setWebViewClient(new WebViewClient() {
-
-            public void onPageFinished(WebView view, String url) {
-                loader.setVisibility(View.GONE);
-            }
-        });
+        webview.setWebViewClient(new MyBrowser());
         webview.getSettings().setDefaultTextEncodingName("utf-8");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             LocaleManager.setLocale(getContext());
@@ -131,6 +135,30 @@ public class CGUFragment extends Fragment {
                 init(cguData.getCGUResponse().getCGU().getDescription());
             } else
                 Utilities.showErrorPopup(getContext(), cguData.getHeader().getMessage());
+        }
+    }
+
+    private class MyBrowser extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            return false;
+        }
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Attention");
+            builder.setPositiveButton("Ok", (dialog, which) -> handler.proceed());
+            builder.setNegativeButton("Cancel", (dialog, which) -> handler.cancel());
+            final AlertDialog dialog = builder.create();
+            dialog.show();
+
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            loader.setVisibility(View.GONE);
         }
     }
 }

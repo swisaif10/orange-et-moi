@@ -8,5 +8,6 @@
     android:background="@color/grey"
     app:cardCornerRadius="0dp"
     app:cardElevation="0dp"
-    android:visibility="invisible">
+    android:visibility="invisible"
+    android:filterTouchesWhenObscured="true">
 </androidx.cardview.widget.CardView>

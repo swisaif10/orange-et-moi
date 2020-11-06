@@ -1,7 +1,6 @@
 package com.orange.ma.entreprise.viewmodels;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -9,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.orange.ma.entreprise.datamanager.retrofit.ApiUrls;
 import com.orange.ma.entreprise.datamanager.retrofit.RestService;
+import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.models.cgu.CGUData;
 import com.orange.ma.entreprise.models.guest.GuestLoginData;
@@ -65,16 +65,19 @@ public class AuthenticationVM extends AndroidViewModel {
         signInMutableLiveData = new MutableLiveData<>();
         guestLoginMutableLiveData = new MutableLiveData<>();
         settingTagMutableLiveData = new MutableLiveData<>();
+
     }
 
-    public void login(String login, String password, Boolean rememberMe, String lang, PreferenceManager preferenceManager) {
+    public void login(String login, String password, Boolean rememberMe, String lang, PreferenceManager preferenceManager, EncryptedSharedPreferences encryptedSharedPreferences) {
         Call<LoginData> call = RestService.getInstance().endpoint().login(ApiUrls.AUTHORIZATION,login, password, rememberMe, lang);
         call.enqueue(new Callback<LoginData>() {
             @Override
             public void onResponse(Call<LoginData> call, Response<LoginData> response) {
                 String token = response.raw().header("x-auth-token");
-                preferenceManager.putValue(Constants.TOKEN_KEY, "Bearer " + token);
-                preferenceManager.putValue(Constants.IS_AUTHENTICATED, true);
+//                preferenceManager.putValue(Constants.TOKEN_KEY, "Bearer " + token);
+                encryptedSharedPreferences.putValue(Constants.TOKEN_KEY, "Bearer " + token);
+                encryptedSharedPreferences.putValue(Constants.IS_AUTHENTICATED, true);
+//                preferenceManager.putValue(Constants.IS_AUTHENTICATED, true);
                 loginMutableLiveData.setValue(response.body());
             }
 
@@ -100,14 +103,16 @@ public class AuthenticationVM extends AndroidViewModel {
         });
     }
 
-    public void signIn(String id, String cin, String email, String password, String lang,PreferenceManager preferenceManager) {
+    public void signIn(String id, String cin, String email, String password, String lang,PreferenceManager preferenceManager, EncryptedSharedPreferences encryptedSharedPreferences) {
         Call<LoginData> call = RestService.getInstance().endpoint().signIn(ApiUrls.AUTHORIZATION,id, cin, email, password, lang);
         call.enqueue(new Callback<LoginData>() {
             @Override
             public void onResponse(Call<LoginData> call, Response<LoginData> response) {
                 String token = response.raw().header("x-auth-token");
-                preferenceManager.putValue(Constants.TOKEN_KEY, "Bearer " + token);
-                preferenceManager.putValue(Constants.IS_AUTHENTICATED, true);
+//                preferenceManager.putValue(Constants.TOKEN_KEY, "Bearer " + token);
+                encryptedSharedPreferences.putValue(Constants.TOKEN_KEY, "Bearer " + token);
+                encryptedSharedPreferences.putValue(Constants.IS_AUTHENTICATED, true);
+//                preferenceManager.putValue(Constants.IS_AUTHENTICATED, true);
                 signInMutableLiveData.setValue(response.body());
             }
 

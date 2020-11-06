@@ -27,7 +27,7 @@ android {
         release {
             debuggable false
             minifyEnabled true
-            shrinkResources false // shouldn't shrink or ignore icons or image resources
+            shrinkResources true // shouldn't shrink or ignore icons or image resources
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -100,5 +100,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
     implementation 'com.baoyz.pullrefreshlayout:library:1.2.0'
     implementation 'com.google.android.gms:play-services-tagmanager:17.0.0'
+    implementation "androidx.security:security-crypto:1.1.0-alpha02"
+
 
 }
