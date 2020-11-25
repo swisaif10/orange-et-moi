@@ -2,13 +2,25 @@ package com.orange.ma.entreprise.datamanager.sharedpref;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.security.KeyPairGeneratorSpec;
+import android.security.keystore.KeyGenParameterSpec;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.security.GeneralSecurityException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.KeyPairGeneratorSpi;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Size;
+import androidx.security.crypto.MasterKey;
 import androidx.security.crypto.MasterKeys;
+
+import javax.security.auth.x500.X500Principal;
 
 public class EncryptedSharedPreferences {
 
@@ -18,13 +30,13 @@ public class EncryptedSharedPreferences {
 
     public SharedPreferences getEncryptedSharedPreferences(Context context){
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try {
-                String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+                MasterKey masterKeyAlias = new MasterKey.Builder(context).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build();//.getOrCreate(MasterKeys.AES256_GCM_SPEC);
                 sharedPreferences = androidx.security.crypto.EncryptedSharedPreferences.create(
+                        context,
                         "secret_shared_prefs",
                         masterKeyAlias,
-                        context,
                         androidx.security.crypto.EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                         androidx.security.crypto.EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
                 );

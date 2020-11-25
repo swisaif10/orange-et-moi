@@ -231,7 +231,7 @@ public class LoginFragment extends Fragment {
     private void login() {
 
         if (connectivity.isConnected())
-            authenticationVM.login(String.valueOf(id.getText()).trim(), String.valueOf(password.getText()).trim(), saveBtn.isChecked(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), preferenceManager, encryptedSharedPreferences);
+            authenticationVM.login(String.valueOf(id.getText()).trim(), String.valueOf(password.getText()).trim(), saveBtn.isChecked(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), encryptedSharedPreferences);
         else {
             errorLayout.setVisibility(View.VISIBLE);
             errorDescription.setText(getString(R.string.no_internet));

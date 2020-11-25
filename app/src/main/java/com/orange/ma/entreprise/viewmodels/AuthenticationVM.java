@@ -68,7 +68,7 @@ public class AuthenticationVM extends AndroidViewModel {
 
     }
 
-    public void login(String login, String password, Boolean rememberMe, String lang, PreferenceManager preferenceManager, EncryptedSharedPreferences encryptedSharedPreferences) {
+    public void login(String login, String password, Boolean rememberMe, String lang, EncryptedSharedPreferences encryptedSharedPreferences) {
         Call<LoginData> call = RestService.getInstance().endpoint().login(ApiUrls.AUTHORIZATION,login, password, rememberMe, lang);
         call.enqueue(new Callback<LoginData>() {
             @Override
