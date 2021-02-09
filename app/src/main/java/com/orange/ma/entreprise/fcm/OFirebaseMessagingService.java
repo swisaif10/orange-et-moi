@@ -1,12 +1,12 @@
 package com.orange.ma.entreprise.fcm;
 
 import android.content.Intent;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.views.splashscreen.SplashScreenActivity;
 
@@ -22,6 +22,8 @@ import static com.orange.ma.entreprise.utilities.Constants.TITLE;
 public class OFirebaseMessagingService extends FirebaseMessagingService {
 
 
+    private EncryptedSharedPreferences encryptedSharedPreferences;
+
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -36,8 +38,14 @@ public class OFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
-        getSharedPreferences(Constants.FCM_PREFS_NAME, MODE_PRIVATE).edit().putString("fb_token", s).apply();
-        Log.d("TAGFCM", "onNewToken: " + s);
+
+        encryptedSharedPreferences = new EncryptedSharedPreferences();
+
+        encryptedSharedPreferences.getEncryptedSharedPreferences(this);
+
+        encryptedSharedPreferences.putValue("fb_token",s);
+
+//        getSharedPreferences(Constants.FCM_PREFS_NAME, MODE_PRIVATE).edit().putString("fb_token", s).apply();
     }
 
     private void handleNotification(RemoteMessage.Notification notification) {
@@ -54,7 +62,6 @@ public class OFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void handleData(Map<String, String> data) {
-        Log.d("TAGNOTIF", "handleData: ");
         NotificationObject notification = new NotificationObject();
         notification.setTitle(data.get(TITLE));
         notification.setMessage(data.get(MESSAGE));

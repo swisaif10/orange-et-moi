@@ -2,17 +2,21 @@ package com.orange.ma.entreprise.views.splashscreen;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
 import androidx.lifecycle.ViewModelProviders;
+import androidx.security.crypto.MasterKeys;
 
+import com.google.firebase.crashlytics.internal.common.CommonUtils;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.fcm.NotificationObject;
 import com.orange.ma.entreprise.listeners.OnDialogButtonsClickListener;
@@ -26,6 +30,9 @@ import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseActivity;
 import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.selectlanguage.SelectLanguageActivity;
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 import static com.orange.ma.entreprise.utilities.Constants.ACTION_TYPE;
 import static com.orange.ma.entreprise.utilities.Constants.APP_VIEW;
@@ -45,12 +52,21 @@ public class SplashScreenActivity extends BaseActivity {
     private SpalshVM spalshVM;
     private Connectivity connectivity;
     private PreferenceManager preferenceManager;
+    private SharedPreferences sharedPreferences;
+
+    private EncryptedSharedPreferences encryptedSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LocaleManager.setLocale(this);
         setContentView(R.layout.activity_splash_screen);
+
+
+        encryptedSharedPreferences = new EncryptedSharedPreferences();
+
+        encryptedSharedPreferences.getEncryptedSharedPreferences(this);
+
 
         spalshVM = ViewModelProviders.of(this).get(SpalshVM.class);
         connectivity = new Connectivity(this, this);
@@ -67,11 +83,9 @@ public class SplashScreenActivity extends BaseActivity {
         FirebaseDynamicLinks.getInstance()
                 .getDynamicLink(getIntent())
                 .addOnSuccessListener(pendingDynamicLinkData -> {
-                    //Log.d("TAG", "onCreate: Dynamic link host "+ pendingDynamicLinkData.getLink());
                 });
         //firebaseAnalyticsEvent
         OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "page_splash", null);
-        Log.d("TAG", "onCreate: firebase " + FirebaseInstanceId.getInstance().getToken());
     }
 
     @Override
@@ -85,10 +99,10 @@ public class SplashScreenActivity extends BaseActivity {
         if (intent.getData() != null)
             deepLink();
         else {
-            if (preferenceManager.getValue(Constants.FIRST_TIME, true)) {
+            if (encryptedSharedPreferences.getValue(Constants.FIRST_TIME, true)) {
                 intent = new Intent(SplashScreenActivity.this, SelectLanguageActivity.class);
             } else {
-                if (preferenceManager.getValue(Constants.IS_LOGGED_IN, false) || preferenceManager.getValue(Constants.IS_AUTHENTICATED, false))
+                if (encryptedSharedPreferences.getValue(Constants.IS_LOGGED_IN, false) || encryptedSharedPreferences.getValue(Constants.IS_AUTHENTICATED, false))
                     intent = new Intent(SplashScreenActivity.this, MainActivity.class);
                 else
                     intent = new Intent(SplashScreenActivity.this, AuthenticationActivity.class);
@@ -107,7 +121,7 @@ public class SplashScreenActivity extends BaseActivity {
         notification.setEndPoint(intent.getStringExtra(ENDPOINT));
         notification.setEndPointTitle(intent.getStringExtra(ENDPOINT_TITLE));
         if (Utilities.isNullOrEmpty(notification.getActionType())) return;
-        if (Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, ""))) {
+        if (Utilities.isNullOrEmpty(encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, ""))) {
             switch (notification.getActionType()) {
                 case INSCRIPTION:
                     intent = new Intent(this, AuthenticationActivity.class);
@@ -137,8 +151,8 @@ public class SplashScreenActivity extends BaseActivity {
                     if (!notification.getEndPoint().startsWith("http"))
                         notification.setEndPoint("https://" + notification.getEndPoint());
                     String urlVebView = notification.getEndPoint();
-                    if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && urlVebView.contains(Constants.EX_SSO_TOKEN)) {
-                        String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
+                    if (!Utilities.isNullOrEmpty(encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, null)) && urlVebView.contains(Constants.EX_SSO_TOKEN)) {
+                        String token = encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
                         urlVebView = urlVebView.replace(Constants.EX_SSO_TOKEN, token);
                     }
                     Utilities.openCustomTab(this, urlVebView);
@@ -194,7 +208,7 @@ public class SplashScreenActivity extends BaseActivity {
     private void deepLink() {
         String host = getIntent().getData().getHost();
         Intent intent;
-        if (Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, ""))) {
+        if (Utilities.isNullOrEmpty(encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, ""))) {
             switch (host) {
                 case "inscription":
                     intent = new Intent(SplashScreenActivity.this, AuthenticationActivity.class);
@@ -228,5 +242,24 @@ public class SplashScreenActivity extends BaseActivity {
             }
         }
 
+    }
+
+    private boolean isEmulator() {
+        return (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+                || Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.HARDWARE.contains("goldfish")
+                || Build.HARDWARE.contains("ranchu")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for x86")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || Build.PRODUCT.contains("sdk_google")
+                || Build.PRODUCT.contains("google_sdk")
+                || Build.PRODUCT.contains("sdk")
+                || Build.PRODUCT.contains("sdk_x86")
+                || Build.PRODUCT.contains("vbox86p")
+                || Build.PRODUCT.contains("emulator")
+                || Build.PRODUCT.contains("simulator");
     }
 }

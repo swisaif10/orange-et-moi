@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.Utilities;
@@ -25,6 +26,7 @@ public class ExternalBrowserFragment extends BaseFragment {
     private String url;
     private int flag;
     private PreferenceManager preferenceManager;
+    private EncryptedSharedPreferences encryptedSharedPreferences;
 
     public static ExternalBrowserFragment newInstance(String url) {
         ExternalBrowserFragment fragment = new ExternalBrowserFragment();
@@ -45,6 +47,10 @@ public class ExternalBrowserFragment extends BaseFragment {
         preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
+
+        encryptedSharedPreferences = new EncryptedSharedPreferences();
+
+        encryptedSharedPreferences.getEncryptedSharedPreferences(getContext());
 
         if (getArguments() != null)
             url = getArguments().getString("url");
@@ -79,8 +85,8 @@ public class ExternalBrowserFragment extends BaseFragment {
 
     private void init() {
         if (url != null) {
-            if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && url.contains(Constants.EX_SSO_TOKEN)) {
-                String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
+            if (!Utilities.isNullOrEmpty(encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, null)) && url.contains(Constants.EX_SSO_TOKEN)) {
+                String token = encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
                 url = url.replace(Constants.EX_SSO_TOKEN, token);
             }
             Utilities.openInBrowser(getContext(),url);

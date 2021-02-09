@@ -13,11 +13,11 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.text.Html;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.Utilities;
@@ -48,6 +48,7 @@ public class NotificationUtils {
     private static final String CHANNEL_ID = "myChannel";
     private static final String CHANNEL_NAME = "myChannelName";
     private static final String URL = "url";
+    private final EncryptedSharedPreferences encryptedSharedPreferences;
     private Map<String, Class> activities = new HashMap<>();
     private Context mContext;
     private Intent intent;
@@ -61,6 +62,10 @@ public class NotificationUtils {
         preferenceManager = new PreferenceManager.Builder(context, Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
+
+        encryptedSharedPreferences = new EncryptedSharedPreferences();
+
+        encryptedSharedPreferences.getEncryptedSharedPreferences(context);
     }
 
     public void showNotification(NotificationObject notification, Intent resultIntent) {
@@ -77,7 +82,7 @@ public class NotificationUtils {
             image = getBitmapFromURL(notification.getImageUrl());
         }
 
-        if(Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, ""))){
+        if(Utilities.isNullOrEmpty(encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, ""))){
             switch (notification.getActionType()) {
                 case INSCRIPTION:
                     intent = new Intent(mContext, AuthenticationActivity.class);
@@ -171,7 +176,6 @@ public class NotificationUtils {
     }
 
     private void handleDeepLink(String endPoint) {
-        Log.d("TAGNOTIF", "handleDeepLink: "+endPoint);
         intent = new Intent(Intent.ACTION_VIEW);
         intent.putExtra(ACTION_TYPE, DEEP_LINK);
         intent.putExtra(ENDPOINT, endPoint);
@@ -185,7 +189,6 @@ public class NotificationUtils {
             Ringtone r = RingtoneManager.getRingtone(mContext, notifSound);
             r.play();
         } catch (Exception e) {
-            Log.e("Exception", e.getMessage());
         }
     }
 
@@ -199,7 +202,6 @@ public class NotificationUtils {
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
             return myBitmap;
         } catch (IOException e) {
-            Log.e("Exception", e.getMessage());
             return null;
         }
     }

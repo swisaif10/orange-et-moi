@@ -27,6 +27,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.models.login.LoginData;
 import com.orange.ma.entreprise.models.login.SettingTagData;
@@ -66,6 +67,7 @@ public class LoginFragment extends Fragment {
     private PreferenceManager preferenceManager;
     private Intent intent;
     private long lastClickTime = 0;
+    private EncryptedSharedPreferences encryptedSharedPreferences;
 
 
     public LoginFragment() {
@@ -81,6 +83,10 @@ public class LoginFragment extends Fragment {
         preferenceManager = new PreferenceManager.Builder(getContext(), Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
+
+        encryptedSharedPreferences = new EncryptedSharedPreferences();
+
+        encryptedSharedPreferences.getEncryptedSharedPreferences(getContext());
 
         authenticationVM.getLoginMutableLiveData().observe(this, this::handleLoginResponse);
         authenticationVM.getSettingTagMutableLiveData().observe(this, this::handleSettingTagAction);
@@ -141,7 +147,7 @@ public class LoginFragment extends Fragment {
 
                 bundle = new Bundle();
                 bundle.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
-                bundle.putString(Constants.FIREBASE_RC_KEY, preferenceManager.getValue(Constants.LOGIN_KEY, ""));
+                bundle.putString(Constants.FIREBASE_RC_KEY, encryptedSharedPreferences.getValue(Constants.LOGIN_KEY, ""));
                 OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_login", bundle);
 
                 login();
@@ -184,9 +190,9 @@ public class LoginFragment extends Fragment {
         if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar"))
             background.setScaleX(-1);
 
-        id.setText(preferenceManager.getValue(Constants.LOGIN_KEY, ""));
-        password.setText(preferenceManager.getValue(Constants.PASS_KEY, ""));
-        saveBtn.setChecked(preferenceManager.getValue(Constants.SAVE_CREDENTIALS_KEY, false));
+        id.setText(encryptedSharedPreferences.getValue(Constants.LOGIN_KEY, ""));
+        password.setText(encryptedSharedPreferences.getValue(Constants.PASS_KEY, ""));
+        saveBtn.setChecked(encryptedSharedPreferences.getValue(Constants.SAVE_CREDENTIALS_KEY, false));
         validBtn.setEnabled(id.getText().length() > 0 && password.getText().length() > 0);
 
         updateFontFamily();
@@ -225,7 +231,7 @@ public class LoginFragment extends Fragment {
     private void login() {
 
         if (connectivity.isConnected())
-            authenticationVM.login(String.valueOf(id.getText()).trim(), String.valueOf(password.getText()).trim(), saveBtn.isChecked(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), preferenceManager);
+            authenticationVM.login(String.valueOf(id.getText()).trim(), String.valueOf(password.getText()).trim(), saveBtn.isChecked(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), encryptedSharedPreferences);
         else {
             errorLayout.setVisibility(View.VISIBLE);
             errorDescription.setText(getString(R.string.no_internet));
@@ -250,14 +256,21 @@ public class LoginFragment extends Fragment {
             if (code == 200) {
 
                 if (saveBtn.isChecked()) {
-                    preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
-                    preferenceManager.putValue(Constants.LOGIN_KEY, id.getText().toString());
-                    preferenceManager.putValue(Constants.PASS_KEY, password.getText().toString());
-                    preferenceManager.putValue(Constants.SAVE_CREDENTIALS_KEY, true);
+                    encryptedSharedPreferences.putValue(Constants.IS_LOGGED_IN, true);
+//                    preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
+                    encryptedSharedPreferences.putValue(Constants.LOGIN_KEY, id.getText().toString());
+//                    preferenceManager.putValue(Constants.LOGIN_KEY, id.getText().toString());
+                    encryptedSharedPreferences.putValue(Constants.PASS_KEY, password.getText().toString());
+//                    preferenceManager.putValue(Constants.PASS_KEY, password.getText().toString());
+                    encryptedSharedPreferences.putValue(Constants.SAVE_CREDENTIALS_KEY, true);
+//                    preferenceManager.putValue(Constants.SAVE_CREDENTIALS_KEY, true);
                 } else {
-                    preferenceManager.clearValue(Constants.LOGIN_KEY);
-                    preferenceManager.clearValue(Constants.PASS_KEY);
-                    preferenceManager.clearValue(Constants.SAVE_CREDENTIALS_KEY);
+                    encryptedSharedPreferences.clearValue(Constants.LOGIN_KEY);
+//                    preferenceManager.clearValue(Constants.LOGIN_KEY);
+                    encryptedSharedPreferences.clearValue(Constants.PASS_KEY);
+//                    preferenceManager.clearValue(Constants.PASS_KEY);
+                    encryptedSharedPreferences.clearValue(Constants.SAVE_CREDENTIALS_KEY);
+//                    preferenceManager.clearValue(Constants.SAVE_CREDENTIALS_KEY);
                 }
 
                 intent = new Intent(getActivity(), MainActivity.class);
@@ -282,8 +295,8 @@ public class LoginFragment extends Fragment {
                 case 200:
                     if (settingTagData.getResponse().getData().getActionType().equals("external")) {
                         String url = settingTagData.getResponse().getData().getAction();
-                        if (!Utilities.isNullOrEmpty(preferenceManager.getValue(Constants.TOKEN_KEY, null)) && url.contains(Constants.EX_SSO_TOKEN)) {
-                            String token = preferenceManager.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
+                        if (!Utilities.isNullOrEmpty(encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, null)) && url.contains(Constants.EX_SSO_TOKEN)) {
+                            String token = encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
                             url = url.replace(Constants.EX_SSO_TOKEN, token);
                         }
                         if (settingTagData.getResponse().getData().isInApp())

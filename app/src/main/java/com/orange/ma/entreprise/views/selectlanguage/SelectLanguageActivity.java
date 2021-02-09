@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.LocaleManager;
@@ -34,6 +35,7 @@ public class SelectLanguageActivity extends BaseActivity {
     TextView arabicTxt;
     private String selectedLang = LocaleManager.ENGLISH;
     private PreferenceManager preferenceManager;
+    private EncryptedSharedPreferences encryptedSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,10 @@ public class SelectLanguageActivity extends BaseActivity {
         preferenceManager = new PreferenceManager.Builder(this, Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
+
+        encryptedSharedPreferences = new EncryptedSharedPreferences();
+
+        encryptedSharedPreferences.getEncryptedSharedPreferences(this);
 
         OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "page_bienvenue", null);
 
@@ -82,7 +88,8 @@ public class SelectLanguageActivity extends BaseActivity {
     private void setNewLocale(AppCompatActivity mContext, @LocaleManager.LocaleDef String language) {
         LocaleManager.setNewLocale(this, language);
 
-        preferenceManager.putValue(Constants.FIRST_TIME, false);
+        encryptedSharedPreferences.putValue(Constants.FIRST_TIME, false);
+//        preferenceManager.putValue(Constants.FIRST_TIME, false);
 
         Intent intent = new Intent(this, AuthenticationActivity.class);
         startActivity(intent);

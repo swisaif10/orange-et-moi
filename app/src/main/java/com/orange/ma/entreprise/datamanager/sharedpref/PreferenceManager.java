@@ -4,11 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Size;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Map;
 import java.util.Set;
 
@@ -101,10 +104,8 @@ public class PreferenceManager {
                     editor.putLong(key, (Long) value).apply();
                 }
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
             }
         } else {
-            Log.w(TAG, "putValue(): Null args!");
         }
     }
 
@@ -116,7 +117,6 @@ public class PreferenceManager {
                 putValue(entry.getKey().toString(), entry.getValue());
             }
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -128,7 +128,6 @@ public class PreferenceManager {
         try {
             editor.remove(key).apply();
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
         }
     }
 

@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:background="@color/white"
-    tools:context=".views.authentication.fragments.LoginFragment">
+    tools:context=".views.authentication.fragments.LoginFragment"
+    android:filterTouchesWhenObscured="true">
 
     <RelativeLayout
         android:id="@+id/container"

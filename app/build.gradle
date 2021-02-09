@@ -5,13 +5,15 @@ apply plugin: 'com.google.firebase.crashlytics'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
+    ndkVersion '21.3.6528147'
+
 
     defaultConfig {
         applicationId "com.orange.ma.entreprise"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 14
-        versionName "1.0"
+        versionCode 20
+        versionName "1.0.2"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -98,5 +100,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
     implementation 'com.baoyz.pullrefreshlayout:library:1.2.0'
     implementation 'com.google.android.gms:play-services-tagmanager:17.0.0'
+    implementation "androidx.security:security-crypto:1.1.0-alpha02"
+
 
 }

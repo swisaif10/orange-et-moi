@@ -33,6 +33,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.models.login.LoginData;
 import com.orange.ma.entreprise.utilities.Connectivity;
@@ -93,6 +94,7 @@ public class SignInFragment extends Fragment {
     private Boolean from_cgu = false;
     private Boolean instanceData = false;
     private long lastClickTime = 0;
+    private EncryptedSharedPreferences encryptedSharedPreferences;
 
     public SignInFragment() {
         // Required empty public constructor
@@ -193,6 +195,11 @@ public class SignInFragment extends Fragment {
     private void init() {
         if (preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr").equalsIgnoreCase("ar"))
             background.setScaleX(-1);
+
+
+        encryptedSharedPreferences = new EncryptedSharedPreferences();
+
+        encryptedSharedPreferences.getEncryptedSharedPreferences(getContext());
 
         ViewTreeObserver observer = container.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(() -> {
@@ -348,7 +355,7 @@ public class SignInFragment extends Fragment {
 
     private void SignIn() {
         if (connectivity.isConnected())
-            authenticationVM.signIn(id.getText().toString(), cin.getText().toString(), email.getText().toString(), password.getText().toString(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"),preferenceManager);
+            authenticationVM.signIn(id.getText().toString(), cin.getText().toString(), email.getText().toString(), password.getText().toString(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"),preferenceManager,encryptedSharedPreferences);
         else {
             errorLayout.setVisibility(View.VISIBLE);
             errorDescription.setText(getString(R.string.no_internet));
@@ -362,7 +369,8 @@ public class SignInFragment extends Fragment {
         } else {
             int code = responseData.getHeader().getCode();
             if (code == 200) {
-                preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
+                encryptedSharedPreferences.putValue(Constants.IS_LOGGED_IN, true);
+//                preferenceManager.putValue(Constants.IS_LOGGED_IN, true);
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.putExtra("isCompleted", responseData.getResponse().getData().getUserInfos().isCompleted());
                 intent.putExtra("settingCompleteAccount", responseData.getResponse().getData().getSettingCompleteAccount());

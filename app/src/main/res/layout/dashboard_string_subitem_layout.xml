@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingVertical="@dimen/_6sdp">
+    android:paddingVertical="@dimen/_6sdp"
+    android:filterTouchesWhenObscured="true">
 
     <LinearLayout
         android:id="@+id/layout_1"

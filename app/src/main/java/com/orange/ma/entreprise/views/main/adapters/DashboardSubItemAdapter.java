@@ -18,6 +18,7 @@ import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.listeners.OnTemplateItemSelectedListener;
 import com.orange.ma.entreprise.models.dashboard.CompoundElement;
@@ -50,6 +51,7 @@ public class DashboardSubItemAdapter extends RecyclerView.Adapter<DashboardSubIt
         PreferenceManager preferenceManager = new PreferenceManager.Builder(context, Context.MODE_PRIVATE)
                 .name(Constants.SHARED_PREFS_NAME)
                 .build();
+
         lang = preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr");
 
     }
