@@ -336,4 +336,11 @@ public class MainActivity extends BaseActivity {
         }
         return -1;
     }
+
+    public void hideTab (){
+        tabLayout.setVisibility(View.GONE);
+    }
+    public void showTab (){
+        tabLayout.setVisibility(View.VISIBLE);
+    }
 }

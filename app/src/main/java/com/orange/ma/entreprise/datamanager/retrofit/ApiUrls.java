@@ -16,6 +16,7 @@ public interface ApiUrls {
     String GET_DASHBOARD_LIST_URL = "{locale}/api/account/dashboard";
     String LOGOUT_URL = "{locale}/api/account/logout";
     String GUEST_LOGIN_URL = "{locale}/api/account/guest-login";
+    String CONSULT_LINE = "{locale}/api/profile/my-lines";
     String AUTHORIZATION = Credentials.basic(BuildConfig.ID, BuildConfig.DOMAIN);
 
     String SETTING_BY_TAG = "{locale}/api/setting/by-tag";

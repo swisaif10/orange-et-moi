@@ -36,6 +36,7 @@ import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.DashboardVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseFragment;
+import com.orange.ma.entreprise.views.enterNumber.EnterNumberFragment;
 import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.main.adapters.DashboardAdapter;
 
@@ -80,6 +81,8 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ((MainActivity) getActivity()).showTab();
 
         dashboardVM = ViewModelProviders.of(this).get(DashboardVM.class);
         connectivity = new Connectivity(getContext(), this);
@@ -137,6 +140,13 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).showTab();
+
+    }
+
+    @Override
     public void onTemplateItemSelected(CompoundElement compoundElement) {
         if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
             return;
@@ -150,6 +160,9 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
                         break;
                     case "setting":
                         ((MainActivity) getActivity()).moveToSettingsFragment();
+                        break;
+                    case "consult_ligne":
+                        ((MainActivity) getActivity()).switchFragment(new EnterNumberFragment(),"");
                         break;
                 }
             } else {

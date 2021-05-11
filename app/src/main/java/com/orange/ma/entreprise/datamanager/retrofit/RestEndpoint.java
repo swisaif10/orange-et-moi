@@ -1,5 +1,6 @@
 package com.orange.ma.entreprise.datamanager.retrofit;
 
+import com.orange.ma.entreprise.models.listmsisdn.ListMsisdnData;
 import com.orange.ma.entreprise.models.cgu.CGUData;
 import com.orange.ma.entreprise.models.commons.ResponseData;
 import com.orange.ma.entreprise.models.controlversion.ControlVersionData;
@@ -37,6 +38,9 @@ public interface RestEndpoint {
 
     @POST(ApiUrls.GET_TAB_MENU_URL)
     Call<TabMenuData> getTabMenu(@Path("locale") String lang, @Header("x-auth-token") String token);
+
+    @POST(ApiUrls.CONSULT_LINE)
+    Call<ListMsisdnData> getListNum(@Path("locale") String lang, @Header("x-auth-token") String token);
 
     @POST(ApiUrls.GET_DASHBOARD_LIST_URL)
     Call<DashboardData> getDashboardList(@Path("locale") String lang, @Header("x-auth-token") String token);
