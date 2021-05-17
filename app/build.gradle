@@ -20,9 +20,11 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled true
-            shrinkResources false // shouldn't shrink or ignore icons or image resources
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable true
+            //minifyEnabled true
+            //shrinkResources false // shouldn't shrink or ignore icons or image resources
+          //  proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "Boolean", "DEBUG_MODE", "true"
         }
         release {
             debuggable false

@@ -16,7 +16,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/logo"
@@ -24,14 +24,14 @@
             android:layout_height="130dp"
             android:scaleType="fitStart"
             android:src="@drawable/logo_orange_pro"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_margin="20dp"/>
 
         <ImageView
             android:id="@+id/background"
             android:layout_width="240dp"
             android:layout_height="150dp"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:scaleType="fitStart"
             android:src="@drawable/mosi" />
 
@@ -42,7 +42,7 @@
             android:text="Pour afficher les informations relatives à une ligne spécifique lié à votre compte ,Saisie le numéro sur le champs ci-dessous :"
             android:layout_below="@+id/logo"
             android:layout_margin="20dp"
-            android:fontFamily="@font/helveticaneueregular"
+            android:fontFamily="@font/helveticalight"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textAlignment="viewStart"/>
@@ -64,14 +64,16 @@
                 android:background="@drawable/edittext_underline"
                 android:fontFamily="@font/helveticalight"
                 android:hint="N° de téléphone"
-                android:inputType="text"
+                android:inputType="number"
                 android:paddingLeft="0dp"
                 android:paddingRight="0dp"
                 android:textAlignment="viewStart"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 android:textSize="16sp"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:maxLength="10"
+                />
 
 
         </LinearLayout>
@@ -93,12 +95,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:background="@drawable/selector_orange_btn_background"
-                android:enabled="true"
+                android:enabled="false"
                 android:fontFamily="@font/helveticamedium"
                 android:text="Consulter la ligne"
                 android:textAllCaps="false"
                 android:textColor="@drawable/selector_text_color"
-                android:textSize="17sp" />
+                android:textSize="17sp"
+                />
 
 
         </LinearLayout>

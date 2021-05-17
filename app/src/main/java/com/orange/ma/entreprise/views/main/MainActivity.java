@@ -30,6 +30,7 @@ import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.MainVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseActivity;
+import com.orange.ma.entreprise.views.enterNumber.EnterNumberFragment;
 import com.orange.ma.entreprise.views.main.browser.BrowserFragment;
 import com.orange.ma.entreprise.views.main.browser.ExternalBrowserFragment;
 import com.orange.ma.entreprise.views.main.dashboard.DashboardFragment;
@@ -127,6 +128,9 @@ public class MainActivity extends BaseActivity {
                         break;
                     case "setting":
                         fragment = new SettingsFragment();
+                        break;
+                    case "consult_ligne":
+                        fragment = new EnterNumberFragment();
                         break;
                     default:
                         fragment = new BrowserFragment();
@@ -254,6 +258,9 @@ public class MainActivity extends BaseActivity {
             if (getIntent().getStringExtra("link") != null) {
                 if ("setting".equals(getIntent().getStringExtra("link").toLowerCase())) {
                     moveToSettingsFragment();
+                }else if ("consult_ligne".equals(getIntent().getStringExtra("link").toLowerCase()))
+                {
+                    switchFragment(new EnterNumberFragment(),"");
                 }
             } else if (getIntent().getStringExtra(ENDPOINT) != null) {
                 if (getIntent().getStringExtra(ENDPOINT_TITLE) != null) {
@@ -283,6 +290,9 @@ public class MainActivity extends BaseActivity {
                 case "setting":
                     fragment = new SettingsFragment();
                     moveToSettingsFragment();
+                    break;
+                case "consult_ligne":
+                    switchFragment(new EnterNumberFragment(),"");
                     break;
                 default:
                     fragment = new DashboardFragment();

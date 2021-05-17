@@ -1,18 +1,15 @@
-package com.orange.ma.entreprise.views.enterNumber;
+package com.orange.ma.entreprise.views.consult_line;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,53 +18,76 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
+import com.orange.ma.entreprise.models.consult.ConsultData;
 import com.orange.ma.entreprise.models.listmsisdn.ListMsisdnData;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
-import com.orange.ma.entreprise.utilities.ProductSearchAdapter;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.ConsultLigneVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
-import com.orange.ma.entreprise.views.base.BaseFragment;
-import com.orange.ma.entreprise.views.consult_line.ConsultLineFragment;
+import com.orange.ma.entreprise.views.consult_line.adapters.SoldeAdapter;
 import com.orange.ma.entreprise.views.main.MainActivity;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pl.droidsonroids.gif.GifImageView;
 
-public class EnterNumberFragment extends Fragment {
-
-    @BindView(R.id.numtel)
-    AutoCompleteTextView numtel;
-    @BindView(R.id.valid_btn)
-    Button validBtn;
-    @BindView(R.id.background)
-    ImageView background;
+public class ConsultLineFragment extends Fragment {
 
     @BindView(R.id.loader)
     GifImageView loader;
 
-    @BindView(R.id.desc)
-    TextView desc;
+    @BindView(R.id.num_ligne_p)
+    TextView num_ligne_p;
+
+    @BindView(R.id.num_ligne_)
+    TextView num_ligne_;
+
+    @BindView(R.id.forfait)
+    TextView forfait;
+
+    @BindView(R.id.status_p)
+    TextView status_p;
+
+    @BindView(R.id.status)
+    TextView status;
+
+    @BindView(R.id.code_p)
+    TextView code_p;
+
+    @BindView(R.id.code)
+    TextView code;
+    @BindView(R.id.share)
+    ImageView share;
+
+    @BindView(R.id.date)
+    TextView date;
+
+    @BindView(R.id.back_btn)
+    ImageView back_btn;
 
     @BindView(R.id.container)
     RelativeLayout container;
+
+    @BindView(R.id.rv)
+    RecyclerView rv;
     private Connectivity connectivity;
     private PreferenceManager preferenceManager;
     private long lastClickTime = 0;
     private EncryptedSharedPreferences encryptedSharedPreferences;
     private ConsultLigneVM consultlineVM;
+    private String num;
+    private SoldeAdapter amountAdapter;
 
 
-    public EnterNumberFragment() {
+    public ConsultLineFragment() {
         // Required empty public constructor
     }
 
@@ -76,9 +96,9 @@ public class EnterNumberFragment extends Fragment {
         super.onCreate(savedInstanceState);
         ((MainActivity) getActivity()).hideTab();
 
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-
-
+        if (getArguments() != null) {
+            num = getArguments().getString("num");
+        }
         consultlineVM = ViewModelProviders.of(this).get(ConsultLigneVM.class);
         connectivity = new Connectivity(getContext(), this);
 
@@ -88,11 +108,9 @@ public class EnterNumberFragment extends Fragment {
 
         encryptedSharedPreferences = new EncryptedSharedPreferences();
 
-
-
         encryptedSharedPreferences.getEncryptedSharedPreferences(getContext());
 
-        consultlineVM.getListMsisdnMutableLiveData().observe(this, this::handleListMsisdndData);
+        consultlineVM.getConsultMutableLiveData().observe(this, this::handleConsultData);
 
         //  OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_dash_activated", LocaleManager.getLanguagePref(getContext()));
     }
@@ -100,7 +118,7 @@ public class EnterNumberFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_enter_number, container, false);
+        View view = inflater.inflate(R.layout.fragment_consult_line, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -111,12 +129,18 @@ public class EnterNumberFragment extends Fragment {
 
         loader.setVisibility(View.VISIBLE);
 
-        validBtn.setEnabled(numtel.getText().toString().length() == 10);
 
-        getMsisdnList();
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+        getConsultDeatil();
     }
 
-    @OnClick({R.id.valid_btn, R.id.container})
+    @OnClick({ R.id.container})
     public void onViewClicked(View view) {
         if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
             return;
@@ -124,15 +148,6 @@ public class EnterNumberFragment extends Fragment {
         lastClickTime = SystemClock.elapsedRealtime();
 
         switch (view.getId()) {
-            case R.id.valid_btn:
-                Utilities.hideSoftKeyboard(getContext(), getView());
-                Fragment fragment = new ConsultLineFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("num",numtel.getText().toString());
-                fragment.setArguments(bundle);
-                ((MainActivity) getActivity()).switchFragment(fragment,"");
-
-                break;
             case R.id.container:
                 Utilities.hideSoftKeyboard(getContext(), getView());
                 break;
@@ -141,57 +156,43 @@ public class EnterNumberFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        validBtn.setEnabled(numtel.getText().toString().length() == 10);
-    }
+    private void init(ConsultData consultData) {
 
-    private void init(ListMsisdnData listMsisdnData) {
+        code.setText(consultData.getResponse().getData().getCode_puk());
+        code_p.setText(consultData.getResponse().getStrings().getLabel_code_puk());
 
-        desc.setText(listMsisdnData.getResponse().getStrings().getSelect_my_lines_description());
-        validBtn.setText(listMsisdnData.getResponse().getStrings().getSelect_my_lines_label_button());
-        numtel.setHint(listMsisdnData.getResponse().getStrings().getSelect_my_lines_placeholder());
+        status.setText(consultData.getResponse().getData().getStatus());
+        status_p.setText(consultData.getResponse().getStrings().getLabel_status_line());
 
+        date.setText(consultData.getResponse().getStrings().getLast_update_balance());
+        num_ligne_.setText(num);
+        num_ligne_p.setText(consultData.getResponse().getStrings().getNum_line());
+        forfait.setText(consultData.getResponse().getData().getProfile_name());
 
-        if (listMsisdnData.getResponse().getData().size() == 1)
-            numtel.setText(listMsisdnData.getResponse().getData().get(0).getLine());
+        rv.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rv.setHasFixedSize(true);
+        amountAdapter = new SoldeAdapter(getActivity(), consultData.getResponse().getData().getBalance().getLine_balance());
+        rv.setAdapter(amountAdapter);
 
-        ProductSearchAdapter adapter = new ProductSearchAdapter(getActivity(), R.layout.number_item,new ArrayList<>(listMsisdnData.getResponse().getData()));
-        numtel.setAdapter(adapter );
-
-        numtel.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                validBtn.setEnabled(numtel.getText().toString().length() == 10);
-
-
-
-            }
-        });
 
         container.setVisibility(View.VISIBLE);
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shareContent(getActivity(),getString(R.string.recuperer_code_puk_share, consultData.getResponse().getData().getCode_puk()))   ;         }
+        });
+
     }
 
 
-    private void getMsisdnList() {
+    private void getConsultDeatil() {
         if (connectivity.isConnected())
-            consultlineVM.getListNum(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, ""));
+            consultlineVM.getConsultDetai(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, ""),num);
         else
             Utilities.showErrorPopup(getContext(), getString(R.string.no_internet));
     }
 
-    private void handleListMsisdndData(ListMsisdnData listMsisdnData) {
+    private void handleConsultData(ConsultData listMsisdnData) {
         loader.setVisibility(View.GONE);
         if (listMsisdnData == null) {
             Utilities.showErrorPopup(getContext(), getString(R.string.generic_error));
@@ -220,7 +221,14 @@ public class EnterNumberFragment extends Fragment {
         }
     }
 
+    public static void shareContent(Context mContext, String txt) {
+        Log.d("Utils", String.format("Sharing content: %s", txt));
+        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
 
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, txt);
+        mContext.startActivity(Intent.createChooser(shareIntent, mContext.getResources().getString(R.string.text_share)));
+    }
 
 
 }

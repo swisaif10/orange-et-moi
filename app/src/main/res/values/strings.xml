@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Orange Pro</string>
 
+    <string name="recuperer_code_puk_share">Code PUK : %1$s</string>
+    <string name="text_share">Partager</string>
+
     <string name="welcome">Bienvenue</string>
     <string name="french">Français</string>
     <string name="arabic">العربية</string>

@@ -48,7 +48,8 @@
         <activity
             android:name="com.orange.ma.entreprise.views.main.MainActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing"/>
 
         <service
             android:name=".fcm.OFirebaseMessagingService"

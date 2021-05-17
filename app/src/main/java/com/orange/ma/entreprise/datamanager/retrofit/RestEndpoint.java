@@ -1,5 +1,6 @@
 package com.orange.ma.entreprise.datamanager.retrofit;
 
+import com.orange.ma.entreprise.models.consult.ConsultData;
 import com.orange.ma.entreprise.models.listmsisdn.ListMsisdnData;
 import com.orange.ma.entreprise.models.cgu.CGUData;
 import com.orange.ma.entreprise.models.commons.ResponseData;
@@ -41,6 +42,10 @@ public interface RestEndpoint {
 
     @POST(ApiUrls.CONSULT_LINE)
     Call<ListMsisdnData> getListNum(@Path("locale") String lang, @Header("x-auth-token") String token);
+
+    @FormUrlEncoded
+    @POST(ApiUrls.CONSULT_LINE_DETAIL)
+    Call<ConsultData> getConsultDetail(@Path("locale") String lang, @Header("x-auth-token") String token, @Field("msisdn") String msisdn);
 
     @POST(ApiUrls.GET_DASHBOARD_LIST_URL)
     Call<DashboardData> getDashboardList(@Path("locale") String lang, @Header("x-auth-token") String token);

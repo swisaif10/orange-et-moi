@@ -28,6 +28,7 @@ import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.SpalshVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseActivity;
+import com.orange.ma.entreprise.views.enterNumber.EnterNumberFragment;
 import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.selectlanguage.SelectLanguageActivity;
 
@@ -225,13 +226,14 @@ public class SplashScreenActivity extends BaseActivity {
                     intent.putExtra("link", host);
                     startActivity(intent);
                     break;
-                case "login":
-                    startActivity(new Intent(SplashScreenActivity.this, AuthenticationActivity.class));
-                    break;
+                case "consult_ligne":
                 case "setting":
                     intent = new Intent(SplashScreenActivity.this, MainActivity.class);
                     intent.putExtra("link", host);
                     startActivity(intent);
+                    break;
+                case "login":
+                    startActivity(new Intent(SplashScreenActivity.this, AuthenticationActivity.class));
                     break;
                 case "bonjour":
                     intent = new Intent(SplashScreenActivity.this, MainActivity.class);
