@@ -2,6 +2,7 @@ package com.orange.ma.entreprise.views.consult_line;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -64,6 +65,7 @@ public class ConsultLineFragment extends Fragment {
 
     @BindView(R.id.code)
     TextView code;
+
     @BindView(R.id.share)
     ImageView share;
 
@@ -78,6 +80,9 @@ public class ConsultLineFragment extends Fragment {
 
     @BindView(R.id.rv)
     RecyclerView rv;
+
+    @BindView(R.id.status_img)
+    ImageView status_img;
     private Connectivity connectivity;
     private PreferenceManager preferenceManager;
     private long lastClickTime = 0;
@@ -168,6 +173,9 @@ public class ConsultLineFragment extends Fragment {
         num_ligne_.setText(num);
         num_ligne_p.setText(consultData.getResponse().getStrings().getNum_line());
         forfait.setText(consultData.getResponse().getData().getProfile_name());
+
+        status_img.setColorFilter(Color.parseColor(consultData.getResponse().getData().getLabel_color_status()), android.graphics.PorterDuff.Mode.MULTIPLY);
+
 
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.setHasFixedSize(true);

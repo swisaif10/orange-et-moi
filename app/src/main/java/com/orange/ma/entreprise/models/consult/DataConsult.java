@@ -6,6 +6,9 @@ public class DataConsult {
 
     @Expose
     private String status;
+
+    @Expose
+    private String label_color_status;
     @Expose
     private String code_puk;
 
@@ -56,5 +59,13 @@ public class DataConsult {
 
     public void setBalance(Balance balance) {
         this.balance = balance;
+    }
+
+    public String getLabel_color_status() {
+        return label_color_status;
+    }
+
+    public void setLabel_color_status(String label_color_status) {
+        this.label_color_status = label_color_status;
     }
 }

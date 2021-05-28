@@ -42,6 +42,7 @@ import com.orange.ma.entreprise.views.main.MainActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pl.droidsonroids.gif.GifImageView;
 
 
 public class LoginFragment extends Fragment {
@@ -62,6 +63,9 @@ public class LoginFragment extends Fragment {
     TextView errorDescription;
     @BindView(R.id.background)
     ImageView background;
+
+    @BindView(R.id.loader)
+    GifImageView loader;
     private AuthenticationVM authenticationVM;
     private Connectivity connectivity;
     private PreferenceManager preferenceManager;
@@ -150,6 +154,7 @@ public class LoginFragment extends Fragment {
                 bundle.putString(Constants.FIREBASE_RC_KEY, encryptedSharedPreferences.getValue(Constants.LOGIN_KEY, ""));
                 OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_login", bundle);
 
+                loader.setVisibility(View.VISIBLE);
                 login();
                 break;
             case R.id.container:
@@ -248,6 +253,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void handleLoginResponse(LoginData loginData) {
+        loader.setVisibility(View.GONE);
         if (loginData == null) {
             errorLayout.setVisibility(View.VISIBLE);
             errorDescription.setText(getString(R.string.generic_error));
