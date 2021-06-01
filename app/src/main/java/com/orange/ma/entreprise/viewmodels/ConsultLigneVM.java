@@ -62,8 +62,8 @@ public class ConsultLigneVM extends AndroidViewModel {
         });
     }
 
-    public void getConsultDetai(String lang,String msisdn, String token) {
-        Call<ConsultData> call = RestService.getInstance().endpoint().getConsultDetail(lang,msisdn,token);
+    public void getConsultDetai(String lang,String msisdn, String token,String csrf) {
+        Call<ConsultData> call = RestService.getInstance().endpoint().getConsultDetail(lang,msisdn,token,csrf);
         call.enqueue(new Callback<ConsultData>() {
             @Override
             public void onResponse(Call<ConsultData> call, Response<ConsultData> response) {

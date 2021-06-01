@@ -45,7 +45,7 @@ public interface RestEndpoint {
 
     @FormUrlEncoded
     @POST(ApiUrls.CONSULT_LINE_DETAIL)
-    Call<ConsultData> getConsultDetail(@Path("locale") String lang, @Header("x-auth-token") String token, @Field("msisdn") String msisdn);
+    Call<ConsultData> getConsultDetail(@Path("locale") String lang, @Header("x-auth-token") String token, @Field("msisdn") String msisdn,@Field("csrfToken") String csrf);
 
     @POST(ApiUrls.GET_DASHBOARD_LIST_URL)
     Call<DashboardData> getDashboardList(@Path("locale") String lang, @Header("x-auth-token") String token);

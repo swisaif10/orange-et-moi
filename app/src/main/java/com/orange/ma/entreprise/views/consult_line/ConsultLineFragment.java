@@ -90,6 +90,7 @@ public class ConsultLineFragment extends Fragment {
     private ConsultLigneVM consultlineVM;
     private String num;
     private SoldeAdapter amountAdapter;
+    private String csrf;
 
 
     public ConsultLineFragment() {
@@ -103,6 +104,7 @@ public class ConsultLineFragment extends Fragment {
 
         if (getArguments() != null) {
             num = getArguments().getString("num");
+            csrf = getArguments().getString("csrf");
         }
         consultlineVM = ViewModelProviders.of(this).get(ConsultLigneVM.class);
         connectivity = new Connectivity(getContext(), this);
@@ -161,6 +163,11 @@ public class ConsultLineFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
     private void init(ConsultData consultData) {
 
         code.setText(consultData.getResponse().getData().getCode_puk());
@@ -195,15 +202,26 @@ public class ConsultLineFragment extends Fragment {
 
     private void getConsultDeatil() {
         if (connectivity.isConnected())
-            consultlineVM.getConsultDetai(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, ""),num);
+            consultlineVM.getConsultDetai(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, ""),num,csrf);
         else
-            Utilities.showErrorPopup(getContext(), getString(R.string.no_internet));
+            Utilities.showErrorPopupWithClickListener(getContext(), getString(R.string.no_internet),new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+            });
     }
 
     private void handleConsultData(ConsultData listMsisdnData) {
         loader.setVisibility(View.GONE);
         if (listMsisdnData == null) {
-            Utilities.showErrorPopup(getContext(), getString(R.string.generic_error));
+            Utilities.showErrorPopupWithClickListener(getContext(), getString(R.string.generic_error),new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+            });
+
         } else {
             int code = listMsisdnData.getHeader().getCode();
             switch (code) {
@@ -223,7 +241,12 @@ public class ConsultLineFragment extends Fragment {
                     getActivity().finish();
                     break;
                 default:
-                    Utilities.showErrorPopup(getContext(), listMsisdnData.getHeader().getMessage());
+                    Utilities.showErrorPopupWithClickListener(getContext(), listMsisdnData.getHeader().getMessage(), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            getActivity().getSupportFragmentManager().popBackStack();
+                        }
+                    });
             }
 
         }

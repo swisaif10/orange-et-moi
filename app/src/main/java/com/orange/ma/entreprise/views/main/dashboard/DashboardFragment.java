@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
@@ -162,7 +163,19 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
                         ((MainActivity) getActivity()).moveToSettingsFragment();
                         break;
                     case "consult_ligne":
-                        ((MainActivity) getActivity()).switchFragment(new EnterNumberFragment(),"");
+                        if ( ((MainActivity) getActivity()).getFragmentIndex(new EnterNumberFragment()) != -1)
+                        {
+                            ((MainActivity) getActivity()).selectTab(((MainActivity) getActivity()).getFragmentIndex(new EnterNumberFragment()));
+                        }else {
+                            Fragment fragment = new EnterNumberFragment();
+                            Bundle bundle= new Bundle();
+                            bundle.putString("index",((MainActivity) getActivity()).getFragmentIndex(new EnterNumberFragment())+"");
+                            fragment.setArguments(bundle);
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.container,fragment)
+                                    .addToBackStack(null)
+                                    .commit();
+                        }
                         break;
                 }
             } else {

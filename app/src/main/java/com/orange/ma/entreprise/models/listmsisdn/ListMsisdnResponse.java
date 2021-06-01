@@ -11,6 +11,9 @@ public class ListMsisdnResponse {
     @Expose
     private StringListMsisdn strings;
 
+    @Expose
+    private String csrf_token;
+
     public List<Msisdn> getData() {
         return data;
     }
@@ -25,5 +28,13 @@ public class ListMsisdnResponse {
 
     public void setStrings(StringListMsisdn strings) {
         this.strings = strings;
+    }
+
+    public String getCsrf_token() {
+        return csrf_token;
+    }
+
+    public void setCsrf_token(String csrf_token) {
+        this.csrf_token = csrf_token;
     }
 }

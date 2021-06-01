@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,9 @@ public class EnterNumberFragment extends Fragment {
     @BindView(R.id.background)
     ImageView background;
 
+    @BindView(R.id.back_btn)
+    ImageView back_btn;
+
     @BindView(R.id.loader)
     GifImageView loader;
 
@@ -65,6 +69,7 @@ public class EnterNumberFragment extends Fragment {
     private long lastClickTime = 0;
     private EncryptedSharedPreferences encryptedSharedPreferences;
     private ConsultLigneVM consultlineVM;
+    private String index;
 
 
     public EnterNumberFragment() {
@@ -74,10 +79,8 @@ public class EnterNumberFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MainActivity) getActivity()).hideTab();
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-
 
         consultlineVM = ViewModelProviders.of(this).get(ConsultLigneVM.class);
         connectivity = new Connectivity(getContext(), this);
@@ -87,7 +90,6 @@ public class EnterNumberFragment extends Fragment {
                 .build();
 
         encryptedSharedPreferences = new EncryptedSharedPreferences();
-
 
 
         encryptedSharedPreferences.getEncryptedSharedPreferences(getContext());
@@ -114,6 +116,14 @@ public class EnterNumberFragment extends Fragment {
         validBtn.setEnabled(numtel.getText().toString().length() == 10);
 
         getMsisdnList();
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity) getActivity()).moveToDashboardFragment();
+
+            }
+        });
     }
 
     @OnClick({R.id.valid_btn, R.id.container})
@@ -124,15 +134,6 @@ public class EnterNumberFragment extends Fragment {
         lastClickTime = SystemClock.elapsedRealtime();
 
         switch (view.getId()) {
-            case R.id.valid_btn:
-                Utilities.hideSoftKeyboard(getContext(), getView());
-                Fragment fragment = new ConsultLineFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("num",numtel.getText().toString());
-                fragment.setArguments(bundle);
-                ((MainActivity) getActivity()).switchFragment(fragment,"");
-
-                break;
             case R.id.container:
                 Utilities.hideSoftKeyboard(getContext(), getView());
                 break;
@@ -144,8 +145,38 @@ public class EnterNumberFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        numtel.setText("");
         validBtn.setEnabled(numtel.getText().toString().length() == 10);
+
+            if (((MainActivity) getActivity()).getFragmentIndex(new EnterNumberFragment()) != -1)
+            {
+                ((MainActivity) getActivity()).showTab();
+            }else {
+                ((MainActivity) getActivity()).hideTab();
+
+            }
+
+
+
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    ((MainActivity) getActivity()).moveToDashboardFragment();
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+
     }
+
 
     private void init(ListMsisdnData listMsisdnData) {
 
@@ -153,12 +184,24 @@ public class EnterNumberFragment extends Fragment {
         validBtn.setText(listMsisdnData.getResponse().getStrings().getSelect_my_lines_label_button());
         numtel.setHint(listMsisdnData.getResponse().getStrings().getSelect_my_lines_placeholder());
 
+        validBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utilities.hideSoftKeyboard(getContext(), getView());
+                Fragment fragment = new ConsultLineFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("num", numtel.getText().toString());
+                bundle.putString("csrf", listMsisdnData.getResponse().getCsrf_token());
+                fragment.setArguments(bundle);
+                ((MainActivity) getActivity()).switchFragment(fragment, "");
+            }
+        });
 
         if (listMsisdnData.getResponse().getData().size() == 1)
             numtel.setText(listMsisdnData.getResponse().getData().get(0).getLine());
 
-        ProductSearchAdapter adapter = new ProductSearchAdapter(getActivity(), R.layout.number_item,new ArrayList<>(listMsisdnData.getResponse().getData()));
-        numtel.setAdapter(adapter );
+        ProductSearchAdapter adapter = new ProductSearchAdapter(getActivity(), R.layout.number_item, new ArrayList<>(listMsisdnData.getResponse().getData()));
+        numtel.setAdapter(adapter);
 
         numtel.addTextChangedListener(new TextWatcher() {
             @Override
@@ -174,7 +217,6 @@ public class EnterNumberFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 validBtn.setEnabled(numtel.getText().toString().length() == 10);
-
 
 
             }
@@ -219,8 +261,6 @@ public class EnterNumberFragment extends Fragment {
 
         }
     }
-
-
 
 
 }

@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     android:background="@color/white"
-    tools:context=".views.authentication.fragments.LoginFragment"
-    android:filterTouchesWhenObscured="true">
+    android:fillViewport="true"
+    android:filterTouchesWhenObscured="true"
+    tools:context=".views.authentication.fragments.LoginFragment">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/container"
@@ -18,14 +15,17 @@
         android:layout_height="match_parent"
         android:visibility="gone">
 
+
+
+
         <ImageView
             android:id="@+id/logo"
             android:layout_width="match_parent"
             android:layout_height="130dp"
-            android:scaleType="fitStart"
-            android:src="@drawable/logo_orange_pro"
             android:layout_alignParentLeft="true"
-            android:layout_margin="20dp"/>
+            android:layout_margin="20dp"
+            android:scaleType="fitStart"
+            android:src="@drawable/logo_orange_pro" />
 
         <ImageView
             android:id="@+id/background"
@@ -35,45 +35,56 @@
             android:scaleType="fitStart"
             android:src="@drawable/mosi" />
 
+        <ImageView
+            android:id="@+id/back_btn"
+            android:layout_width="34dp"
+            android:layout_height="31dp"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="10dp"
+            android:scaleType="fitStart"
+            android:src="@drawable/selector_left_button"
+            android:padding="10dp"/>
+
         <TextView
             android:id="@+id/desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pour afficher les informations relatives à une ligne spécifique lié à votre compte ,Saisie le numéro sur le champs ci-dessous :"
             android:layout_below="@+id/logo"
             android:layout_margin="20dp"
             android:fontFamily="@font/helveticalight"
+            android:text="Pour afficher les informations relatives à une ligne spécifique lié à votre compte ,Saisie le numéro sur le champs ci-dessous :"
+            android:textAlignment="viewStart"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textAlignment="viewStart"/>
+            android:textSize="18sp" />
+
         <LinearLayout
             android:id="@+id/body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/desc"
             android:orientation="vertical"
-            android:paddingHorizontal="20dp"
-            >
+            android:paddingHorizontal="20dp">
 
 
             <AutoCompleteTextView
                 android:id="@+id/numtel"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_25sdp"
+                android:layout_marginTop="20dp"
                 android:autofillHints=""
                 android:background="@drawable/edittext_underline"
                 android:fontFamily="@font/helveticalight"
                 android:hint="N° de téléphone"
                 android:inputType="number"
+                android:maxLength="10"
                 android:paddingLeft="0dp"
                 android:paddingRight="0dp"
                 android:textAlignment="viewStart"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 android:textSize="16sp"
-                android:layout_marginTop="20dp"
-                android:maxLength="10"
-                />
+                android:imeOptions="actionDone"
+                 />
 
 
         </LinearLayout>
@@ -100,22 +111,19 @@
                 android:text="Consulter la ligne"
                 android:textAllCaps="false"
                 android:textColor="@drawable/selector_text_color"
-                android:textSize="17sp"
-                />
+                android:textSize="17sp" />
 
 
         </LinearLayout>
 
     </RelativeLayout>
 
-        <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/loader"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerInParent="true"
-            android:scaleType="fitXY"
-            android:src="@mipmap/loader"
-            android:visibility="gone"
-           />
-    </RelativeLayout>
-</ScrollView>
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/loader"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:scaleType="fitXY"
+        android:src="@mipmap/loader"
+        android:visibility="gone" />
+</RelativeLayout>

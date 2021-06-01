@@ -339,7 +339,7 @@ public class MainActivity extends BaseActivity {
         return getSupportFragmentManager().findFragmentById(R.id.container);
     }
 
-    private int getFragmentIndex(Fragment fragment) {
+    public int getFragmentIndex(Fragment fragment) {
         for (int i = 0; i < fragments.size(); i++) {
             if (fragments.get(i).getClass().equals(fragment.getClass()))
                 return i;
@@ -352,5 +352,9 @@ public class MainActivity extends BaseActivity {
     }
     public void showTab (){
         tabLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void selectTab(int index){
+        tabLayout.selectTab(tabLayout.getTabAt(index));
     }
 }
