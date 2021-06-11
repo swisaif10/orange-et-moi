@@ -23,12 +23,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.models.listmsisdn.ListMsisdnData;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
+import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.ProductSearchAdapter;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.ConsultLigneVM;
@@ -194,6 +196,10 @@ public class EnterNumberFragment extends Fragment {
                 bundle.putString("csrf", listMsisdnData.getResponse().getCsrf_token());
                 fragment.setArguments(bundle);
                 ((MainActivity) getActivity()).switchFragment(fragment, "");
+                Bundle bundles = new Bundle();
+                bundles.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
+                bundles.putString("Msisdn", numtel.getText().toString());
+                OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_consult_ligne", bundles);
             }
         });
 

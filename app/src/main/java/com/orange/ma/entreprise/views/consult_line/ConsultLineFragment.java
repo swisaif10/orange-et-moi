@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
@@ -29,6 +30,7 @@ import com.orange.ma.entreprise.models.consult.ConsultData;
 import com.orange.ma.entreprise.models.listmsisdn.ListMsisdnData;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
+import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.ConsultLigneVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
@@ -194,7 +196,13 @@ public class ConsultLineFragment extends Fragment {
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                shareContent(getActivity(),getString(R.string.recuperer_code_puk_share, consultData.getResponse().getData().getCode_puk()))   ;         }
+                Bundle bundles = new Bundle();
+                bundles.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
+                bundles.putString("Msisdn", num);
+                bundles.putString("PUK", consultData.getResponse().getData().getCode_puk());
+                OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_share_puk", bundles);
+                shareContent(getActivity(),getString(R.string.recuperer_code_puk_share, consultData.getResponse().getData().getCode_puk()))   ;
+            }
         });
 
     }
@@ -214,6 +222,15 @@ public class ConsultLineFragment extends Fragment {
 
     private void handleConsultData(ConsultData listMsisdnData) {
         loader.setVisibility(View.GONE);
+
+        Bundle bundles = new Bundle();
+        bundles.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
+        bundles.putString("Msisdn", num);
+        bundles.putString("Plantarrifaire", listMsisdnData.getResponse().getData().getProfile_name());
+        bundles.putString("Status", listMsisdnData.getResponse().getData().getStatus());
+        OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("detail_ligne", bundles);
+        OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "detail_ligne", LocaleManager.getLanguagePref(getContext()));
+
         if (listMsisdnData == null) {
             Utilities.showErrorPopupWithClickListener(getContext(), getString(R.string.generic_error),new View.OnClickListener() {
                 @Override

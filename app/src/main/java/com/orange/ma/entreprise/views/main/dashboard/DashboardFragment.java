@@ -176,6 +176,8 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
                                     .addToBackStack(null)
                                     .commit();
                         }
+                        OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "consult_ligne", LocaleManager.getLanguagePref(getContext()));
+
                         break;
                 }
             } else {

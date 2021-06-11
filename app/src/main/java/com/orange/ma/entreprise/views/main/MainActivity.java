@@ -131,6 +131,8 @@ public class MainActivity extends BaseActivity {
                         break;
                     case "consult_ligne":
                         fragment = new EnterNumberFragment();
+                        OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "consult_ligne", LocaleManager.getLanguagePref(this));
+
                         break;
                     default:
                         fragment = new BrowserFragment();
@@ -261,6 +263,8 @@ public class MainActivity extends BaseActivity {
                 }else if ("consult_ligne".equals(getIntent().getStringExtra("link").toLowerCase()))
                 {
                     switchFragment(new EnterNumberFragment(),"");
+                    OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "consult_ligne", LocaleManager.getLanguagePref(this));
+
                 }
             } else if (getIntent().getStringExtra(ENDPOINT) != null) {
                 if (getIntent().getStringExtra(ENDPOINT_TITLE) != null) {
@@ -293,6 +297,8 @@ public class MainActivity extends BaseActivity {
                     break;
                 case "consult_ligne":
                     switchFragment(new EnterNumberFragment(),"");
+                    OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "consult_ligne", LocaleManager.getLanguagePref(this));
+
                     break;
                 default:
                     fragment = new DashboardFragment();
