@@ -227,7 +227,7 @@ public class LoginFragment extends Fragment {
         showPasswordBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                password.setTransformationMethod(!isChecked?new PasswordTransformationMethod():null);
+                password.setTransformationMethod(!isChecked ? new PasswordTransformationMethod() : null);
                 password.setSelection(password.getText().length());
             }
         });

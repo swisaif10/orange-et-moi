@@ -82,7 +82,7 @@ public interface Utilities {
         TextView titleTv = view.findViewById(R.id.title);
         TextView msg = view.findViewById(R.id.message);
 
-        if(title!=null)
+        if (title != null)
             titleTv.setText(Html.fromHtml(title));
         else
             titleTv.setVisibility(View.GONE);

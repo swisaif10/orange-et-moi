@@ -34,30 +34,25 @@ import androidx.recyclerview.widget.SnapHelper;
  */
 
 public class SnapToBlock extends SnapHelper {
+    @SuppressWarnings("unused")
+    private static final String TAG = "SnapToBlock";
     private RecyclerView mRecyclerView;
-
-    // Total number of items in a block of views in the RecyclerView (page size.)
-    private int mBlocksize;
 
     // Maxim blocks to move during most vigorous fling.
     //private final int mMaxFlingBlocks;
-
+    // Total number of items in a block of views in the RecyclerView (page size.)
+    private int mBlocksize;
     // Maximum number of positions to move on a fling. (blocksize * max block to move)
     private int mMaxPositionsToMove;
-
     // Width of a RecyclerView item if orientation is horizonal; height of the item if vertical.
     // This dimension includes the view, margins and decorations.
     private int mItemDimension;
-
     // When snapping, used to determine direction of snap.
     private int mPriorFirstPosition = RecyclerView.NO_POSITION;
-
     // Offset within prior position
     private int mPriorPositionOffset;
-
     // Horizontal/vertical layout helper
     private OrientationHelper mOrientationHelper;
-
     // Callback interface when blocks are snapped.
     private SnapBlockCallback mSnapBlockCallback;
 
@@ -345,7 +340,4 @@ public class SnapToBlock extends SnapHelper {
         void onBlockSnapped(int snappedPosition);
 
     }
-
-    @SuppressWarnings("unused")
-    private static final String TAG = "SnapToBlock";
 }

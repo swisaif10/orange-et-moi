@@ -44,8 +44,8 @@
             android:fontFamily="@font/helveticabold"
             android:text="@string/logout_dialog_title"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/message"
@@ -54,10 +54,10 @@
             android:layout_below="@id/title"
             android:layout_marginStart="20dp"
             android:layout_marginTop="40dp"
-            android:textSize="16sp"
             android:layout_marginBottom="40dp"
             android:text="@string/logout_dialog_messsage"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/confirm_btn"

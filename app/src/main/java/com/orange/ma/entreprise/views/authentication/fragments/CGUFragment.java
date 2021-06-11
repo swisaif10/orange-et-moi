@@ -70,7 +70,7 @@ public class CGUFragment extends Fragment {
 
         encryptedSharedPreferences.getEncryptedSharedPreferences(getContext());
 
-        OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(),"page_cgu_inscription", LocaleManager.getLanguagePref(getContext()));
+        OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "page_cgu_inscription", LocaleManager.getLanguagePref(getContext()));
 
     }
 

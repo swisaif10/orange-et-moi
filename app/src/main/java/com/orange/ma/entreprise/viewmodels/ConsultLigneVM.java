@@ -6,17 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.orange.ma.entreprise.datamanager.retrofit.ApiUrls;
 import com.orange.ma.entreprise.datamanager.retrofit.RestService;
-import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
-import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
-import com.orange.ma.entreprise.models.cgu.CGUData;
 import com.orange.ma.entreprise.models.consult.ConsultData;
-import com.orange.ma.entreprise.models.guest.GuestLoginData;
 import com.orange.ma.entreprise.models.listmsisdn.ListMsisdnData;
-import com.orange.ma.entreprise.models.login.LoginData;
-import com.orange.ma.entreprise.models.login.SettingTagData;
-import com.orange.ma.entreprise.utilities.Constants;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,7 +40,7 @@ public class ConsultLigneVM extends AndroidViewModel {
     }
 
     public void getListNum(String lang, String token) {
-        Call<ListMsisdnData> call = RestService.getInstance().endpoint().getListNum(lang,token);
+        Call<ListMsisdnData> call = RestService.getInstance().endpoint().getListNum(lang, token);
         call.enqueue(new Callback<ListMsisdnData>() {
             @Override
             public void onResponse(Call<ListMsisdnData> call, Response<ListMsisdnData> response) {
@@ -62,8 +54,8 @@ public class ConsultLigneVM extends AndroidViewModel {
         });
     }
 
-    public void getConsultDetai(String lang,String msisdn, String token,String csrf) {
-        Call<ConsultData> call = RestService.getInstance().endpoint().getConsultDetail(lang,msisdn,token,csrf);
+    public void getConsultDetai(String lang, String msisdn, String token, String csrf) {
+        Call<ConsultData> call = RestService.getInstance().endpoint().getConsultDetail(lang, msisdn, token, csrf);
         call.enqueue(new Callback<ConsultData>() {
             @Override
             public void onResponse(Call<ConsultData> call, Response<ConsultData> response) {

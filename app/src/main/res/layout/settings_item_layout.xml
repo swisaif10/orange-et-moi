@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:paddingHorizontal="15dp"
     android:background="@drawable/selector_grey_btn_background"
-    android:filterTouchesWhenObscured="true">
+    android:clickable="true"
+    android:filterTouchesWhenObscured="true"
+    android:focusable="true"
+    android:paddingHorizontal="15dp">
 
     <ImageView
         android:id="@+id/icon"

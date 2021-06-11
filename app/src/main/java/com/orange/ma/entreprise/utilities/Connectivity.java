@@ -136,6 +136,11 @@ public class Connectivity implements LifecycleObserver {
     // ****************************************************************************************
     // ****************************************************************************************
 
+    // ****************************************** Connectivity interfaces
+    public interface ConnectivityChangeCallback {
+        void onConnectivityChanged();
+    }
+
     private class ConnectivityReceiver extends BroadcastReceiver {
 
         private ConnectivityChangeCallback connectivityChangeCallback;
@@ -148,11 +153,6 @@ public class Connectivity implements LifecycleObserver {
         public void onReceive(Context context, Intent intent) {
             connectivityChangeCallback.onConnectivityChanged();
         }
-    }
-
-    // ****************************************** Connectivity interfaces
-    public interface ConnectivityChangeCallback {
-        void onConnectivityChanged();
     }
 
 }

@@ -68,6 +68,20 @@ public class NotificationUtils {
         encryptedSharedPreferences.getEncryptedSharedPreferences(context);
     }
 
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            java.net.URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
     public void showNotification(NotificationObject notification, Intent resultIntent) {
 
         Bitmap image = null;
@@ -82,7 +96,7 @@ public class NotificationUtils {
             image = getBitmapFromURL(notification.getImageUrl());
         }
 
-        if(Utilities.isNullOrEmpty(encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, ""))){
+        if (Utilities.isNullOrEmpty(encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, ""))) {
             switch (notification.getActionType()) {
                 case INSCRIPTION:
                     intent = new Intent(mContext, AuthenticationActivity.class);
@@ -93,7 +107,7 @@ public class NotificationUtils {
                     intent = new Intent(mContext, AuthenticationActivity.class);
                     resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
             }
-        }else{
+        } else {
             switch (notification.getActionType()) {
                 case DEEP_LINK:
                     handleDeepLink(notification.getEndPoint());
@@ -123,7 +137,6 @@ public class NotificationUtils {
                     resultPendingIntent = PendingIntent.getActivity(mContext, 0, resultIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             }
         }
-
 
 
         final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
@@ -189,20 +202,6 @@ public class NotificationUtils {
             Ringtone r = RingtoneManager.getRingtone(mContext, notifSound);
             r.play();
         } catch (Exception e) {
-        }
-    }
-
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            java.net.URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            return null;
         }
     }
 

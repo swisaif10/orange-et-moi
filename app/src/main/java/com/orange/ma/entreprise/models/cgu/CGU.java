@@ -1,4 +1,3 @@
-
 package com.orange.ma.entreprise.models.cgu;
 
 import com.google.gson.annotations.Expose;

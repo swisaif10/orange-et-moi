@@ -163,16 +163,15 @@ public class DashboardFragment extends BaseFragment implements OnTemplateItemSel
                         ((MainActivity) getActivity()).moveToSettingsFragment();
                         break;
                     case "consult_ligne":
-                        if ( ((MainActivity) getActivity()).getFragmentIndex(new EnterNumberFragment()) != -1)
-                        {
+                        if (((MainActivity) getActivity()).getFragmentIndex(new EnterNumberFragment()) != -1) {
                             ((MainActivity) getActivity()).selectTab(((MainActivity) getActivity()).getFragmentIndex(new EnterNumberFragment()));
-                        }else {
+                        } else {
                             Fragment fragment = new EnterNumberFragment();
-                            Bundle bundle= new Bundle();
-                            bundle.putString("index",((MainActivity) getActivity()).getFragmentIndex(new EnterNumberFragment())+"");
+                            Bundle bundle = new Bundle();
+                            bundle.putString("index", ((MainActivity) getActivity()).getFragmentIndex(new EnterNumberFragment()) + "");
                             fragment.setArguments(bundle);
                             getActivity().getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.container,fragment)
+                                    .replace(R.id.container, fragment)
                                     .addToBackStack(null)
                                     .commit();
                         }

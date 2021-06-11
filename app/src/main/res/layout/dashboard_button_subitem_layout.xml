@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_item"
     android:layout_width="match_parent"
-    android:paddingEnd="10dp"
     android:layout_height="@dimen/_30sdp"
     android:layout_marginBottom="@dimen/_5sdp"
-    android:filterTouchesWhenObscured="true">
+    android:filterTouchesWhenObscured="true"
+    android:paddingEnd="10dp">
 
     <RelativeLayout
         android:id="@+id/layout"

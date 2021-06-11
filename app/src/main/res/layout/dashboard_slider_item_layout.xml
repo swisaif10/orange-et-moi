@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/_145sdp"
     android:background="@color/grey"
+    android:filterTouchesWhenObscured="true"
     app:cardCornerRadius="0dp"
     app:cardElevation="5dp"
-    app:cardUseCompatPadding="true"
-    android:filterTouchesWhenObscured="true">
+    app:cardUseCompatPadding="true">
 
     <View
         android:id="@+id/color"

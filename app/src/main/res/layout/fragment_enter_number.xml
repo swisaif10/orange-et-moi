@@ -16,8 +16,6 @@
         android:visibility="gone">
 
 
-
-
         <ImageView
             android:id="@+id/logo"
             android:layout_width="match_parent"
@@ -41,9 +39,9 @@
             android:layout_height="31dp"
             android:layout_alignParentLeft="true"
             android:layout_margin="10dp"
+            android:padding="10dp"
             android:scaleType="fitStart"
-            android:src="@drawable/selector_left_button"
-            android:padding="10dp"/>
+            android:src="@drawable/selector_left_button" />
 
         <TextView
             android:id="@+id/desc"
@@ -75,6 +73,7 @@
                 android:background="@drawable/edittext_underline"
                 android:fontFamily="@font/helveticalight"
                 android:hint="N° de téléphone"
+                android:imeOptions="actionDone"
                 android:inputType="number"
                 android:maxLength="10"
                 android:paddingLeft="0dp"
@@ -82,9 +81,7 @@
                 android:textAlignment="viewStart"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
-                android:textSize="16sp"
-                android:imeOptions="actionDone"
-                 />
+                android:textSize="16sp" />
 
 
         </LinearLayout>

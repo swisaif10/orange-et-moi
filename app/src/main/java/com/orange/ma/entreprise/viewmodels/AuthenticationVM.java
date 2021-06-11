@@ -16,11 +16,6 @@ import com.orange.ma.entreprise.models.login.LoginData;
 import com.orange.ma.entreprise.models.login.SettingTagData;
 import com.orange.ma.entreprise.utilities.Constants;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import okhttp3.Headers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -69,7 +64,7 @@ public class AuthenticationVM extends AndroidViewModel {
     }
 
     public void login(String login, String password, Boolean rememberMe, String lang, EncryptedSharedPreferences encryptedSharedPreferences) {
-        Call<LoginData> call = RestService.getInstance().endpoint().login(ApiUrls.AUTHORIZATION,login, password, rememberMe, lang);
+        Call<LoginData> call = RestService.getInstance().endpoint().login(ApiUrls.AUTHORIZATION, login, password, rememberMe, lang);
         call.enqueue(new Callback<LoginData>() {
             @Override
             public void onResponse(Call<LoginData> call, Response<LoginData> response) {
@@ -89,7 +84,7 @@ public class AuthenticationVM extends AndroidViewModel {
     }
 
     public void getCGU(String lang) {
-        Call<CGUData> call = RestService.getInstance().endpoint().getCGU(ApiUrls.AUTHORIZATION,"cgu", lang);
+        Call<CGUData> call = RestService.getInstance().endpoint().getCGU(ApiUrls.AUTHORIZATION, "cgu", lang);
         call.enqueue(new Callback<CGUData>() {
             @Override
             public void onResponse(Call<CGUData> call, Response<CGUData> response) {
@@ -103,8 +98,8 @@ public class AuthenticationVM extends AndroidViewModel {
         });
     }
 
-    public void signIn(String id, String cin, String email, String password, String lang,PreferenceManager preferenceManager, EncryptedSharedPreferences encryptedSharedPreferences) {
-        Call<LoginData> call = RestService.getInstance().endpoint().signIn(ApiUrls.AUTHORIZATION,id, cin, email, password, lang);
+    public void signIn(String id, String cin, String email, String password, String lang, PreferenceManager preferenceManager, EncryptedSharedPreferences encryptedSharedPreferences) {
+        Call<LoginData> call = RestService.getInstance().endpoint().signIn(ApiUrls.AUTHORIZATION, id, cin, email, password, lang);
         call.enqueue(new Callback<LoginData>() {
             @Override
             public void onResponse(Call<LoginData> call, Response<LoginData> response) {
@@ -124,7 +119,7 @@ public class AuthenticationVM extends AndroidViewModel {
     }
 
     public void guestLogin(String lang) {
-        Call<GuestLoginData> call = RestService.getInstance().endpoint().guestLogin(ApiUrls.AUTHORIZATION,lang);
+        Call<GuestLoginData> call = RestService.getInstance().endpoint().guestLogin(ApiUrls.AUTHORIZATION, lang);
         call.enqueue(new Callback<GuestLoginData>() {
             @Override
             public void onResponse(Call<GuestLoginData> call, Response<GuestLoginData> response) {
@@ -138,8 +133,8 @@ public class AuthenticationVM extends AndroidViewModel {
         });
     }
 
-    public void performTagAction(String tag,String lang){
-        Call<SettingTagData> call = RestService.getInstance().endpoint().performTagAction(ApiUrls.AUTHORIZATION,tag,lang);
+    public void performTagAction(String tag, String lang) {
+        Call<SettingTagData> call = RestService.getInstance().endpoint().performTagAction(ApiUrls.AUTHORIZATION, tag, lang);
         call.enqueue(new Callback<SettingTagData>() {
             @Override
             public void onResponse(Call<SettingTagData> call, Response<SettingTagData> response) {

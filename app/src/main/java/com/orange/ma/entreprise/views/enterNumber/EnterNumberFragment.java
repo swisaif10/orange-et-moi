@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,7 +34,6 @@ import com.orange.ma.entreprise.utilities.ProductSearchAdapter;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.ConsultLigneVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
-import com.orange.ma.entreprise.views.base.BaseFragment;
 import com.orange.ma.entreprise.views.consult_line.ConsultLineFragment;
 import com.orange.ma.entreprise.views.main.MainActivity;
 
@@ -150,15 +148,12 @@ public class EnterNumberFragment extends Fragment {
         numtel.setText("");
         validBtn.setEnabled(numtel.getText().toString().length() == 10);
 
-            if (((MainActivity) getActivity()).getFragmentIndex(new EnterNumberFragment()) != -1)
-            {
-                ((MainActivity) getActivity()).showTab();
-            }else {
-                ((MainActivity) getActivity()).hideTab();
+        if (((MainActivity) getActivity()).getFragmentIndex(new EnterNumberFragment()) != -1) {
+            ((MainActivity) getActivity()).showTab();
+        } else {
+            ((MainActivity) getActivity()).hideTab();
 
-            }
-
-
+        }
 
 
         getView().setFocusableInTouchMode(true);
@@ -174,7 +169,6 @@ public class EnterNumberFragment extends Fragment {
                 return false;
             }
         });
-
 
 
     }

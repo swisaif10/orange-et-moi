@@ -2,7 +2,6 @@ package com.orange.ma.entreprise.models.consult;
 
 import com.google.gson.annotations.Expose;
 import com.orange.ma.entreprise.models.commons.Header;
-import com.orange.ma.entreprise.models.login.LoginResponse;
 
 public class ConsultData {
 

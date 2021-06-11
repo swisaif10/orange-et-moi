@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.main.browser.BrowserFragment"
-    android:filterTouchesWhenObscured="true">
+    android:filterTouchesWhenObscured="true"
+    tools:context=".views.main.browser.BrowserFragment">
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/loader"

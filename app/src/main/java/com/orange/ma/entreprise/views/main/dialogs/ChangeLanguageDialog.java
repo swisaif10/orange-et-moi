@@ -23,8 +23,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-
 public class ChangeLanguageDialog extends Dialog {
 
     @BindView(R.id.french_checkbox)
@@ -106,7 +104,7 @@ public class ChangeLanguageDialog extends Dialog {
     private void selectNewLang(String lang) {
         if (!selectedLang.equalsIgnoreCase(lang)) {
             LocaleManager.setNewLocale(context, lang);
-            Intent intent = new Intent(context,MainActivity.class);
+            Intent intent = new Intent(context, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

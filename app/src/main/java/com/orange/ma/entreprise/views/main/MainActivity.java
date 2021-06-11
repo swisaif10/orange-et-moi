@@ -260,9 +260,8 @@ public class MainActivity extends BaseActivity {
             if (getIntent().getStringExtra("link") != null) {
                 if ("setting".equals(getIntent().getStringExtra("link").toLowerCase())) {
                     moveToSettingsFragment();
-                }else if ("consult_ligne".equals(getIntent().getStringExtra("link").toLowerCase()))
-                {
-                    switchFragment(new EnterNumberFragment(),"");
+                } else if ("consult_ligne".equals(getIntent().getStringExtra("link").toLowerCase())) {
+                    switchFragment(new EnterNumberFragment(), "");
                     OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "consult_ligne", LocaleManager.getLanguagePref(this));
 
                 }
@@ -296,7 +295,7 @@ public class MainActivity extends BaseActivity {
                     moveToSettingsFragment();
                     break;
                 case "consult_ligne":
-                    switchFragment(new EnterNumberFragment(),"");
+                    switchFragment(new EnterNumberFragment(), "");
                     OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(this, "consult_ligne", LocaleManager.getLanguagePref(this));
 
                     break;
@@ -353,14 +352,15 @@ public class MainActivity extends BaseActivity {
         return -1;
     }
 
-    public void hideTab (){
+    public void hideTab() {
         tabLayout.setVisibility(View.GONE);
     }
-    public void showTab (){
+
+    public void showTab() {
         tabLayout.setVisibility(View.VISIBLE);
     }
 
-    public void selectTab(int index){
+    public void selectTab(int index) {
         tabLayout.selectTab(tabLayout.getTabAt(index));
     }
 }

@@ -1,8 +1,6 @@
-
 package com.orange.ma.entreprise.models.commons;
 
 import com.google.gson.annotations.Expose;
-import com.orange.ma.entreprise.models.commons.Header;
 
 @SuppressWarnings("unused")
 public class ResponseData {

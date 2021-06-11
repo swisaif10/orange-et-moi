@@ -9,8 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,7 +25,6 @@ import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
 import com.orange.ma.entreprise.datamanager.sharedpref.PreferenceManager;
 import com.orange.ma.entreprise.models.consult.ConsultData;
-import com.orange.ma.entreprise.models.listmsisdn.ListMsisdnData;
 import com.orange.ma.entreprise.utilities.Connectivity;
 import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.utilities.LocaleManager;
@@ -99,6 +96,15 @@ public class ConsultLineFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static void shareContent(Context mContext, String txt) {
+        Log.d("Utils", String.format("Sharing content: %s", txt));
+        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, txt);
+        mContext.startActivity(Intent.createChooser(shareIntent, mContext.getResources().getString(R.string.text_share)));
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,7 +145,6 @@ public class ConsultLineFragment extends Fragment {
         loader.setVisibility(View.VISIBLE);
 
 
-
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,7 +154,7 @@ public class ConsultLineFragment extends Fragment {
         getConsultDeatil();
     }
 
-    @OnClick({ R.id.container})
+    @OnClick({R.id.container})
     public void onViewClicked(View view) {
         if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
             return;
@@ -201,18 +206,17 @@ public class ConsultLineFragment extends Fragment {
                 bundles.putString("Msisdn", num);
                 bundles.putString("PUK", consultData.getResponse().getData().getCode_puk());
                 OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("btn_share_puk", bundles);
-                shareContent(getActivity(),getString(R.string.recuperer_code_puk_share, consultData.getResponse().getData().getCode_puk()))   ;
+                shareContent(getActivity(), getString(R.string.recuperer_code_puk_share, consultData.getResponse().getData().getCode_puk()));
             }
         });
 
     }
 
-
     private void getConsultDeatil() {
         if (connectivity.isConnected())
-            consultlineVM.getConsultDetai(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, ""),num,csrf);
+            consultlineVM.getConsultDetai(preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, ""), num, csrf);
         else
-            Utilities.showErrorPopupWithClickListener(getContext(), getString(R.string.no_internet),new View.OnClickListener() {
+            Utilities.showErrorPopupWithClickListener(getContext(), getString(R.string.no_internet), new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     getActivity().getSupportFragmentManager().popBackStack();
@@ -232,7 +236,7 @@ public class ConsultLineFragment extends Fragment {
         OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "detail_ligne", LocaleManager.getLanguagePref(getContext()));
 
         if (listMsisdnData == null) {
-            Utilities.showErrorPopupWithClickListener(getContext(), getString(R.string.generic_error),new View.OnClickListener() {
+            Utilities.showErrorPopupWithClickListener(getContext(), getString(R.string.generic_error), new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     getActivity().getSupportFragmentManager().popBackStack();
@@ -267,15 +271,6 @@ public class ConsultLineFragment extends Fragment {
             }
 
         }
-    }
-
-    public static void shareContent(Context mContext, String txt) {
-        Log.d("Utils", String.format("Sharing content: %s", txt));
-        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
-
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, txt);
-        mContext.startActivity(Intent.createChooser(shareIntent, mContext.getResources().getString(R.string.text_share)));
     }
 
 

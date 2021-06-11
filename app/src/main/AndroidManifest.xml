@@ -10,15 +10,15 @@
         android:name="com.orange.ma.entreprise.OrangePro"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher_new"
-        android:roundIcon="@mipmap/r_ic_launcher_new"
         android:label="@string/app_name"
-        android:networkSecurityConfig="@xml/network_traffic_config"
-        android:usesCleartextTraffic="false"
-        android:supportsRtl="true"
         android:launchMode="singleTask"
+        android:networkSecurityConfig="@xml/network_traffic_config"
+        android:roundIcon="@mipmap/r_ic_launcher_new"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:allowBackup"
-        tools:ignore="HardcodedDebugMode">
+        android:usesCleartextTraffic="false"
+        tools:ignore="HardcodedDebugMode"
+        tools:replace="android:allowBackup">
         <activity
             android:name="com.orange.ma.entreprise.views.authentication.AuthenticationActivity"
             android:launchMode="singleTask"
@@ -49,7 +49,7 @@
             android:name="com.orange.ma.entreprise.views.main.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing" />
 
         <service
             android:name=".fcm.OFirebaseMessagingService"

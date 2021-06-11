@@ -34,7 +34,7 @@ public class SpalshVM extends AndroidViewModel {
 
 
     public void getVersionCheck(String lang) {
-        Call<ControlVersionData> call = RestService.getInstance().endpoint().getVersionCheck(ApiUrls.AUTHORIZATION,lang);
+        Call<ControlVersionData> call = RestService.getInstance().endpoint().getVersionCheck(ApiUrls.AUTHORIZATION, lang);
         call.enqueue(new Callback<ControlVersionData>() {
             @Override
             public void onResponse(Call<ControlVersionData> call, Response<ControlVersionData> response) {

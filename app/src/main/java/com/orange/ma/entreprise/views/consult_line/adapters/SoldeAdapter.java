@@ -52,6 +52,7 @@ public class SoldeAdapter extends RecyclerView.Adapter<SoldeAdapter.ForfaitHolde
     public class ForfaitHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.name)
         TextView name;
+
         public ForfaitHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

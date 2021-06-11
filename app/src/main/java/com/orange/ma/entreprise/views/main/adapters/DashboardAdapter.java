@@ -170,7 +170,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         boolean hasMenuKey = ViewConfiguration.get(context).hasPermanentMenuKey();
         boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
 
-        if (Utilities.aspect(context) > 1.8f && (hasMenuKey||hasBackKey))
+        if (Utilities.aspect(context) > 1.8f && (hasMenuKey || hasBackKey))
             return 0;
         if (densityDpi < 500 && ViewConfiguration.get(context).hasPermanentMenuKey())
             h = (int) context.getResources().getDimension(R.dimen._22sdp);

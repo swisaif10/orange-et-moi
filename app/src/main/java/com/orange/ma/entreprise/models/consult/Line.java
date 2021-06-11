@@ -2,8 +2,6 @@ package com.orange.ma.entreprise.models.consult;
 
 import com.google.gson.annotations.Expose;
 
-import java.util.List;
-
 public class Line {
 
     @Expose

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
@@ -46,6 +45,9 @@ public class WebViewFragment extends BaseFragment {
     private PreferenceManager preferenceManager;
     private EncryptedSharedPreferences encryptedSharedPreferences;
 
+    public WebViewFragment() {
+    }
+
     public static WebViewFragment newInstance(String url, String title) {
         WebViewFragment fragment = new WebViewFragment();
         Bundle args = new Bundle();
@@ -53,9 +55,6 @@ public class WebViewFragment extends BaseFragment {
         args.putString("title", title);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public WebViewFragment() {
     }
 
     @Override
@@ -150,7 +149,6 @@ public class WebViewFragment extends BaseFragment {
             loader.setVisibility(View.GONE);
         }
     }
-
 
 
 }

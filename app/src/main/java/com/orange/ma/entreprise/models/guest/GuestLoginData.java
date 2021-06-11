@@ -1,4 +1,3 @@
-
 package com.orange.ma.entreprise.models.guest;
 
 import com.google.gson.annotations.Expose;

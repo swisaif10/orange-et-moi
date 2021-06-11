@@ -1,10 +1,8 @@
-
 package com.orange.ma.entreprise.models.dashboard;
 
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DashboardResponseData {
 

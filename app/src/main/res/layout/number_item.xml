@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -10,15 +9,15 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:fontFamily="@font/helveticalight"
+        android:textAlignment="viewStart"
         android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textAlignment="viewStart"/>
+        android:textSize="18sp" />
 
     <View
         android:id="@+id/separator"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/grey"
-       android:layout_below="@+id/num" />
+        android:layout_below="@+id/num"
+        android:background="@color/grey" />
 
 </RelativeLayout>

@@ -45,7 +45,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
         try {
             int icon = context.getResources().getIdentifier(arrayList.get(position).getIcon(), "drawable", context.getPackageName());
             holder.icon.setImageDrawable(context.getResources().getDrawable(icon));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -32,16 +32,16 @@ public class BrowserFragment extends BaseFragment {
     private PreferenceManager preferenceManager;
     private EncryptedSharedPreferences encryptedSharedPreferences;
 
+    public BrowserFragment() {
+
+    }
+
     public static BrowserFragment newInstance(String url) {
         BrowserFragment fragment = new BrowserFragment();
         Bundle args = new Bundle();
         args.putString("url", url);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public BrowserFragment() {
-
     }
 
     @Override

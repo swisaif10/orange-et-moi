@@ -9,11 +9,8 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.lifecycle.ViewModelProviders;
-import androidx.security.crypto.MasterKeys;
 
-import com.google.firebase.crashlytics.internal.common.CommonUtils;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.orange.ma.entreprise.OrangePro;
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
@@ -28,12 +25,8 @@ import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.SpalshVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
 import com.orange.ma.entreprise.views.base.BaseActivity;
-import com.orange.ma.entreprise.views.enterNumber.EnterNumberFragment;
 import com.orange.ma.entreprise.views.main.MainActivity;
 import com.orange.ma.entreprise.views.selectlanguage.SelectLanguageActivity;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 
 import static com.orange.ma.entreprise.utilities.Constants.ACTION_TYPE;
 import static com.orange.ma.entreprise.utilities.Constants.APP_VIEW;

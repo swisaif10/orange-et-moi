@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     android:background="@color/white"
-    tools:context=".views.authentication.fragments.LoginFragment"
-    android:filterTouchesWhenObscured="true">
+    android:fillViewport="true"
+    android:filterTouchesWhenObscured="true"
+    tools:context=".views.authentication.fragments.LoginFragment">
 
     <RelativeLayout
         android:id="@+id/container"
@@ -62,20 +62,20 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_toEndOf="@+id/error_icon"
                     android:layout_toStartOf="@id/close_btn"
+                    android:layout_toEndOf="@+id/error_icon"
                     android:fontFamily="@font/helveticamedium"
+                    android:paddingVertical="@dimen/_10sdp"
                     android:textColor="@color/white"
                     android:textSize="13sp"
-                    android:paddingVertical="@dimen/_10sdp"
                     tools:text="RC / Patente ou mot de passe incorrect" />
 
                 <RelativeLayout
                     android:id="@+id/close_btn"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
                     android:padding="@dimen/_7sdp">
 
                     <ImageView
@@ -197,8 +197,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/helveticalight"
-                android:text="@string/signin"
                 android:paddingVertical="15dp"
+                android:text="@string/signin"
                 android:textColor="@drawable/selector_button_text_color"
                 android:textSize="18sp" />
 
@@ -211,8 +211,8 @@
                 android:id="@+id/visitor_mode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="15dp"
                 android:fontFamily="@font/helveticalight"
+                android:paddingVertical="15dp"
                 android:text="@string/visitor_mode"
                 android:textColor="@drawable/selector_button_text_color"
                 android:textSize="18sp" />
@@ -226,11 +226,11 @@
                 android:id="@+id/forgotten_pwd_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="15dp"
+                android:clickable="true"
                 android:fontFamily="@font/helveticalight"
+                android:paddingVertical="15dp"
                 android:text="@string/forgotten_password"
                 android:textColor="@drawable/selector_button_text_color"
-                android:clickable="true"
                 android:textSize="18sp" />
 
             <View
@@ -242,12 +242,12 @@
                 android:id="@+id/gest_account_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 android:fontFamily="@font/helveticalight"
+                android:paddingVertical="15dp"
                 android:text="@string/change_account_manager"
                 android:textColor="@drawable/selector_button_text_color"
-                android:clickable="true"
-                android:paddingVertical="15dp"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
         </LinearLayout>
 

@@ -3,24 +3,13 @@ package com.orange.ma.entreprise.datamanager.sharedpref;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.security.KeyPairGeneratorSpec;
-import android.security.keystore.KeyGenParameterSpec;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.security.GeneralSecurityException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.KeyPairGeneratorSpi;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Size;
 import androidx.security.crypto.MasterKey;
-import androidx.security.crypto.MasterKeys;
 
-import javax.security.auth.x500.X500Principal;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 public class EncryptedSharedPreferences {
 
@@ -28,7 +17,7 @@ public class EncryptedSharedPreferences {
     private SharedPreferences.Editor editor;
 
 
-    public SharedPreferences getEncryptedSharedPreferences(Context context){
+    public SharedPreferences getEncryptedSharedPreferences(Context context) {
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try {

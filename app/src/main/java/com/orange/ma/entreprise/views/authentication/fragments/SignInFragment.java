@@ -129,7 +129,7 @@ public class SignInFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(getActivity().getIntent().getExtras()!=null && getActivity().getIntent().getStringExtra(IDENTIFIANT)!=null){
+        if (getActivity().getIntent().getExtras() != null && getActivity().getIntent().getStringExtra(IDENTIFIANT) != null) {
             id.setText(getActivity().getIntent().getStringExtra(IDENTIFIANT));
             cin.setText(getActivity().getIntent().getStringExtra(CIN));
             email.setText(getActivity().getIntent().getStringExtra(EMAIL));
@@ -241,7 +241,7 @@ public class SignInFragment extends Fragment {
         password.addTextChangedListener(textWatcher);
         email.addTextChangedListener(textWatcher);
 
-        if (!from_cgu && !instanceData ) {
+        if (!from_cgu && !instanceData) {
             id.getText().clear();
             cin.getText().clear();
             password.getText().clear();
@@ -265,7 +265,7 @@ public class SignInFragment extends Fragment {
         showPasswordBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                password.setTransformationMethod(!isChecked?new PasswordTransformationMethod():null);
+                password.setTransformationMethod(!isChecked ? new PasswordTransformationMethod() : null);
                 password.setSelection(password.getText().length());
             }
         });
@@ -355,7 +355,7 @@ public class SignInFragment extends Fragment {
 
     private void SignIn() {
         if (connectivity.isConnected())
-            authenticationVM.signIn(id.getText().toString(), cin.getText().toString(), email.getText().toString(), password.getText().toString(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"),preferenceManager,encryptedSharedPreferences);
+            authenticationVM.signIn(id.getText().toString(), cin.getText().toString(), email.getText().toString(), password.getText().toString(), preferenceManager.getValue(Constants.LANGUAGE_KEY, "fr"), preferenceManager, encryptedSharedPreferences);
         else {
             errorLayout.setVisibility(View.VISIBLE);
             errorDescription.setText(getString(R.string.no_internet));
@@ -386,9 +386,9 @@ public class SignInFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        getActivity().getIntent().putExtra(IDENTIFIANT,String.valueOf(id.getText()));
-        getActivity().getIntent().putExtra(CIN,String.valueOf(cin.getText()));
-        getActivity().getIntent().putExtra(EMAIL,String.valueOf(email.getText()));
-        getActivity().getIntent().putExtra(PASSWORD,String.valueOf(password.getText()));
+        getActivity().getIntent().putExtra(IDENTIFIANT, String.valueOf(id.getText()));
+        getActivity().getIntent().putExtra(CIN, String.valueOf(cin.getText()));
+        getActivity().getIntent().putExtra(EMAIL, String.valueOf(email.getText()));
+        getActivity().getIntent().putExtra(PASSWORD, String.valueOf(password.getText()));
     }
 }

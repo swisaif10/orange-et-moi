@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.orange.ma.entreprise.R;
 import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
@@ -28,16 +27,16 @@ public class ExternalBrowserFragment extends BaseFragment {
     private PreferenceManager preferenceManager;
     private EncryptedSharedPreferences encryptedSharedPreferences;
 
+    public ExternalBrowserFragment() {
+
+    }
+
     public static ExternalBrowserFragment newInstance(String url) {
         ExternalBrowserFragment fragment = new ExternalBrowserFragment();
         Bundle args = new Bundle();
         args.putString("url", url);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public ExternalBrowserFragment() {
-
     }
 
     @Override
@@ -61,7 +60,7 @@ public class ExternalBrowserFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         flag = 0;
         View view = inflater.inflate(R.layout.fragment_browser, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         loader.setVisibility(View.VISIBLE);
         return view;
     }
@@ -89,7 +88,7 @@ public class ExternalBrowserFragment extends BaseFragment {
                 String token = encryptedSharedPreferences.getValue(Constants.TOKEN_KEY, "").replace("Bearer ", "");
                 url = url.replace(Constants.EX_SSO_TOKEN, token);
             }
-            Utilities.openInBrowser(getContext(),url);
+            Utilities.openInBrowser(getContext(), url);
         }
     }
 }

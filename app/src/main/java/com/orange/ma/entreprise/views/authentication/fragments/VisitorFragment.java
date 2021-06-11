@@ -47,10 +47,10 @@ public class VisitorFragment extends Fragment implements OnTemplateItemSelectedL
     GifImageView loader;
     @BindView(R.id.swipeRefresh)
     PullRefreshLayout swipeRefresh;
+    StartSnapHelper snapHelper = new StartSnapHelper();
     private PreferenceManager preferenceManager;
     private Connectivity connectivity;
     private AuthenticationVM authenticationVM;
-    StartSnapHelper snapHelper = new StartSnapHelper();
     private EncryptedSharedPreferences encryptedSharedPreferences;
 
     public VisitorFragment() {

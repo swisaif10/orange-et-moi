@@ -11,15 +11,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestService {
 
-    private RestEndpoint restEndpoint;
     private static RestService restService;
-
-    public static RestService getInstance() {
-        if (restService == null) {
-            restService = new RestService();
-        }
-        return restService;
-    }
+    private RestEndpoint restEndpoint;
 
     private RestService() {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
@@ -30,7 +23,7 @@ public class RestService {
         client.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
-                    .addHeader("Accept", "application/json;version=1.0")
+                    .addHeader("Accept", "application/json;version=" + BuildConfig.VERSION_NAME)
                     .addHeader("os", "android");
             Request request = requestBuilder.build();
             return chain.proceed(request);
@@ -45,6 +38,13 @@ public class RestService {
                 .client(client.build())
                 .build();
         restEndpoint = retrofit.create(RestEndpoint.class);
+    }
+
+    public static RestService getInstance() {
+        if (restService == null) {
+            restService = new RestService();
+        }
+        return restService;
     }
 
     public RestEndpoint endpoint() {

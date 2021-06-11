@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.orange.ma.entreprise.datamanager.sharedpref.EncryptedSharedPreferences;
-import com.orange.ma.entreprise.utilities.Constants;
 import com.orange.ma.entreprise.views.splashscreen.SplashScreenActivity;
 
 import java.util.Map;
@@ -43,7 +42,7 @@ public class OFirebaseMessagingService extends FirebaseMessagingService {
 
         encryptedSharedPreferences.getEncryptedSharedPreferences(this);
 
-        encryptedSharedPreferences.putValue("fb_token",s);
+        encryptedSharedPreferences.putValue("fb_token", s);
 
 //        getSharedPreferences(Constants.FCM_PREFS_NAME, MODE_PRIVATE).edit().putString("fb_token", s).apply();
     }

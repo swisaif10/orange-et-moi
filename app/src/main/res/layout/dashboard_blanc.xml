@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/large_item_card"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_50sdp"
     android:background="@color/grey"
-    app:cardCornerRadius="0dp"
-    app:cardElevation="0dp"
+    android:filterTouchesWhenObscured="true"
     android:visibility="invisible"
-    android:filterTouchesWhenObscured="true">
-</androidx.cardview.widget.CardView>
+    app:cardCornerRadius="0dp"
+    app:cardElevation="0dp"></androidx.cardview.widget.CardView>

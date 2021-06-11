@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:filterTouchesWhenObscured="true"
     android:orientation="vertical"
-    android:paddingVertical="@dimen/_6sdp"
-    android:filterTouchesWhenObscured="true">
+    android:paddingVertical="@dimen/_6sdp">
 
     <LinearLayout
         android:id="@+id/layout_1"
@@ -18,9 +18,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/helveticabold"
+            android:layoutDirection="ltr"
             android:textColor="@color/orange"
             android:textSize="@dimen/_14sdp"
-            android:layoutDirection="ltr"
             tools:text="102" />
 
         <TextView
@@ -47,9 +47,9 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/helveticabold"
             android:gravity="end"
+            android:layoutDirection="ltr"
             android:textColor="@color/orange"
             android:textSize="@dimen/_14sdp"
-            android:layoutDirection="ltr"
             tools:text="102" />
 
         <TextView

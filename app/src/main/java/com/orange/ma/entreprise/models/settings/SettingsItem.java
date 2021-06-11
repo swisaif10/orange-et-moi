@@ -1,8 +1,6 @@
-
 package com.orange.ma.entreprise.models.settings;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 public class SettingsItem {
 

@@ -1,4 +1,3 @@
-
 package com.orange.ma.entreprise.models.tabmenu;
 
 import com.google.gson.annotations.Expose;
