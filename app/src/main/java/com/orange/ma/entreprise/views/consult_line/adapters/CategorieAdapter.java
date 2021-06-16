@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.orange.ma.entreprise.R;
+import com.orange.ma.entreprise.models.consult.Categorie;
 import com.orange.ma.entreprise.models.consult.Line;
 
 import java.util.List;
@@ -18,42 +20,49 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SoldeAdapter extends RecyclerView.Adapter<SoldeAdapter.ForfaitHolder> {
+public class CategorieAdapter extends RecyclerView.Adapter<CategorieAdapter.ForfaitHolder> {
 
     private Context mContext;
-    private List<Line> offreList;
+    private List<Categorie> categorieList;
+    private SoldeAdapter amountAdapter;
 
-    public SoldeAdapter(Context mContext, List<Line> offreList) {
+    public CategorieAdapter(Context mContext, List<Categorie> categorieList) {
         this.mContext = mContext;
-        this.offreList = offreList;
+        this.categorieList = categorieList;
     }
 
     @NonNull
     @Override
     public ForfaitHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.solde_item, parent, false);
+                inflate(R.layout.categorie_item, parent, false);
         return new ForfaitHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ForfaitHolder holder, int position) {
-        Line currentoffre = offreList.get(position);
+        Categorie currentoffre = categorieList.get(position);
 
-        holder.name.setText(Html.fromHtml(currentoffre.getMessage()));
+        holder.name.setText(Html.fromHtml(currentoffre.getName()));
 
-
+        holder.rv.setLayoutManager(new LinearLayoutManager(mContext));
+        holder.rv.setHasFixedSize(true);
+        amountAdapter = new SoldeAdapter(mContext, currentoffre.getLine_balance());
+        holder.rv.setAdapter(amountAdapter);
 
     }
 
     @Override
     public int getItemCount() {
-        return offreList.size();
+        return categorieList.size();
     }
 
     public class ForfaitHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.name)
         TextView name;
+
+        @BindView(R.id.rv)
+        RecyclerView rv;
 
         public ForfaitHolder(@NonNull View itemView) {
             super(itemView);

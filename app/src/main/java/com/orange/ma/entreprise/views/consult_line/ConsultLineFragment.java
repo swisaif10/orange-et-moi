@@ -31,6 +31,7 @@ import com.orange.ma.entreprise.utilities.LocaleManager;
 import com.orange.ma.entreprise.utilities.Utilities;
 import com.orange.ma.entreprise.viewmodels.ConsultLigneVM;
 import com.orange.ma.entreprise.views.authentication.AuthenticationActivity;
+import com.orange.ma.entreprise.views.consult_line.adapters.CategorieAdapter;
 import com.orange.ma.entreprise.views.consult_line.adapters.SoldeAdapter;
 import com.orange.ma.entreprise.views.main.MainActivity;
 
@@ -80,6 +81,9 @@ public class ConsultLineFragment extends Fragment {
     @BindView(R.id.rv)
     RecyclerView rv;
 
+    @BindView(R.id.rv_categorie)
+    RecyclerView rv_categorie;
+
     @BindView(R.id.status_img)
     ImageView status_img;
     private Connectivity connectivity;
@@ -90,6 +94,7 @@ public class ConsultLineFragment extends Fragment {
     private String num;
     private SoldeAdapter amountAdapter;
     private String csrf;
+    private CategorieAdapter categorieAdapter;
 
 
     public ConsultLineFragment() {
@@ -195,6 +200,11 @@ public class ConsultLineFragment extends Fragment {
         rv.setHasFixedSize(true);
         amountAdapter = new SoldeAdapter(getActivity(), consultData.getResponse().getData().getBalance().getLine_balance());
         rv.setAdapter(amountAdapter);
+
+        rv_categorie.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rv_categorie.setHasFixedSize(true);
+        categorieAdapter = new CategorieAdapter(getActivity(), consultData.getResponse().getData().getBalance().getCategories());
+        rv_categorie.setAdapter(categorieAdapter);
 
 
         container.setVisibility(View.VISIBLE);

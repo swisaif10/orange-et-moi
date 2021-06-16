@@ -4,13 +4,20 @@ import com.google.gson.annotations.Expose;
 
 import java.util.List;
 
-public class Balance {
+public class Categorie {
 
+    @Expose
+    private String name;
     @Expose
     private List<Line> line_balance;
 
-    @Expose
-    private List<Categorie> categories;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public List<Line> getLine_balance() {
         return line_balance;
@@ -18,13 +25,5 @@ public class Balance {
 
     public void setLine_balance(List<Line> line_balance) {
         this.line_balance = line_balance;
-    }
-
-    public List<Categorie> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Categorie> categories) {
-        this.categories = categories;
     }
 }
