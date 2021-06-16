@@ -226,15 +226,6 @@ public class ConsultLineFragment extends Fragment {
 
     private void handleConsultData(ConsultData listMsisdnData) {
         loader.setVisibility(View.GONE);
-
-        Bundle bundles = new Bundle();
-        bundles.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
-        bundles.putString("Msisdn", num);
-        bundles.putString("Plantarrifaire", listMsisdnData.getResponse().getData().getProfile_name());
-        bundles.putString("Status", listMsisdnData.getResponse().getData().getStatus());
-        OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("detail_ligne", bundles);
-        OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "detail_ligne", LocaleManager.getLanguagePref(getContext()));
-
         if (listMsisdnData == null) {
             Utilities.showErrorPopupWithClickListener(getContext(), getString(R.string.generic_error), new View.OnClickListener() {
                 @Override
@@ -242,14 +233,19 @@ public class ConsultLineFragment extends Fragment {
                     getActivity().getSupportFragmentManager().popBackStack();
                 }
             });
-
         } else {
             int code = listMsisdnData.getHeader().getCode();
             switch (code) {
                 case 200:
+                    Bundle bundles = new Bundle();
+                    bundles.putString(Constants.FIREBASE_LANGUE_KEY, LocaleManager.getLanguagePref(getContext()));
+                    bundles.putString("Msisdn", num);
+                    bundles.putString("Plantarrifaire", listMsisdnData.getResponse().getData().getProfile_name());
+                    bundles.putString("Status", listMsisdnData.getResponse().getData().getStatus());
+                    OrangePro.getInstance().getFireBaseAnalyticsInstance().logEvent("detail_ligne", bundles);
+                    OrangePro.getInstance().getFireBaseAnalyticsInstance().setCurrentScreen(getActivity(), "detail_ligne", LocaleManager.getLanguagePref(getContext()));
 
                     init(listMsisdnData);
-
                     break;
                 case 403:
                     encryptedSharedPreferences.putValue(Constants.IS_LOGGED_IN, false);
@@ -269,9 +265,6 @@ public class ConsultLineFragment extends Fragment {
                         }
                     });
             }
-
         }
     }
-
-
 }
