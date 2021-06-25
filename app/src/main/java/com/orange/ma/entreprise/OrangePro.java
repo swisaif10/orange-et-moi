@@ -2,11 +2,15 @@ package com.orange.ma.entreprise;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.orange.ma.entreprise.utilities.LocaleManager;
+
+import java.util.concurrent.Executor;
 
 public class OrangePro extends MultiDexApplication {
 
@@ -23,7 +27,7 @@ public class OrangePro extends MultiDexApplication {
         orangeApp = this;
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
+        System.out.println("");
     }
 
     @Override

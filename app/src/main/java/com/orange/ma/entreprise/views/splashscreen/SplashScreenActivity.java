@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -61,7 +62,7 @@ public class SplashScreenActivity extends BaseActivity {
 
         encryptedSharedPreferences.getEncryptedSharedPreferences(this);
 
-
+        Log.e("firebasetoken",encryptedSharedPreferences.getValue("fb_token",""));
         spalshVM = ViewModelProviders.of(this).get(SpalshVM.class);
         connectivity = new Connectivity(this, this);
 
