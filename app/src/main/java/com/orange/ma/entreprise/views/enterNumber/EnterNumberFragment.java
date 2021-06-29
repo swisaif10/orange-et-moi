@@ -256,7 +256,12 @@ public class EnterNumberFragment extends Fragment {
                     getActivity().finish();
                     break;
                 default:
-                    Utilities.showErrorPopup(getContext(), listMsisdnData.getHeader().getMessage());
+                    Utilities.showErrorPopupWithClickListener(getContext(), listMsisdnData.getHeader().getMessage(), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            getActivity().getSupportFragmentManager().popBackStack();
+                        }
+                    });
             }
 
         }
